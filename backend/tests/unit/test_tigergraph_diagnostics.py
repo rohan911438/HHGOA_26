@@ -226,3 +226,86 @@ class TestGraphListingHonesty:
         results = run_checks(client.settings, client)
         listing = next(r for r in results if r.name == "Graph listing")
         assert listing.ok is True
+
+
+class TestServerErrorClassification:
+    """Regression tests for a real bug caught live against Savanna: a 500
+    Server Error while minting a token fell through classify_network's
+    keyword list into the generic ENDPOINT bucket, and run_checks treated
+    every non-AUTHENTICATION category as "skipped" rather than "failed" -
+    so the whole tool printed ALL CHECKS PASSED while authentication had
+    actually failed. Exact error text captured from the live failure.
+    """
+
+    def test_500_error_is_classified_SERVER_not_ENDPOINT(self):
+        http_error = Exception(
+            "500 Server Error: Internal Server Error for url: "
+            "https://tg-example.i234.tgcloud.io:443/gsql/v1/tokens"
+        )
+        wrapped = TigerGraphUnavailable(
+            "Could not mint a REST++ token from TG_SECRET: HTTPError: "
+            "500 Server Error: Internal Server Error for url: "
+            "https://tg-example.i234.tgcloud.io:443/gsql/v1/tokens"
+        )
+        wrapped.__cause__ = http_error
+
+        category, _ = classify_network("https://example.com", wrapped)
+        assert category == "SERVER"
+
+    def test_502_503_504_are_also_classified_SERVER(self):
+        for code, text in (
+            (502, "502 Bad Gateway"),
+            (503, "503 Service Unavailable"),
+            (504, "504 Gateway Timeout"),
+        ):
+            wrapped = TigerGraphUnavailable(f"Could not mint a REST++ token: {text}")
+            wrapped.__cause__ = Exception(text)
+            category, _ = classify_network("https://example.com", wrapped)
+            assert category == "SERVER", f"{code} was not classified SERVER"
+
+
+class _StubClientAuthFails:
+    """Stand-in whose echo() raises a real, live-shaped 500 error - proves
+    run_checks no longer reports this as a silent skip."""
+
+    def __init__(self, settings: Settings):
+        self.settings = settings
+
+    def echo(self):
+        http_error = Exception("500 Server Error: Internal Server Error for url: .../tokens")
+        wrapped = TigerGraphUnavailable(
+            "Could not mint a REST++ token from TG_SECRET: HTTPError: "
+            "500 Server Error: Internal Server Error for url: .../tokens"
+        )
+        wrapped.__cause__ = http_error
+        raise wrapped
+
+
+class TestRunChecksDoesNotSilentlyPassOnServerError:
+    def _settings(self) -> Settings:
+        # A real, resolvable host - a fictitious tgcloud.io subdomain
+        # would fail the DNS check first and mask the SERVER-error path
+        # this test exists to exercise (this was caught the hard way:
+        # the first version of this test used exactly that host by
+        # mistake, silently testing NETWORK classification instead).
+        return Settings(
+            _env_file=None,
+            tg_host="https://example.com",
+            tg_graphname="HHGOA_FRAUD",
+            tg_secret="fake00000000000000000000000secret",
+        )
+
+    def test_a_500_during_token_mint_fails_the_whole_check(self):
+        settings = self._settings()
+        client = _StubClientAuthFails(settings)
+        results = run_checks(settings, client)
+
+        by_name = {r.name: r for r in results}
+        # The host WAS reached (we got a real HTTP response, just a bad
+        # one) - "Host reachable" is honestly true.
+        assert by_name["Host reachable"].ok is True
+        # But authentication demonstrably did NOT succeed - this must be
+        # False, not None/skipped, or the overall result silently passes.
+        assert by_name["Authentication successful"].ok is False
+        assert by_name["Authentication successful"].category == "SERVER"
+        assert all_passed(results) is False

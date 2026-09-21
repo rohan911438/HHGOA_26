@@ -95,6 +95,16 @@ def classify_network(host: str, exc: Exception) -> tuple[str, str]:
 
     if not resolves(hostname) or "getaddrinfo" in lowered or "name or service not known" in lowered:
         return "NETWORK", f"DNS resolution failed for '{hostname}': {wrapper_msg}"
+    # Checked before the generic "timeout" match below: "504 Gateway
+    # Timeout" contains the word "timeout" too, but it's an HTTP status
+    # from a server that responded - a SERVER-side signal, not evidence
+    # we never reached anything (caught by a test using this exact code).
+    if any(
+        k in lowered
+        for k in ("500", "502", "503", "504", "internal server error", "bad gateway",
+                   "service unavailable", "gateway timeout")
+    ):
+        return "SERVER", f"TigerGraph reported a server-side error: {wrapper_msg}"
     if "timed out" in lowered or "timeout" in lowered:
         return "NETWORK", f"connection to '{hostname}' timed out: {wrapper_msg}"
     if "certificate" in lowered or "ssl" in lowered:
@@ -170,14 +180,25 @@ def run_checks(settings: Settings | None = None, client: TigerGraphClient | None
         results.append(CheckResult("Authentication successful", True, f"via {s.tg_auth_method}"))
     except TigerGraphUnavailable as exc:
         category, detail = classify_network(s.tg_host, exc)
-        host_ok = category != "NETWORK"
-        results.append(CheckResult("Host reachable", host_ok, detail, "" if host_ok else category))
+        # NETWORK means the host genuinely could not be reached at all -
+        # authentication was never attempted, so "skipped" is honest.
+        # Every other category (AUTHENTICATION, ENDPOINT, SERVER, ...)
+        # means the request *did* reach TigerGraph and the token/auth
+        # exchange itself failed - that must count as a real failure,
+        # not a skip, regardless of which specific category it landed in.
+        # (Caught live: a 500 Server Error was previously falling through
+        # to "skipped", letting the whole check report ALL CHECKS PASSED
+        # while authentication had actually failed.)
+        host_reached = category != "NETWORK"
+        results.append(
+            CheckResult("Host reachable", host_reached, detail, "" if host_reached else category)
+        )
         results.append(
             CheckResult(
                 "Authentication successful",
-                False if category == "AUTHENTICATION" else None,
-                detail if category == "AUTHENTICATION" else "skipped - could not reach host",
-                category if category == "AUTHENTICATION" else "",
+                False if host_reached else None,
+                detail if host_reached else "skipped - could not reach host",
+                category if host_reached else "",
             )
         )
         for name in ("Graph accessible", "Schema accessible", "Read-only query successful"):
