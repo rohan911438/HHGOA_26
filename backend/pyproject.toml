@@ -1,0 +1,73 @@
+[project]
+name = "hhgoa-fraud-agent"
+version = "0.1.0"
+description = "Agentic Fraud Investigation backend — TigerGraph + MCP + GraphRAG + LangGraph"
+requires-python = ">=3.11,<3.13"
+
+dependencies = [
+    # API
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "python-multipart>=0.0.9",
+
+    # Config / models
+    "pydantic>=2.9",
+    "pydantic-settings>=2.6",
+    "python-dotenv>=1.0",
+
+    # Agent orchestration
+    "langgraph>=0.2.50",
+    "langchain-core>=0.3.20",
+    "langchain-openai>=0.2.10",
+    "openai>=1.55",
+
+    # TigerGraph
+    "pyTigerGraph>=1.8",
+
+    # MCP - official TigerGraph server, not a fork
+    "mcp>=1.1",
+    "tigergraph-mcp>=1.0.3",
+
+    # Persistence
+    "SQLAlchemy>=2.0.36",
+
+    # Retrieval / vectors
+    "numpy>=1.26",
+
+    # HTTP
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+data = [
+    # Only needed to fetch the source dataset, not at runtime.
+    "kaggle>=1.6",
+]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "pytest-cov>=6.0",
+    "ruff>=0.8",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = [
+    "tigergraph: requires a live TigerGraph connection",
+    "mcp: requires the TigerGraph MCP server",
+    "llm: requires a live LLM API key",
+    "integration: end-to-end, may be slow",
+]
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

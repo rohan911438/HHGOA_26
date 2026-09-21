@@ -1,0 +1,76 @@
+# ============================================================
+# SECRETS — never commit
+# ============================================================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+secrets/
+**/secrets.json
+.tg_token
+.tigergraph_token
+
+# ============================================================
+# Python
+# ============================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+ENV/
+
+# ============================================================
+# Testing / tooling
+# ============================================================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.ruff_cache/
+.mypy_cache/
+
+# ============================================================
+# Local data & runtime artifacts
+# ============================================================
+backend/data/fraud_agent.db
+backend/data/*.db
+backend/data/*.sqlite3
+backend/data/vector_store/
+backend/artifacts/
+backend/logs/
+*.log
+
+# Source dataset is large / not ours to redistribute.
+# Keep the folder + its README, ignore the payload.
+backend/data/hhgoa/**
+!backend/data/hhgoa/
+!backend/data/hhgoa/README.md
+!backend/data/hhgoa/.gitkeep
+
+# Dev subset is deterministically reproducible from the (gitignored)
+# source dataset via `python scripts/create_dev_subset.py --seed 42` -
+# a build output, not source.
+backend/data/dev/**
+!backend/data/dev/
+!backend/data/dev/.gitkeep
+
+# ============================================================
+# Editors / OS
+# ============================================================
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
