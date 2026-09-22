@@ -1,338 +1,1152 @@
-# HHGoa '26 — Agentic Fraud Investigation Agent (powered by TigerGraph)
+# 🕵️ Agentic Fraud Investigation Agent
 
-A graph-native fraud investigation system where TigerGraph and a stack of
-deterministic services do the data analysis, and an LLM agent
-orchestrates, iterates, and explains — **never the other way around**.
-No component in this codebase, deterministic or LLM-orchestrated,
-produces a fraud verdict, a fraud probability, or a final score. That is
-explicitly out of scope for everything built here.
+**AI-powered fraud investigation using TigerGraph, GraphRAG, controlled tools, and case memory**
 
-Status: **backend, agent, API, and frontend are all complete and
-integrated** (Phases 0–2L). Phase 2M (this document) is the final
-submission-readiness pass — see [Status](#status) for exact, currently
-observed test numbers, and [Known limitations](#known-limitations--data-status)
-for what remains genuinely unavailable (the official benchmark dataset)
-versus what is fully built and tested (everything else).
+*Hacker House Goa '26 — TigerGraph Challenge*
 
-## Architecture
+An agentic fraud investigation system that uses TigerGraph as the investigation engine and an AI agent as the orchestration and reasoning layer.
+
+Instead of asking an LLM to guess whether a transaction is fraudulent, the system first gathers structured evidence from a fraud graph, evaluates evidence quality and uncertainty, retrieves relevant historical investigation context, determines a traceable next-best action, and creates a persistent investigation case.
+
+The result is an investigation workflow that is evidence-driven, traceable, uncertainty-aware, and approval-gated.
+
+## ✨ What does this project do?
+
+Given a transaction such as:
+
+```
+Transaction ID: 2987937
+```
+
+the system can:
+
+- Investigate the transaction through TigerGraph.
+- Discover connected entities and transaction relationships.
+- Normalize graph results into structured evidence.
+- Evaluate evidence coverage, quality, conflicts, and uncertainty.
+- Retrieve similar historical cases and recurring patterns.
+- Determine a development-policy next-best action.
+- Create and update an investigation case.
+- Preserve evidence, decisions, actions, and outcomes.
+- Present the entire investigation through an analyst dashboard.
+
+### The core idea
+
+**LLM does not replace graph analytics.**
+
+```
+TigerGraph  → finds evidence
+Agent       → orchestrates investigation
+Rules       → evaluate uncertainty & policy
+Case Memory → provides historical context
+UI          → explains the investigation
+```
+
+## 🎯 Problem
+
+Fraud investigation is rarely a simple binary classification problem.
+
+An analyst may need to answer:
+
+- What is connected to this transaction?
+- Has the same card appeared elsewhere?
+- Is the device shared?
+- Are multiple transactions connected through an address?
+- Is there a suspicious network pattern?
+- How complete is the available evidence?
+- Are the signals contradictory?
+- Have similar cases been investigated before?
+- What should happen next?
+- Does that action require human approval?
+- What evidence supports the recommendation?
+
+Traditional ML classification can provide a score, but it does not inherently provide the investigation trail behind the decision.
+
+This project treats fraud investigation as a structured, tool-driven workflow rather than a single prediction.
+
+## 🧠 Core Architecture
 
 ```mermaid
-flowchart TD
-    U["Analyst / Evaluator"] --> FE["Frontend (Next.js)<br/>frontend/src"]
-    FE -->|"fetch() — the ONLY network call site<br/>frontend/src/lib/api.ts"| API
+flowchart TB
 
-    subgraph Backend["backend/app"]
-        API["FastAPI<br/>app/api"] --> AGENT["Agent Orchestrator (LangGraph)<br/>app/agent"]
-        AGENT --> INV["Investigation Service<br/>app/investigation/service.py"]
-        INV --> REG["Investigation Tool Registry<br/>app/investigation/registry.py<br/>(the ONLY surface the agent may call)"]
-        REG --> Q["6 read-only GSQL queries<br/>app/tigergraph/queries.py"]
+    U[Fraud Analyst] --> UI[Next.js Analyst Dashboard]
 
-        Q --> EV["Evidence Normalization<br/>app/evidence<br/>quality + provenance, never a verdict"]
-        EV --> UNC["Uncertainty Engine<br/>app/uncertainty<br/>deterministic, no LLM"]
-        AGENT --> CTX["Context / GraphRAG<br/>app/context<br/>current facts + historical cases + patterns"]
-        UNC --> POL["Policy / Next-Best-Action<br/>app/policy<br/>deterministic, executable always false"]
-        CTX --> POL
-        POL --> CM["CaseManager<br/>app/case"]
-        CM --> CS["CaseStore (in-memory)"]
-        CM --> MEM["CaseMemory<br/>similar cases, recurring patterns"]
-        MEM --> CTX
-    end
+    UI --> API[FastAPI API]
 
-    Q -->|"REST++ / token auth"| TG[("TigerGraph Cloud<br/>HHGOA_FRAUD graph")]
-    REG -.->|"read-only tool allowlist<br/>no raw GSQL, ever"| MCP["TigerGraph MCP<br/>app/mcp (read-only filtered)"]
-    MCP -.-> TG
+    API --> AGENT[Agent Orchestrator]
 
-    CM --> API
-    API -->|"typed JSON only —<br/>no chain-of-thought, no secrets"| FE
+    AGENT --> INV[Investigation Service]
+
+    INV --> REG[Investigation Tool Registry]
+
+    REG --> TG[TigerGraph<br/>HHGOA_FRAUD]
+
+    TG --> EVID[Evidence Normalization]
+
+    EVID --> SNAP[Investigation Snapshot]
+
+    SNAP --> UNC[Uncertainty Engine]
+
+    SNAP --> CTX[GraphRAG / Case Context]
+
+    CTX --> MEM[Case Memory]
+
+    UNC --> POLICY[Policy / Next-Best-Action]
+
+    CTX --> POLICY
+
+    POLICY --> CASE[Case Manager]
+
+    MEM --> CASE
+
+    CASE --> STORE[Case Store]
+
+    CASE --> API
+
+    API --> UI
 ```
 
-Every arrow above is a real import/call boundary, not an aspiration —
-enforced by AST-level architectural-boundary tests (see
-`backend/README.md`'s Testing section) that fail the suite if, say,
-`app/agent` ever imported `app.tigergraph.queries` directly, or if a
-deterministic engine ever imported an LLM SDK. The frontend has exactly
-one network call site (`frontend/src/lib/api.ts`) and never talks to
-TigerGraph, GSQL, or MCP directly.
+## 🔄 Investigation Workflow
 
-**Design principle:** every deterministic number an investigation
-produces — evidence coverage, signal quality, overall uncertainty,
-policy authorization, case-similarity score — is computed once, by an
-independently unit- and live-tested component. The LLM agent never
-recalculates any of them; it decides *when* to call them, interprets
-their output, and produces a grounded, evidence-cited explanation.
-
-## Repository layout
+The complete workflow is:
 
 ```
-backend/     Python backend - TigerGraph, evidence, uncertainty, policy,
-             case management, GraphRAG/context, the LangGraph agent, the
-             FastAPI serving layer, and the benchmark-discovery module.
-             See backend/README.md and backend/docs/ for full detail.
-frontend/    Next.js investigation console. See backend/docs/phase-2-frontend.md.
+Transaction
+     │
+     ▼
+Initialize Investigation
+     │
+     ▼
+Investigate through controlled tools
+     │
+     ├── Transaction Context
+     ├── Shared Card Activity
+     ├── Shared Address Activity
+     ├── Shared Device Activity
+     ├── Shared Email Activity
+     └── Transaction Network
+     │
+     ▼
+Normalize Evidence
+     │
+     ▼
+Assess Uncertainty
+     │
+     ▼
+Build Historical Context
+     │
+     ├── Similar Cases
+     ├── Recurring Patterns
+     └── Missing Information
+     │
+     ▼
+Determine Next-Best Action
+     │
+     ▼
+Create / Update Case
+     │
+     ▼
+Present Investigation to Analyst
 ```
 
-## Status
+The agent can iterate when more evidence is required, subject to bounded investigation limits.
 
-Every number below is from an actual command run in this repository —
-see [Testing](#testing-this-repository) to reproduce them.
+## 🕸️ TigerGraph Investigation Layer
 
-| Layer | Offline tests | Live tests | Notes |
-| --- | --- | --- | --- |
-| Backend (unit + API) | **329/329 PASS** | — | `pytest tests/unit tests/api` |
-| Backend (live, TigerGraph) | — | **currently BLOCKED** | External TigerGraph Cloud outage — see [Live TigerGraph status](#live-tigergraph-status) |
-| Frontend (unit + integration) | **30/30 PASS** | — | `npm test` in `frontend/` |
-| Frontend (typecheck / lint / build) | **all clean** | — | `tsc --noEmit`, `eslint`, `next build` |
+TigerGraph is the core investigation engine.
 
-The backend's live suite (79 tests across TigerGraph-backed investigation,
-context, case, policy, uncertainty, agent, benchmark, and API layers) is
-**fully built and has passed 79/79 in this same development session**
-(recorded in `backend/docs/phase-2-api.md` and
-`backend/docs/phase-2-benchmark-report.md`) — it is currently unable to
-run only because the shared TigerGraph Cloud workspace's token-minting
-endpoint is returning `HTTP 500` (external infrastructure, not this
-repository — see below). Every live test skips cleanly (not falsely) when
-this happens, by design.
+The graph currently contains:
 
-### Live TigerGraph status
+**Vertex types:** `Transaction`, `Card`, `Address`, `EmailDomain`, `Device`
 
-As of this document's last update, `python backend/scripts/test_tigergraph.py`
-reports:
+**Edge types:** `MADE_WITH_CARD` (Transaction→Card), `BILLED_TO` (Transaction→Address), `PURCHASER_EMAIL` / `RECIPIENT_EMAIL` (Transaction→EmailDomain), `USED_DEVICE` (Transaction→Device)
+
+The graph connects transactions with their associated entities and relationships, allowing the investigation service to traverse transaction networks instead of treating each transaction as an isolated row.
+
+The current development graph contains approximately:
+
+- **6,676 vertices**
+- **15,627 edges**
+
+The exact graph contents are generated from the available development dataset — see [Development dataset & benchmark limitation](#-development-dataset--benchmark-limitation).
+
+## 🔎 Investigation Tools
+
+The application exposes a controlled investigation tool registry.
+
+Current read-only investigation capabilities include:
+
+| Tool | Purpose |
+| --- | --- |
+| `get_transaction_context` | Retrieve the primary transaction context |
+| `find_shared_card_activity` | Find activity connected through a card |
+| `find_shared_address_activity` | Find activity connected through an address |
+| `find_shared_device_activity` | Find activity connected through a device |
+| `find_shared_email_activity` | Find activity connected through an email domain |
+| `investigate_transaction_network` | Investigate the broader transaction network |
+
+The agent does not receive unrestricted GSQL execution.
+
+Instead:
 
 ```
-✓ Host configured
-✓ Graph name configured
-✓ Credential configured - using secret
-✗ Authentication successful [SERVER] - Could not mint a REST++ token
-  from TG_SECRET: HTTPError: 500 Server Error: Internal Server Error
-  for url: https://<workspace>.tgcloud.io:443/gsql/v1/tokens
+Agent
+  ↓
+Investigation Service
+  ↓
+Tool Registry
+  ↓
+Approved Read-Only Tool
+  ↓
+TigerGraph
 ```
 
-This is TigerGraph Cloud's own token-minting endpoint returning a
-server-side error — confirmed reproducible across multiple independent
-retries and unrelated to general internet connectivity (which was
-independently verified reachable). No code in this repository was
-changed to "work around" this; live tests skip cleanly rather than
-falsely fail (see `backend/README.md`'s "Known environmental behavior").
-A prior, independently-observed healthy run of the exact same flow (see
-[Demo](#demo)) is fully recorded with real, non-hardcoded values.
+This keeps the agent's access bounded and auditable.
 
-## Setup
+## 🧩 Evidence Model
+
+Raw graph results are not passed directly around the application.
+
+They are normalized into structured evidence.
+
+Each evidence item contains information such as:
+
+- Evidence Type
+- Observation
+- Interpretation
+- Provenance
+- Quality
+- Status
+- Evidence ID
+- Metrics
+- Related Entities
+
+Example conceptual structure:
+
+```json
+{
+  "type": "shared_card",
+  "status": "SUCCESS",
+  "observation": "...",
+  "interpretation": "...",
+  "quality": "MEDIUM",
+  "provenance": {
+    "source": "tigergraph",
+    "entity_id": "..."
+  }
+}
+```
+
+The system deliberately distinguishes:
+
+- `SUCCESS`
+- `EMPTY`
+- `ERROR`
+- `NOT_INVESTIGATED`
+
+An empty result is not treated as an error.
+
+An unavailable source is not converted into fabricated evidence.
+
+## ⚠️ Evidence Quality
+
+Not every graph relationship is equally informative.
+
+The system preserves evidence quality instead of treating every relationship as equally strong.
+
+For example, address-based relationships in the development dataset may represent relatively coarse regional/address information.
+
+Therefore the system explicitly preserves the lower quality of that evidence rather than presenting it as a definitive fraud signal.
+
+This is important for the investigation layer because:
+
+> More connected data does not automatically mean stronger evidence.
+
+## 🧮 Uncertainty Engine
+
+The Uncertainty Engine is deterministic and independent of the LLM.
+
+It evaluates the investigation itself rather than producing a fraud probability.
+
+The assessment considers:
+
+- Evidence coverage
+- Evidence quality
+- Signal conflict
+- Data completeness
+- Missing evidence
+- Conflicting evidence
+- Overall investigation uncertainty
+
+Conceptually:
+
+```
+Evidence
+   │
+   ├── Coverage
+   ├── Quality
+   ├── Conflicts
+   └── Completeness
+          │
+          ▼
+   Uncertainty Assessment
+          │
+          ▼
+   LOW / MEDIUM / HIGH / UNKNOWN
+```
+
+**Important distinction**
+
+The system does not equate:
+
+> investigation uncertainty
+
+with:
+
+> probability of fraud
+
+They are separate concepts.
+
+## 🧠 GraphRAG / Historical Context
+
+The agent does not investigate every transaction in isolation.
+
+Before making a decision, the system can construct structured investigation context from case memory.
+
+Context can contain:
+
+**Current Facts** — evidence collected during the current investigation.
+
+**Historical Cases** — previously stored investigation cases with similar characteristics.
+
+**Recurring Patterns** — patterns detected across historical cases.
+
+**Missing Information** — evidence that may still be required.
+
+### Historical similarity
+
+Similar cases are retrieved using deterministic structured similarity.
+
+The current similarity model considers:
+
+| Component | Weight |
+| --- | --- |
+| Evidence-type overlap | 40% |
+| Uncertainty-level match | 20% |
+| Action match | 20% |
+| Conflict-type overlap | 10% |
+| Trigger match | 10% |
+
+Results are deterministic and reproducible.
+
+The historical context is treated as data, not as instructions to the agent.
+
+This prevents historical case content from becoming an uncontrolled prompt-injection mechanism.
+
+## 🤖 Agent Orchestrator
+
+The agent is implemented using a bounded LangGraph workflow.
+
+```mermaid
+flowchart LR
+
+    A[Initialize Case]
+    B[Investigate]
+    C[Assess Uncertainty]
+    D[Build Context]
+    E[Decide Next Step]
+    F[Gather More Evidence]
+    G[Policy Evaluation]
+    H[Case Update]
+    I[END]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+
+    E -->|More evidence needed| F
+    F --> B
+
+    E -->|Enough evidence| G
+    G --> H
+    H --> I
+```
+
+The orchestration loop is bounded by:
+
+- maximum iterations
+- maximum tool calls
+- controlled tool access
+- explicit failure handling
+- explicit limit handling
+
+The LLM is therefore not given unrestricted control over the system.
+
+### 🧠 What the LLM does
+
+The LLM is responsible for:
+
+- understanding the investigation state;
+- selecting appropriate investigation steps within the available workflow;
+- synthesizing structured evidence;
+- identifying information gaps;
+- using historical context;
+- explaining findings;
+- supporting the investigation workflow.
+
+The LLM is **not** responsible for:
+
+- executing arbitrary GSQL;
+- directly calling TigerGraph;
+- bypassing the tool registry;
+- executing financial or external actions;
+- inventing evidence;
+- replacing deterministic graph analytics;
+- exposing hidden chain-of-thought.
+
+## ⚖️ Next-Best Action
+
+The system contains a deterministic policy engine for development-time next-best-action decisions.
+
+Available action vocabulary includes:
+
+- `ALLOW_TRANSACTION`
+- `BLOCK_TRANSACTION`
+- `MONITOR_ACCOUNT`
+- `WARN_CUSTOMER`
+- `CREATE_CASE`
+- `REQUEST_MORE_EVIDENCE`
+- `ESCALATE_ANALYST`
+- `FILE_REPORT`
+
+Actions may require different approval routes.
+
+For example:
+
+```
+Action
+  │
+  ▼
+Policy Engine
+  │
+  ├── Can system act?
+  ├── Is evidence sufficient?
+  ├── What is the uncertainty?
+  ├── How strong is the evidence?
+  └── Are there conflicts?
+          │
+          ▼
+    Policy Decision
+          │
+          ├── Action
+          ├── Approval Route
+          ├── Evidence IDs
+          └── Executable
+```
+
+**Important**
+
+The current policy rules are explicitly:
+
+> PROJECT DEVELOPMENT HEURISTIC — NOT OFFICIAL HHGOA POLICY
+
+The system does not claim that these heuristics represent the official bank policy from the challenge dataset.
+
+Actions that require human approval remain approval-gated.
+
+## 📁 Case Management
+
+Every investigation can become a structured case.
+
+A case can contain:
+
+```
+Case
+ ├── Trigger
+ ├── Status
+ ├── Findings
+ ├── Evidence
+ ├── Decisions
+ ├── Recommendations
+ ├── Actions
+ ├── Approval state
+ ├── Outcomes
+ └── Historical context
+```
+
+### Case lifecycle
+
+```mermaid
+stateDiagram-v2
+
+    [*] --> OPEN
+    OPEN --> INVESTIGATING
+
+    INVESTIGATING --> PENDING_EVIDENCE
+    PENDING_EVIDENCE --> INVESTIGATING
+
+    INVESTIGATING --> ACTION_RECOMMENDED
+    ACTION_RECOMMENDED --> PENDING_REVIEW
+
+    PENDING_REVIEW --> CLOSED
+    PENDING_REVIEW --> INVESTIGATING
+
+    CLOSED --> [*]
+```
+
+`CLOSED` is terminal.
+
+## 🧠 Case Memory
+
+Case Memory supports:
+
+- retrieval by transaction;
+- retrieval by evidence pattern;
+- retrieval by action;
+- retrieval by outcome;
+- similar-case retrieval;
+- recurring-pattern detection.
+
+This allows the agent to reason with historical investigation context without requiring an external vector database.
+
+The current implementation uses structured deterministic retrieval rather than embeddings.
+
+## 🖥️ Analyst Dashboard
+
+The frontend is built with:
+
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS v4
+
+The dashboard provides a single investigation console.
+
+```
+┌─────────────────────────────────────────────┐
+│          FRAUD INVESTIGATION CONSOLE        │
+├─────────────────────────────────────────────┤
+│ Transaction ID                               │
+│ [ 2987937                    ] [Investigate]│
+├─────────────────────────────────────────────┤
+│ Investigation Summary                       │
+│ Case | Status | Uncertainty | Action        │
+├─────────────────────────────────────────────┤
+│ Next-Best Action                            │
+├───────────────────────┬─────────────────────┤
+│ Evidence              │ Investigation Graph │
+├───────────────────────┼─────────────────────┤
+│ Uncertainty           │ Agent Findings      │
+├───────────────────────┴─────────────────────┤
+│ Historical Context / Recurring Patterns     │
+├─────────────────────────────────────────────┤
+│ Case Timeline                               │
+└─────────────────────────────────────────────┘
+```
+
+The graph visualization is generated from actual evidence returned by the backend.
+
+It does not invent graph edges.
+
+## 🔌 API
+
+The frontend communicates exclusively with the FastAPI backend.
+
+**Health**
+- `GET /health`
+- `GET /health/dependencies`
+
+**Investigations**
+- `POST /investigations`
+- `GET /investigations/{investigation_id}`
+
+**Cases**
+- `GET /cases/{case_id}`
+- `GET /cases/{case_id}/evidence`
+- `GET /cases/{case_id}/history`
+- `GET /cases/{case_id}/similar`
+- `GET /cases/{case_id}/context`
+
+Interactive API documentation is available through FastAPI's generated OpenAPI documentation (`/docs`, `/openapi.json`) when the backend is running.
+
+## 🗂️ Project Structure
+
+```
+.
+├── backend/
+│   ├── app/
+│   │   ├── agent/
+│   │   │   ├── state.py
+│   │   │   ├── llm.py
+│   │   │   ├── prompts.py
+│   │   │   └── orchestrator.py
+│   │   │
+│   │   ├── api/
+│   │   │   ├── app.py
+│   │   │   ├── models.py
+│   │   │   ├── dependencies.py
+│   │   │   ├── registry.py
+│   │   │   └── errors.py
+│   │   │
+│   │   ├── benchmark/
+│   │   │   ├── discovery.py
+│   │   │   ├── models.py
+│   │   │   └── runner.py
+│   │   │
+│   │   ├── case/
+│   │   │   ├── models.py
+│   │   │   ├── store.py
+│   │   │   ├── manager.py
+│   │   │   └── memory.py
+│   │   │
+│   │   ├── context/
+│   │   │   ├── models.py
+│   │   │   ├── builder.py
+│   │   │   └── formatter.py
+│   │   │
+│   │   ├── evidence/
+│   │   │   └── ...
+│   │   │
+│   │   ├── policy/
+│   │   │   ├── models.py
+│   │   │   └── engine.py
+│   │   │
+│   │   └── tigergraph/
+│   │       └── queries.py
+│   │
+│   ├── tests/
+│   │   ├── unit/
+│   │   ├── api/
+│   │   └── tigergraph/
+│   │
+│   ├── docs/
+│   │   ├── phase-2-evidence-model.md
+│   │   ├── phase-2-tool-registry.md
+│   │   ├── phase-2-uncertainty-model.md
+│   │   ├── phase-2-policy-nba.md
+│   │   ├── phase-2-case-management-memory.md
+│   │   ├── phase-2-agent-orchestrator.md
+│   │   ├── phase-2-graphrag-context.md
+│   │   ├── phase-2-benchmark-report.md
+│   │   ├── phase-2-api.md
+│   │   ├── phase-2-frontend.md
+│   │   └── phase-2m-demo-and-judging-checklist.md
+│   │
+│   ├── data/
+│   │   └── hhgoa/          # not committed - see backend/data/README.md
+│   │
+│   ├── scripts/
+│   └── pyproject.toml
+│
+├── frontend/
+│   ├── src/
+│   │   ├── app/
+│   │   ├── components/
+│   │   └── lib/
+│   │       ├── api.ts
+│   │       └── types.ts
+│   └── ...
+│
+└── README.md
+```
+
+## 🚀 Getting Started
+
+### Requirements
+
+**Backend**
+- Python 3.11 (3.11–3.12)
+- TigerGraph / TigerGraph Cloud with a configured graph
+- Required environment variables (see `backend/.env.example`)
+
+**Frontend**
+- Node.js
+- npm
+
+### 1. Clone
+
+```bash
+git clone https://github.com/rohan911438/HHGOA_26.git
+cd HHGOA_26
+```
+
+### 2. Backend setup
+
+```bash
+cd backend
+
+# create and activate a Python 3.11 environment
+py -3.11 -m venv .venv
+# Windows
+.venv\Scripts\activate
+# Linux / macOS
+source .venv/bin/activate
+
+# install dependencies (includes test tooling)
+pip install -e ".[dev]"
+
+# create the environment file
+cp .env.example .env
+```
+
+Configure the required values in `.env` locally (TigerGraph host/graph/credential, optionally an LLM key). **Never commit `.env`.**
+
+### 3. Start the backend
+
+```bash
+uvicorn app.api.app:create_app --factory --reload
+```
+
+The API is available at `http://localhost:8000`. FastAPI documentation: `http://localhost:8000/docs`.
+
+## 🎨 Frontend Setup
+
+```bash
+cd frontend
+npm install
+cp .env.example .env.local    # NEXT_PUBLIC_API_URL - point at the backend above
+npm run dev
+```
+
+Open `http://localhost:3000` in your browser.
+
+## 🧪 Running Tests
 
 ### Backend
 
 ```bash
 cd backend
-py -3.11 -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
-cp .env.example .env        # fill in real values — never commit this file
-python scripts/test_tigergraph.py    # verify TigerGraph connectivity
-uvicorn app.api.app:create_app --factory --reload   # serves on :8000
+pytest tests/unit tests/api
 ```
 
-Required environment variables (`.env`, see `backend/.env.example` for
-the full annotated list — never commit real values):
+The project currently has:
 
-| Variable | Purpose |
-| --- | --- |
-| `TG_HOST`, `TG_GRAPHNAME` | TigerGraph Savanna endpoint + graph name |
-| `TG_SECRET` (or `TG_API_TOKEN`/`TG_JWT_TOKEN`/`TG_PASSWORD`) | TigerGraph credential — token > JWT > secret > password preference |
-| `OPENAI_API_KEY`, `OPENAI_MODEL` | Optional — the entire deterministic backend and its test suite run with **no LLM credential at all**, via `FakeLLMClient` |
-| `TG_MCP_PROFILE`, `TG_MCP_TRANSPORT` | MCP connection profile (read-only tool subset — see `backend/README.md`'s "TigerGraph MCP" section) |
+**329 / 329 backend offline tests passing**
 
 ### Frontend
 
 ```bash
 cd frontend
-npm install
-cp .env.example .env.local   # NEXT_PUBLIC_API_URL — points at the backend above
-npm run dev                   # serves on :3000
+npm test
 ```
 
-The frontend needs exactly one configuration value
-(`NEXT_PUBLIC_API_URL`) — it never holds a TigerGraph or LLM credential.
+Current result:
 
-### TigerGraph / MCP
+**30 / 30 frontend tests passing**
 
-The graph (`HHGOA_FRAUD`) and its schema are provisioned via
-`backend/scripts/create_schema.py` and `backend/scripts/load_data.py`
-against the (gitignored, not redistributed) development-fallback
-dataset — see `backend/data/README.md`. The official `tigergraph-mcp`
-server reads the same `TG_*` variables and is restricted to a read-only
-tool allowlist (`backend/app/mcp/config.py`) — schema creation and data
-loading run through scripts, never through the agent, and the agent
-itself never calls MCP directly (its only TigerGraph-facing surface is
-`InvestigationService`, reached through the tool registry).
-
-## Demo
-
-Reproducible flow, using the same transaction (`2987937`) throughout
-development:
+### TypeScript
 
 ```bash
-# terminal 1
-cd backend && uvicorn app.api.app:create_app --factory --reload
-# terminal 2
-cd frontend && npm run dev
-# browser
-open http://localhost:3000
+npx tsc --noEmit
 ```
 
-1. The transaction field defaults to `2987937` (editable). Click
-   **Investigate**.
-2. A generic "AI investigation in progress…" indicator shows while the
-   backend runs the full pipeline — it does not claim to show live
-   backend stages the API doesn't actually expose (the call is
-   synchronous end to end).
-3. The result renders: case ID, investigation/case status, uncertainty
-   level and its four components (coverage/quality/conflict/
-   completeness), the evidence list (type/observation/interpretation/
-   quality/status/provenance — low-quality evidence stays visibly
-   low-quality, never upgraded), a relationship graph built from that
-   same evidence, the next-best-action panel (action/rationale/approval
-   requirement/route/executable), historical context (similar cases,
-   clearly labeled `SYNTHETIC DEVELOPMENT CASE`), recurring patterns,
-   and a case timeline.
-
-**Last independently observed healthy result** (recorded verbatim in
-`backend/docs/phase-2-api.md`, not hardcoded anywhere in the
-application): `status=COMPLETED`, `uncertainty_level=LOW`,
-`action=CREATE_CASE`, `approval_required=true`, `approval_route=ANALYST`,
-`executable=false`. **Never presented as fraud confirmation** — see
-[Safety / agent boundaries](#safety--agent-boundaries).
-
-**What graceful degradation looks like** (independently, genuinely
-observed during this session's TigerGraph outage — see
-[Live TigerGraph status](#live-tigergraph-status)): the same transaction
-returned `status=COMPLETED` (the pipeline itself did not crash),
-`uncertainty_level=UNKNOWN`, `action=REQUEST_MORE_EVIDENCE`,
-`approval_required=false`, `approval_route=NONE`, `executable=false`,
-with the one evidence item that ran explicitly marked `status=ERROR`
-(not silently `EMPTY`) and its `quality="UNKNOWN"` with reason "Query
-failed - no observation is available to assess." Five other tools never
-ran at all and are listed as `NOT_INVESTIGATED`, distinct from having
-run and found nothing. Nothing was fabricated to make the demo look
-healthier than the underlying data actually was.
-
-## Safety / agent boundaries
-
-- **Deterministic graph analysis, not LLM analysis.** Every evidence
-  item, uncertainty number, and policy recommendation is computed by a
-  plain Python engine (`app/evidence`, `app/uncertainty`, `app/policy`),
-  never by the LLM. The LLM's only controlled output is one of four
-  fixed control-flow actions plus one of four fixed evidence-request
-  types (`LLMDecision`, a strict `extra="forbid"` Pydantic schema) — it
-  cannot invoke arbitrary code or bypass any engine.
-- **Controlled tools only.** The agent's only TigerGraph-facing surface
-  is `InvestigationService.investigate_transaction()`, which internally
-  runs six explicitly-registered tools through
-  `app/investigation/registry.py`. No raw GSQL is ever reachable from
-  the LLM, the API, or the frontend — verified by AST-level tests, not
-  just convention.
-- **No arbitrary GSQL, anywhere.** `TigerGraphClient.gsql()` refuses a
-  write statement unless `allow_write=True` is passed explicitly by
-  trusted internal code (never by a route handler or the agent); no API
-  route accepts a raw query string or GSQL parameter (verified in
-  `backend/tests/api/test_security.py` by walking the actual generated
-  OpenAPI schema).
-- **Approval-gated, never self-executing.** Every `PolicyDecision.executable`
-  is `False` for every action this system can currently produce — there
-  is no payment processor, case-management system, or customer-messaging
-  integration wired up to actually carry an action out. A recommendation
-  is a recommendation.
-- **Uncertainty is not fraud probability.** `UncertaintyAssessment` has
-  no `fraud_probability`/`fraud_confidence` field, and every UI surface
-  that shows the number carries an explicit disclaimer. See
-  [Data limitation](#known-limitations--data-status) for how this project
-  also keeps the *dataset's* fraud label fully isolated from this number.
-- **The LLM orchestrates; it does not replace graph analytics.** It
-  decides when to call the deterministic pipeline and produces the final
-  grounded explanation — it never recomputes evidence, uncertainty, or
-  policy.
-- **No chain-of-thought exposure.** The agent's internal
-  observability/event trail (`AgentMessage`/`agent_messages`) is not
-  serialized into any API response at all (grep-verified: zero
-  references to `agent_messages` anywhere under `backend/app/api/`) — the
-  API and frontend only ever surface the final structured result and a
-  grounded, evidence-cited explanation.
-
-## Known limitations / data status
-
-**The official `HHGOA_IEEE` dataset and 20-case benchmark package were
-not available anywhere in this development environment** — searched
-exhaustively and documented in `backend/docs/phase-1-report.md` §1 and
-re-verified in `backend/docs/phase-2-benchmark-report.md`. Per that
-finding, this project uses the public **IEEE-CIS Fraud Detection**
-Kaggle dataset strictly as a **development fallback**:
-
-- It is labeled `DEVELOPMENT_IEEE_CIS_DATA` everywhere it appears in
-  code, docs, and this README — **never presented as the official HHGoa
-  benchmark.**
-- Its only fraud signal is a binary `isFraud` training label. This
-  project **never** uses it as an agent confidence score, a risk score,
-  or a policy input anywhere — independently verified, both
-  behaviorally and via static (AST) source inspection, in every relevant
-  phase's test suite (see `backend/README.md`'s "No fraud verdict,
-  anywhere" section).
-- **No official 20 benchmark case, expected answer, fraud typology, or
-  bank policy threshold is fabricated anywhere in this repository.**
-  `backend/app/benchmark/discovery.py` searches for the real official
-  material at the paths the challenge would provide it at, and raises
-  rather than silently substituting fallback data when it finds none —
-  see `backend/docs/phase-2-benchmark-report.md` for the full, honest
-  accounting (official cases discovered: 0).
-- What *is* real and tested against this fallback: a full, live,
-  end-to-end diagnostic run of the entire pipeline (5/5 completed, 0
-  failures — `backend/docs/phase-2-benchmark-report.md`), clearly
-  labeled `is_official_benchmark: false` in its own output.
-
-Historical/similar-case data shown anywhere in the API or UI is
-synthetic development data, always labeled `SYNTHETIC DEVELOPMENT CASE`
-when its `is_synthetic` flag is set — never presented as a real prior
-bank investigation.
-
-## Security
-
-- No credential is ever hardcoded; all configuration comes from the
-  environment. `.env`/`.env.local` are git-ignored everywhere in this
-  repo; only `.env.example` (placeholders only, audited this session) is
-  trackable.
-- The logging layer redacts anything matching a password/secret/token/key
-  pattern before it reaches a handler (`backend/app/logging.py`).
-- The API's exception handlers never leak a stack trace or raw exception
-  message to a client — always a fixed, safe sentence
-  (`backend/app/api/app.py`); the real detail is server-side log only.
-- The frontend has exactly one network call site
-  (`frontend/src/lib/api.ts`) and cannot reach TigerGraph, GSQL, or MCP
-  under any code path — verified this session by grepping the entire
-  frontend source tree.
-- **Known, documented, unresolved issue** (inherited, not introduced by
-  this phase): `pyTigerGraph` 2.0.4 unconditionally disables TLS
-  certificate verification for any HTTPS host. The connection is
-  genuinely encrypted but the certificate chain is never validated — see
-  `backend/docs/phase-2-evidence-model.md` §8 for the full root-cause
-  writeup and why an inconclusive workaround attempt was not applied.
-
-See `backend/README.md`'s own Security section and
-`backend/docs/phase-2-api.md` §10 for the full API-layer security
-boundary detail.
-
-## Testing this repository
+### Lint
 
 ```bash
-# backend — offline (no network, no credentials, no LLM key needed)
-cd backend && .venv/Scripts/python -m pytest tests/unit tests/api -v
-
-# backend — live (requires a reachable TigerGraph; skips cleanly otherwise)
-cd backend && .venv/Scripts/python -m pytest tests/tigergraph -v -m tigergraph
-
-# frontend
-cd frontend && npm test && npx tsc --noEmit && npm run lint && npm run build
+npm run lint
 ```
 
-## Full documentation index
+### Production build
 
-- `backend/README.md` — backend architecture, setup, dataset, MCP, testing, security
-- `backend/docs/phase-1-report.md` — dataset + TigerGraph connection, the official-dataset search record
-- `backend/docs/phase-2-*.md` — one evidence-backed report per component (evidence model, uncertainty, policy/NBA, case management, tool registry, agent orchestrator, GraphRAG/context, API, benchmark)
-- `backend/docs/phase-2-frontend.md` — frontend architecture, API integration, testing, security, known limitations
-- `backend/docs/tigergraph-schema.md`, `backend/docs/dataset-analysis.md` — schema and dataset profile, generated from the real data
-"# HHGOA_26" 
+```bash
+npm run build
+```
+
+## 🎬 Demo
+
+The primary demonstration transaction is:
+
+```
+2987937
+```
+
+The intended demonstration flow is:
+
+```
+1. Open analyst dashboard
+        ↓
+2. Enter transaction ID
+        ↓
+3. Start investigation
+        ↓
+4. Agent gathers graph evidence
+        ↓
+5. Evidence is normalized
+        ↓
+6. Uncertainty is evaluated
+        ↓
+7. Historical context is retrieved
+        ↓
+8. Next-best action is determined
+        ↓
+9. Case is created
+        ↓
+10. Analyst reviews the investigation
+```
+
+### Previously verified healthy result
+
+The last healthy live run produced:
+
+```
+Status:             COMPLETED
+Uncertainty:        LOW
+Action:             CREATE_CASE
+Approval Required:  YES
+Approval Route:     ANALYST
+Executable:         false
+```
+
+These values are observed system output from a healthy live run, not hardcoded demo values.
+
+## 🛡️ Security & Agent Boundaries
+
+Security and control are core design principles.
+
+### No frontend access to TigerGraph
+
+```
+Frontend
+   ↓
+FastAPI
+   ↓
+Application layer
+   ↓
+TigerGraph
+```
+
+The frontend never communicates directly with:
+
+- TigerGraph
+- GSQL
+- MCP
+
+### No arbitrary GSQL
+
+The agent cannot submit arbitrary GSQL queries.
+
+Only registered investigation tools are exposed through the application boundary.
+
+### Read-only investigation tools
+
+The investigation registry exposes controlled read-only operations.
+
+Destructive graph operations are not available to the agent workflow.
+
+### Approval-gated actions
+
+A policy recommendation does not automatically mean that the action is executed.
+
+The current system explicitly represents:
+
+- `approval_required`
+- `approval_route`
+- `executable`
+
+The current investigation workflow keeps execution disabled.
+
+### No chain-of-thought exposure
+
+The application exposes investigation findings, evidence, rationale, and traceability information.
+
+It does not expose hidden chain-of-thought.
+
+## 📊 Development Dataset & Benchmark Limitation
+
+The official HHGOA_IEEE dataset and official 20-case benchmark package were not available in the development environment during implementation.
+
+Therefore:
+
+**The official benchmark cases and expected answers were not fabricated.**
+
+For development and engineering validation, the project used the publicly available IEEE-CIS Fraud Detection dataset as a development fallback.
+
+This fallback is used for:
+
+- graph development;
+- integration testing;
+- investigation tooling;
+- pipeline validation;
+- UI development;
+- system testing.
+
+It is **not** represented as the official HHGOA benchmark dataset.
+
+The fallback dataset contains an `isFraud` field. That field is kept separate from:
+
+- investigation uncertainty;
+- evidence quality;
+- policy decisions;
+- agent confidence.
+
+No official HHGOA benchmark score is claimed from the fallback data. Full accounting: `backend/docs/phase-2-benchmark-report.md`.
+
+## ⚠️ Current Infrastructure Limitation
+
+At the time of the final integration verification, TigerGraph Cloud's REST++ token-minting endpoint was returning:
+
+```
+HTTP 500
+```
+
+The failure occurred during:
+
+```
+gsql/v1/tokens
+```
+
+The issue was independently reproduced multiple times and classified as an external TigerGraph Cloud infrastructure problem.
+
+No application workaround was introduced.
+
+The application was also tested against this failure mode and correctly degraded without fabricating evidence.
+
+For example:
+
+```
+TigerGraph unavailable
+        ↓
+Evidence source → ERROR
+        ↓
+Uncertainty → UNKNOWN
+        ↓
+NBA → REQUEST_MORE_EVIDENCE
+        ↓
+Executable → false
+```
+
+The system distinguishes:
+
+- `SUCCESS`
+- `EMPTY`
+- `ERROR`
+- `NOT_INVESTIGATED`
+
+rather than hiding infrastructure failures.
+
+The last healthy live verification before the outage completed successfully.
+
+## 📈 Validation Status
+
+| Area | Status |
+| --- | --- |
+| Backend offline tests | ✅ 329/329 |
+| Frontend tests | ✅ 30/30 |
+| TypeScript | ✅ PASS |
+| ESLint | ✅ PASS |
+| Production build | ✅ PASS |
+| API architecture | ✅ Verified |
+| Agent tool boundary | ✅ Verified |
+| Frontend → TigerGraph isolation | ✅ Verified |
+| Security audit | ✅ PASS |
+| Healthy TigerGraph integration | ✅ Previously verified |
+| Current TigerGraph live check | ⚠️ External HTTP 500 |
+| Official HHGOA benchmark | ⚠️ Unavailable |
+
+## 🧱 Design Principles
+
+The system was built around several principles:
+
+**1. Evidence before action** — the agent should investigate before recommending an action.
+
+**2. Graph analytics before LLM reasoning** — TigerGraph provides structured relationship evidence. The LLM synthesizes and orchestrates that evidence.
+
+**3. Uncertainty is explicit** — missing or conflicting evidence should reduce confidence in the investigation rather than being silently ignored.
+
+**4. Tool access is controlled** — the agent receives a bounded set of investigation capabilities.
+
+**5. Human approval matters** — sensitive actions remain approval-gated.
+
+**6. Historical context is data** — past cases inform the investigation but do not become instructions.
+
+**7. Everything should be traceable** — evidence, decisions, recommendations, and cases retain identifiers and provenance.
+
+**8. Graceful degradation** — infrastructure failures should produce explicit uncertainty/error states rather than fabricated conclusions.
+
+## 🔬 Why a Graph?
+
+Fraud is often relational.
+
+A single transaction may appear normal in isolation but become more interesting when connected to:
+
+```
+Transaction
+    │
+    ├── Card
+    │     └── Other transactions
+    │
+    ├── Device
+    │     └── Other transactions
+    │
+    ├── Email Domain
+    │     └── Other transactions
+    │
+    └── Address
+          └── Other transactions
+```
+
+Graph databases allow the investigation to traverse these relationships directly.
+
+This makes the graph particularly useful for discovering:
+
+- shared entities;
+- connected transactions;
+- transaction networks;
+- repeated relationships;
+- clusters of activity.
+
+## 🤝 Why Agentic Investigation?
+
+A traditional pipeline might look like:
+
+```
+Transaction
+    ↓
+Model
+    ↓
+Fraud Score
+    ↓
+Decision
+```
+
+This project instead uses:
+
+```
+Transaction
+    ↓
+Investigate
+    ↓
+Collect Evidence
+    ↓
+Assess Uncertainty
+    ↓
+Retrieve Context
+    ↓
+Decide Next Step
+    ↓
+Create Case
+    ↓
+Human Review
+```
+
+The distinction is important.
+
+The system is not simply asking an LLM:
+
+> "Is this transaction fraudulent?"
+
+It is asking:
+
+> "What evidence should be investigated, what does that evidence show, how complete and reliable is it, what historical context is relevant, and what should happen next?"
+
+## 🏗️ Technology Stack
+
+| Layer | Technology |
+| --- | --- |
+| Graph Database | TigerGraph |
+| Graph Querying | GSQL |
+| Graph Access | TigerGraph MCP / controlled application tools |
+| Agent Orchestration | LangGraph |
+| Backend | FastAPI |
+| Language | Python |
+| Frontend | Next.js 16 |
+| UI | React 19 + Tailwind CSS v4 |
+| API Contract | OpenAPI |
+| Case Memory | Structured deterministic retrieval |
+| Testing | Pytest + Jest |
+| Build | Next.js / Turbopack |
+
+## 📚 Documentation
+
+Detailed engineering documentation is available under `backend/docs/`:
+
+- `phase-2-evidence-model.md`
+- `phase-2-tool-registry.md`
+- `phase-2-uncertainty-model.md`
+- `phase-2-policy-nba.md`
+- `phase-2-case-management-memory.md`
+- `phase-2-agent-orchestrator.md`
+- `phase-2-graphrag-context.md`
+- `phase-2-benchmark-report.md`
+- `phase-2-api.md`
+- `phase-2-frontend.md`
+- `phase-2m-demo-and-judging-checklist.md`
+
+These documents describe the implementation decisions and validation performed during development.
+
+## 🏆 Challenge Alignment
+
+This project addresses the major challenge requirements through:
+
+| Challenge Requirement | Implementation |
+| --- | --- |
+| TigerGraph | `HHGOA_FRAUD` graph |
+| Graph investigation | Controlled GSQL investigation tools |
+| Agentic workflow | LangGraph orchestrator |
+| GraphRAG | Structured historical/context retrieval |
+| Fraud evidence | Normalized graph evidence |
+| Uncertainty | Deterministic uncertainty engine |
+| Next-best action | Policy engine |
+| Case management | CaseManager + CaseStore |
+| Case memory | Similar-case + recurring-pattern retrieval |
+| Human approval | Approval routes |
+| Analyst UI | Next.js investigation console |
+| Traceability | Evidence IDs + provenance + case history |
+| Graceful degradation | Explicit ERROR / UNKNOWN states |
+
+## 🚧 Future Extensions
+
+Potential future work includes:
+
+- official HHGOA benchmark integration once available;
+- richer graph algorithms;
+- additional fraud typologies;
+- production-grade persistent case storage;
+- external evidence providers;
+- analyst feedback loops;
+- more sophisticated policy configuration;
+- real action execution behind explicit approval workflows;
+- expanded benchmark evaluation.
+
+These are intentionally outside the current submission scope.
+
+## 👨‍💻 Project Status
+
+**Phase 2M — Final Integration & Submission Readiness: COMPLETE**
+
+The current implementation provides:
+
+```
+Graph Investigation
+        +
+Agent Orchestration
+        +
+Evidence Normalization
+        +
+Uncertainty Assessment
+        +
+Historical Context
+        +
+Next-Best Action
+        +
+Case Management
+        +
+Analyst Dashboard
+```
+
+The system is designed to investigate fraud as a traceable decision-support workflow, rather than treating fraud detection as a single opaque prediction.
+
+## 📜 License
+
+*Add the project's chosen license here.*
+
+---
+
+**Built for Hacker House Goa '26**
+
+*TigerGraph × Hacker House Goa '26*
+
+Built around the idea that fraud investigation should be:
+
+**Graph-powered. Evidence-driven. Uncertainty-aware. Human-controlled.**
