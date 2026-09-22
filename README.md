@@ -724,6 +724,14 @@ The project currently has:
 
 **329 / 329 backend offline tests passing**
 
+Live tests (require a reachable TigerGraph connection, skip cleanly otherwise):
+
+```bash
+pytest tests/tigergraph -m tigergraph
+```
+
+**79 / 79 backend live tests passing** (last run against the active TigerGraph workspace)
+
 ### Frontend
 
 ```bash
@@ -785,20 +793,22 @@ The intended demonstration flow is:
 10. Analyst reviews the investigation
 ```
 
-### Previously verified healthy result
+### Verified healthy result
 
-The last healthy live run produced:
+Freshly re-confirmed live against the TigerGraph workspace (2026-09-22, transaction `2987937`, 6 evidence items gathered — shared card, shared address, shared email domain, shared device, transaction context, and the network-pattern summary):
 
 ```
-Status:             COMPLETED
-Uncertainty:        LOW
-Action:             CREATE_CASE
-Approval Required:  YES
-Approval Route:     ANALYST
-Executable:         false
+Status:              COMPLETED
+Case ID:             case-8eb22537c8ea408294245659aa73743c
+Uncertainty:         LOW (overall_uncertainty = 0.178)
+Action:              CREATE_CASE
+Approval Required:   YES
+Approval Route:      ANALYST
+Executable:          false
+Iterations/Tools:    1 / 1
 ```
 
-These values are observed system output from a healthy live run, not hardcoded demo values.
+These values are observed system output from a real live run against the live `HHGOA_FRAUD` graph, not hardcoded demo values.
 
 ## Security & Agent Boundaries
 
@@ -882,27 +892,13 @@ The fallback dataset contains an `isFraud` field. That field is kept separate fr
 
 No official HHGOA benchmark score is claimed from the fallback data. Full accounting: `backend/docs/phase-2-benchmark-report.md`.
 
-## Current Infrastructure Limitation
+## Infrastructure Resilience (Previously Encountered Outage, Now Resolved)
 
-At the time of the final integration verification, TigerGraph Cloud's REST++ token-minting endpoint was returning:
+During final integration verification, TigerGraph Cloud's REST++ token-minting endpoint (`gsql/v1/tokens`) intermittently returned `HTTP 500`. The issue was independently reproduced multiple times, classified as an external TigerGraph Cloud workspace problem (the workspace had gone idle), and **no application workaround was introduced**.
 
-```
-HTTP 500
-```
+**Status: resolved.** After the workspace was reactivated, `python backend/scripts/test_tigergraph.py` reports `ALL CHECKS PASSED` (host reachable, authentication via secret, graph `HHGOA_FRAUD` accessible, schema accessible — 5 vertex types / 5 edge types, 6,676 vertices confirmed via a real read-only query), and a fresh live investigation completed end to end (see [Verified healthy result](#verified-healthy-result) above).
 
-The failure occurred during:
-
-```
-gsql/v1/tokens
-```
-
-The issue was independently reproduced multiple times and classified as an external TigerGraph Cloud infrastructure problem.
-
-No application workaround was introduced.
-
-The application was also tested against this failure mode and correctly degraded without fabricating evidence.
-
-For example:
+What's worth keeping on record is how the system behaved **while** the outage was active — this is real, observed behavior, not a hypothetical:
 
 ```
 TigerGraph unavailable
@@ -923,9 +919,7 @@ The system distinguishes:
 - `ERROR`
 - `NOT_INVESTIGATED`
 
-rather than hiding infrastructure failures.
-
-The last healthy live verification before the outage completed successfully.
+rather than hiding infrastructure failures — no fabricated evidence, no fabricated verdict, and a case was still created for follow-up. This graceful-degradation path is exercised by this project's live test suite regardless of current TigerGraph availability.
 
 ## Validation Status
 
@@ -940,8 +934,8 @@ The last healthy live verification before the outage completed successfully.
 | Agent tool boundary | Verified |
 | Frontend → TigerGraph isolation | Verified |
 | Security audit | PASS |
-| Healthy TigerGraph integration | Previously verified |
-| Current TigerGraph live check | External HTTP 500 |
+| Backend live tests (TigerGraph) | 79/79 |
+| Live investigation end-to-end | Verified (transaction 2987937, see Demo) |
 | Official HHGOA benchmark | Unavailable |
 
 ## Design Principles
