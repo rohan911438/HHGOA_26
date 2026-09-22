@@ -1,4 +1,4 @@
-# 🕵️ Agentic Fraud Investigation Agent
+# Agentic Fraud Investigation Agent
 
 **AI-powered fraud investigation using TigerGraph, GraphRAG, controlled tools, and case memory**
 
@@ -10,7 +10,7 @@ Instead of asking an LLM to guess whether a transaction is fraudulent, the syste
 
 The result is an investigation workflow that is evidence-driven, traceable, uncertainty-aware, and approval-gated.
 
-## ✨ What does this project do?
+## What does this project do?
 
 Given a transaction such as:
 
@@ -42,7 +42,7 @@ Case Memory → provides historical context
 UI          → explains the investigation
 ```
 
-## 🎯 Problem
+## Problem
 
 Fraud investigation is rarely a simple binary classification problem.
 
@@ -64,7 +64,7 @@ Traditional ML classification can provide a score, but it does not inherently pr
 
 This project treats fraud investigation as a structured, tool-driven workflow rather than a single prediction.
 
-## 🧠 Core Architecture
+## Core Architecture
 
 ```mermaid
 flowchart TB
@@ -106,7 +106,7 @@ flowchart TB
     API --> UI
 ```
 
-## 🔄 Investigation Workflow
+## Investigation Workflow
 
 The complete workflow is:
 
@@ -151,7 +151,7 @@ Present Investigation to Analyst
 
 The agent can iterate when more evidence is required, subject to bounded investigation limits.
 
-## 🕸️ TigerGraph Investigation Layer
+## TigerGraph Investigation Layer
 
 TigerGraph is the core investigation engine.
 
@@ -168,9 +168,9 @@ The current development graph contains approximately:
 - **6,676 vertices**
 - **15,627 edges**
 
-The exact graph contents are generated from the available development dataset — see [Development dataset & benchmark limitation](#-development-dataset--benchmark-limitation).
+The exact graph contents are generated from the available development dataset — see [Development dataset & benchmark limitation](#development-dataset--benchmark-limitation).
 
-## 🔎 Investigation Tools
+## Investigation Tools
 
 The application exposes a controlled investigation tool registry.
 
@@ -203,7 +203,7 @@ TigerGraph
 
 This keeps the agent's access bounded and auditable.
 
-## 🧩 Evidence Model
+## Evidence Model
 
 Raw graph results are not passed directly around the application.
 
@@ -248,7 +248,7 @@ An empty result is not treated as an error.
 
 An unavailable source is not converted into fabricated evidence.
 
-## ⚠️ Evidence Quality
+## Evidence Quality
 
 Not every graph relationship is equally informative.
 
@@ -262,7 +262,7 @@ This is important for the investigation layer because:
 
 > More connected data does not automatically mean stronger evidence.
 
-## 🧮 Uncertainty Engine
+## Uncertainty Engine
 
 The Uncertainty Engine is deterministic and independent of the LLM.
 
@@ -307,7 +307,7 @@ with:
 
 They are separate concepts.
 
-## 🧠 GraphRAG / Historical Context
+## GraphRAG / Historical Context
 
 The agent does not investigate every transaction in isolation.
 
@@ -343,7 +343,7 @@ The historical context is treated as data, not as instructions to the agent.
 
 This prevents historical case content from becoming an uncontrolled prompt-injection mechanism.
 
-## 🤖 Agent Orchestrator
+## Agent Orchestrator
 
 The agent is implemented using a bounded LangGraph workflow.
 
@@ -383,7 +383,7 @@ The orchestration loop is bounded by:
 
 The LLM is therefore not given unrestricted control over the system.
 
-### 🧠 What the LLM does
+### What the LLM does
 
 The LLM is responsible for:
 
@@ -405,7 +405,7 @@ The LLM is **not** responsible for:
 - replacing deterministic graph analytics;
 - exposing hidden chain-of-thought.
 
-## ⚖️ Next-Best Action
+## Next-Best Action
 
 The system contains a deterministic policy engine for development-time next-best-action decisions.
 
@@ -455,7 +455,7 @@ The system does not claim that these heuristics represent the official bank poli
 
 Actions that require human approval remain approval-gated.
 
-## 📁 Case Management
+## Case Management
 
 Every investigation can become a structured case.
 
@@ -497,7 +497,7 @@ stateDiagram-v2
 
 `CLOSED` is terminal.
 
-## 🧠 Case Memory
+## Case Memory
 
 Case Memory supports:
 
@@ -512,7 +512,7 @@ This allows the agent to reason with historical investigation context without re
 
 The current implementation uses structured deterministic retrieval rather than embeddings.
 
-## 🖥️ Analyst Dashboard
+## Analyst Dashboard
 
 The frontend is built with:
 
@@ -549,7 +549,7 @@ The graph visualization is generated from actual evidence returned by the backen
 
 It does not invent graph edges.
 
-## 🔌 API
+## API
 
 The frontend communicates exclusively with the FastAPI backend.
 
@@ -570,7 +570,7 @@ The frontend communicates exclusively with the FastAPI backend.
 
 Interactive API documentation is available through FastAPI's generated OpenAPI documentation (`/docs`, `/openapi.json`) when the backend is running.
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```
 .
@@ -651,7 +651,7 @@ Interactive API documentation is available through FastAPI's generated OpenAPI d
 └── README.md
 ```
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Requirements
 
@@ -700,7 +700,7 @@ uvicorn app.api.app:create_app --factory --reload
 
 The API is available at `http://localhost:8000`. FastAPI documentation: `http://localhost:8000/docs`.
 
-## 🎨 Frontend Setup
+## Frontend Setup
 
 ```bash
 cd frontend
@@ -711,7 +711,7 @@ npm run dev
 
 Open `http://localhost:3000` in your browser.
 
-## 🧪 Running Tests
+## Running Tests
 
 ### Backend
 
@@ -753,7 +753,7 @@ npm run lint
 npm run build
 ```
 
-## 🎬 Demo
+## Demo
 
 The primary demonstration transaction is:
 
@@ -800,7 +800,7 @@ Executable:         false
 
 These values are observed system output from a healthy live run, not hardcoded demo values.
 
-## 🛡️ Security & Agent Boundaries
+## Security & Agent Boundaries
 
 Security and control are core design principles.
 
@@ -852,7 +852,7 @@ The application exposes investigation findings, evidence, rationale, and traceab
 
 It does not expose hidden chain-of-thought.
 
-## 📊 Development Dataset & Benchmark Limitation
+## Development Dataset & Benchmark Limitation
 
 The official HHGOA_IEEE dataset and official 20-case benchmark package were not available in the development environment during implementation.
 
@@ -882,7 +882,7 @@ The fallback dataset contains an `isFraud` field. That field is kept separate fr
 
 No official HHGOA benchmark score is claimed from the fallback data. Full accounting: `backend/docs/phase-2-benchmark-report.md`.
 
-## ⚠️ Current Infrastructure Limitation
+## Current Infrastructure Limitation
 
 At the time of the final integration verification, TigerGraph Cloud's REST++ token-minting endpoint was returning:
 
@@ -927,24 +927,24 @@ rather than hiding infrastructure failures.
 
 The last healthy live verification before the outage completed successfully.
 
-## 📈 Validation Status
+## Validation Status
 
 | Area | Status |
 | --- | --- |
-| Backend offline tests | ✅ 329/329 |
-| Frontend tests | ✅ 30/30 |
-| TypeScript | ✅ PASS |
-| ESLint | ✅ PASS |
-| Production build | ✅ PASS |
-| API architecture | ✅ Verified |
-| Agent tool boundary | ✅ Verified |
-| Frontend → TigerGraph isolation | ✅ Verified |
-| Security audit | ✅ PASS |
-| Healthy TigerGraph integration | ✅ Previously verified |
-| Current TigerGraph live check | ⚠️ External HTTP 500 |
-| Official HHGOA benchmark | ⚠️ Unavailable |
+| Backend offline tests | 329/329 |
+| Frontend tests | 30/30 |
+| TypeScript | PASS |
+| ESLint | PASS |
+| Production build | PASS |
+| API architecture | Verified |
+| Agent tool boundary | Verified |
+| Frontend → TigerGraph isolation | Verified |
+| Security audit | PASS |
+| Healthy TigerGraph integration | Previously verified |
+| Current TigerGraph live check | External HTTP 500 |
+| Official HHGOA benchmark | Unavailable |
 
-## 🧱 Design Principles
+## Design Principles
 
 The system was built around several principles:
 
@@ -964,7 +964,7 @@ The system was built around several principles:
 
 **8. Graceful degradation** — infrastructure failures should produce explicit uncertainty/error states rather than fabricated conclusions.
 
-## 🔬 Why a Graph?
+## Why a Graph?
 
 Fraud is often relational.
 
@@ -996,7 +996,7 @@ This makes the graph particularly useful for discovering:
 - repeated relationships;
 - clusters of activity.
 
-## 🤝 Why Agentic Investigation?
+## Why Agentic Investigation?
 
 A traditional pipeline might look like:
 
@@ -1040,7 +1040,7 @@ It is asking:
 
 > "What evidence should be investigated, what does that evidence show, how complete and reliable is it, what historical context is relevant, and what should happen next?"
 
-## 🏗️ Technology Stack
+## Technology Stack
 
 | Layer | Technology |
 | --- | --- |
@@ -1057,7 +1057,7 @@ It is asking:
 | Testing | Pytest + Jest |
 | Build | Next.js / Turbopack |
 
-## 📚 Documentation
+## Documentation
 
 Detailed engineering documentation is available under `backend/docs/`:
 
@@ -1075,7 +1075,7 @@ Detailed engineering documentation is available under `backend/docs/`:
 
 These documents describe the implementation decisions and validation performed during development.
 
-## 🏆 Challenge Alignment
+## Challenge Alignment
 
 This project addresses the major challenge requirements through:
 
@@ -1095,7 +1095,7 @@ This project addresses the major challenge requirements through:
 | Traceability | Evidence IDs + provenance + case history |
 | Graceful degradation | Explicit ERROR / UNKNOWN states |
 
-## 🚧 Future Extensions
+## Future Extensions
 
 Potential future work includes:
 
@@ -1111,7 +1111,7 @@ Potential future work includes:
 
 These are intentionally outside the current submission scope.
 
-## 👨‍💻 Project Status
+## Project Status
 
 **Phase 2M — Final Integration & Submission Readiness: COMPLETE**
 
@@ -1137,7 +1137,7 @@ Analyst Dashboard
 
 The system is designed to investigate fraud as a traceable decision-support workflow, rather than treating fraud detection as a single opaque prediction.
 
-## 📜 License
+## License
 
 *Add the project's chosen license here.*
 
