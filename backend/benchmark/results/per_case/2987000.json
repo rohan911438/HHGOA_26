@@ -1,0 +1,29 @@
+{
+  "case_id": "case-f0d0e99f47b54be0823e5fe42a34a7f1",
+  "official_case_id": null,
+  "transaction_id": "2987000",
+  "is_official_benchmark_case": false,
+  "investigation_status": "COMPLETED",
+  "findings": [
+    "218 other transaction(s) share the same address identifier ('315.0|87.0').",
+    "Transaction 2987000 has a card, an address on file.",
+    "Transaction 2987000 has a linked Card ('13926||150.0|142.0'), but no other transaction shares it.",
+    "Transaction 2987000 has no linked Device.",
+    "Transaction 2987000 has no linked email domain.",
+    "Transaction 2987000 reaches up to 218 related transaction-slots within 2 hops (218 via Address). Not deduplicated - the same transaction reachable via more than one entity type is counted once per type."
+  ],
+  "uncertainty_level": "LOW",
+  "historical_context_count": 1,
+  "recommended_action": "CREATE_CASE",
+  "approval_required": true,
+  "approval_route": "ANALYST",
+  "case_status": "PENDING_REVIEW",
+  "explanation": "PHASE 2J INFRASTRUCTURE VALIDATION - diagnostic run against the IEEE-CIS development-fallback graph, not an official HHGoa benchmark result.",
+  "requested_evidence_count": 0,
+  "iteration_count": 1,
+  "tool_call_count": 1,
+  "execution_time_ms": 6166.009199921973,
+  "comparisons": [],
+  "error": null,
+  "executed_at": "2026-09-22T13:50:47.236338Z"
+}

@@ -21,8 +21,9 @@ from __future__ import annotations
 import pytest
 
 from app.config import get_settings
-from app.tigergraph.client import TigerGraphQueryError, get_client
 from app.tigergraph import queries as q
+from app.tigergraph.client import TigerGraphQueryError, get_client
+from app.tigergraph.diagnostics import all_passed, run_checks
 
 pytestmark = pytest.mark.tigergraph
 
@@ -36,10 +37,22 @@ KNOWN_PURCHASER_DOMAIN = "sbcglobal.net"
 
 @pytest.fixture(scope="module")
 def client():
+    # Phase 2M: brought in line with every later live-test fixture
+    # (test_agent_live.py, test_case_live.py, ...) - a configured-but-
+    # currently-unreachable TigerGraph (e.g. a token-minting 500 from
+    # the Savanna workspace itself) must SKIP this file, not report a
+    # false FAILED, matching this project's own stated testing
+    # philosophy (see backend/README.md's Testing section). This file
+    # predates that convention; this fixture is the only change.
     settings = get_settings()
     if not settings.tg_configured:
         pytest.skip("TigerGraph not configured - set TG_HOST/TG_GRAPHNAME/TG_SECRET in .env")
-    return get_client(settings)
+    c = get_client(settings)
+    results = run_checks(settings, c)
+    if not all_passed(results):
+        detail = next((r.detail for r in results if r.ok is False), "unknown failure")
+        pytest.skip(f"TigerGraph is not currently reachable/healthy - {detail}")
+    return c
 
 
 class TestTransactionContext:

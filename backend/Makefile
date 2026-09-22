@@ -13,7 +13,7 @@ help:
 	@echo "test        Run the full test suite"
 	@echo "test-unit   Run offline unit tests only"
 	@echo "api         Start the FastAPI server"
-	@echo "benchmark   Run the 20-case benchmark"
+	@echo "benchmark   Run the Phase 2J infrastructure-validation runner"
 
 install:
 	py -3.11 -m venv .venv
@@ -52,10 +52,10 @@ test-mcp:
 	$(PY) scripts/test_mcp.py
 
 api:
-	$(PY) -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+	$(PY) -m uvicorn app.api.app:create_app --factory --reload --host 127.0.0.1 --port 8000
 
 benchmark:
-	$(PY) scripts/run_benchmark.py
+	$(PY) scripts/run_benchmark_infra_validation.py
 
 lint:
 	$(PY) -m ruff check app tests scripts

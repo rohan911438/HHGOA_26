@@ -1,0 +1,29 @@
+{
+  "case_id": "case-c33bd144213c4bbca7948c8cb8af76a5",
+  "official_case_id": null,
+  "transaction_id": "2987937",
+  "is_official_benchmark_case": false,
+  "investigation_status": "COMPLETED",
+  "findings": [
+    "12 other transaction(s) share the same card identifier ('18227|583.0|150.0|226.0').",
+    "20 other transaction(s) share the purchaser email domain 'sbcglobal.net'.",
+    "312 other transaction(s) share the same address identifier ('299.0|87.0').",
+    "Transaction 2987937 has a card, an address, a purchaser email domain on file.",
+    "Transaction 2987937 has no linked Device.",
+    "Transaction 2987937 reaches up to 344 related transaction-slots within 2 hops (312 via Address, 12 via Card, 20 via EmailDomain_purchaser). Not deduplicated - the same transaction reachable via more than one entity type is counted once per type."
+  ],
+  "uncertainty_level": "LOW",
+  "historical_context_count": 0,
+  "recommended_action": "CREATE_CASE",
+  "approval_required": true,
+  "approval_route": "ANALYST",
+  "case_status": "PENDING_REVIEW",
+  "explanation": "PHASE 2J INFRASTRUCTURE VALIDATION - diagnostic run against the IEEE-CIS development-fallback graph, not an official HHGoa benchmark result.",
+  "requested_evidence_count": 0,
+  "iteration_count": 1,
+  "tool_call_count": 1,
+  "execution_time_ms": 5921.538900001906,
+  "comparisons": [],
+  "error": null,
+  "executed_at": "2026-09-22T13:50:41.028267Z"
+}

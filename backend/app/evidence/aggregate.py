@@ -62,6 +62,16 @@ _SHARED_ENTITY_QUERIES = (
 )
 
 
+def dataset_risk_score_from_is_fraud_label(is_fraud_label: bool | None) -> float | None:
+    """PROJECT NOTE (also on EvidenceBundle.dataset_risk_score): IEEE-CIS
+    (the current development fallback dataset) has no continuous risk
+    score, only the binary isFraud label. This 0.0/1.0 mapping exists in
+    exactly one place so both `aggregate_evidence` (Phase 2B) and
+    `InvestigationService` (Phase 2D, which reuses already-normalized
+    Evidence metrics rather than re-querying TigerGraph) agree on it."""
+    return None if is_fraud_label is None else (1.0 if is_fraud_label else 0.0)
+
+
 def _run_transaction_context(client: TigerGraphClient, transaction_id: str) -> tuple[Evidence, float | None]:
     """Returns the normalized evidence item and the dataset risk score
     extracted from it (None if the query failed)."""
@@ -73,10 +83,7 @@ def _run_transaction_context(client: TigerGraphClient, transaction_id: str) -> t
             None,
         )
     evidence = normalize_transaction_context(ctx)
-    is_fraud = ctx.attributes.get("is_fraud")
-    # PROJECT NOTE (also on EvidenceBundle.dataset_risk_score): this
-    # dataset has no continuous risk score, only the isFraud label.
-    dataset_risk_score = None if is_fraud is None else (1.0 if is_fraud else 0.0)
+    dataset_risk_score = dataset_risk_score_from_is_fraud_label(ctx.attributes.get("is_fraud"))
     return evidence, dataset_risk_score
 
 
@@ -148,7 +155,11 @@ def deduplicate_evidence(items: list[Evidence]) -> list[Evidence]:
 # ---------------------------------------------------------------- summary
 
 
-def _build_summary(transaction_id: str, dataset_risk_score: float | None, evidence: list[Evidence]) -> EvidenceSummary:
+def build_summary(transaction_id: str, dataset_risk_score: float | None, evidence: list[Evidence]) -> EvidenceSummary:
+    """Public so Phase 2D's InvestigationService can build an
+    EvidenceBundle from tool_results it already collected via the
+    registry, without re-querying TigerGraph through aggregate_evidence
+    a second time. See app/investigation/service.py."""
     counts: dict[str, int] = {}
     status: dict[str, QueryStatus] = {}
     for item in evidence:
@@ -207,7 +218,7 @@ def aggregate_evidence(client: TigerGraphClient, transaction_id: str) -> Evidenc
         [ctx_evidence, *shared_evidence, email_evidence, network_evidence]
     )
 
-    summary = _build_summary(transaction_id, dataset_risk_score, all_evidence)
+    summary = build_summary(transaction_id, dataset_risk_score, all_evidence)
 
     bundle = EvidenceBundle(
         transaction_id=transaction_id,

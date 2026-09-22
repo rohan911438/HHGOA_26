@@ -1,0 +1,9 @@
+{
+  "is_official_benchmark": false,
+  "official_dataset_available": false,
+  "cases_executed": 5,
+  "cases_completed": 5,
+  "cases_failed": 0,
+  "failed_transaction_ids": [],
+  "note": "Diagnostic project metrics only - see docs/phase-2-benchmark-report.md."
+}
