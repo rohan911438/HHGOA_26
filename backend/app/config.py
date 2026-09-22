@@ -12,7 +12,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
-from pydantic import Field, SecretStr, field_validator
+from pydantic import SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BACKEND_ROOT = Path(__file__).resolve().parent.parent
@@ -51,6 +51,12 @@ class Settings(BaseSettings):
 
     api_host: str = "0.0.0.0"
     api_port: int = 8000
+    # Comma-separated browser origins allowed to call the API cross-origin
+    # (the frontend runs on a different port in local dev, so a real
+    # browser enforces CORS even though app.tigergraph/pytest TestClient
+    # calls never exercise it). Defaults cover `npm run dev`'s default
+    # port on both localhost and 127.0.0.1.
+    cors_allowed_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
 
     # ---------------- TigerGraph ----------------
     tg_host: str = ""
@@ -107,6 +113,10 @@ class Settings(BaseSettings):
     @classmethod
     def _strip_trailing_slash(cls, v: str) -> str:
         return v.rstrip("/")
+
+    @property
+    def cors_origins(self) -> list[str]:
+        return [origin.strip() for origin in self.cors_allowed_origins.split(",") if origin.strip()]
 
     @property
     def tg_host_set(self) -> bool:

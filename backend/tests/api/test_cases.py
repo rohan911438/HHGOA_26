@@ -18,6 +18,23 @@ class TestUnknownCase:
         assert "secret" not in str(body).lower()
 
 
+class TestListCases:
+    def test_empty_store_returns_an_empty_list_not_an_error(self, client):
+        response = client.get("/cases")
+        assert response.status_code == 200
+        assert response.json() == []
+
+    def test_lists_every_case_this_process_has_created(self, client):
+        first = _create_case(client)
+        second = _create_case(client)
+
+        response = client.get("/cases")
+
+        assert response.status_code == 200
+        case_ids = {c["case_id"] for c in response.json()}
+        assert {first["case_id"], second["case_id"]} <= case_ids
+
+
 class TestCaseRetrieval:
     def test_serialized_case_record_round_trips(self, client):
         created = _create_case(client)

@@ -85,6 +85,10 @@ export function getInvestigation(investigationId: string): Promise<Investigation
   return request<InvestigationResponse>(`/investigations/${encodeURIComponent(investigationId)}`);
 }
 
+export function getCases(): Promise<CaseRecord[]> {
+  return request<CaseRecord[]>("/cases");
+}
+
 export function getCase(caseId: string): Promise<CaseRecord> {
   return request<CaseRecord>(`/cases/${encodeURIComponent(caseId)}`);
 }

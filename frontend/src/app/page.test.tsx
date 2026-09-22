@@ -33,9 +33,25 @@ function jsonResponse(body: unknown, status = 200): Response {
   } as Response;
 }
 
+// The real page also fetches GET /health/dependencies on mount (a real,
+// honest health check - see src/lib/health.ts) - every test's mock must
+// answer it, never leave it unhandled, since it fires before any user
+// interaction.
+const mockHealthyDependencies = {
+  status: "ok",
+  service: "hhgoa-fraud-agent",
+  dependencies: [
+    { name: "tigergraph", checked: true, healthy: true, detail: "reachable", latency_ms: 12.3 },
+    { name: "llm", checked: true, healthy: true, detail: "configured", latency_ms: null },
+  ],
+};
+
 function mockFetchImplementation(url: string, init?: RequestInit): Promise<Response> {
   const method = init?.method ?? "GET";
 
+  if (method === "GET" && url === `${API_BASE}/health/dependencies`) {
+    return Promise.resolve(jsonResponse(mockHealthyDependencies));
+  }
   if (method === "POST" && url === `${API_BASE}/investigations`) {
     return Promise.resolve(jsonResponse(mockInvestigationResponse));
   }
@@ -51,6 +67,23 @@ function mockFetchImplementation(url: string, init?: RequestInit): Promise<Respo
   throw new Error(`Unexpected fetch in test: ${method} ${url}`);
 }
 
+/** Overrides only the POST /investigations response, delegating every
+ * other route (notably the mount-time health check) to the normal mock -
+ * avoids the call-order fragility of `mockImplementationOnce`, since the
+ * health check always fires before any user-triggered request. */
+function withInvestigationsOverride(
+  handler: (url: string, init?: RequestInit) => Promise<Response>
+): typeof fetch {
+  return jest.fn((input: RequestInfo | URL, init?: RequestInit) => {
+    const url = typeof input === "string" ? input : input.toString();
+    const method = init?.method ?? "GET";
+    if (method === "POST" && url === `${API_BASE}/investigations`) {
+      return handler(url, init);
+    }
+    return mockFetchImplementation(url, init);
+  }) as unknown as typeof fetch;
+}
+
 describe("Home page - full investigation flow", () => {
   const originalFetch = global.fetch;
 
@@ -64,10 +97,22 @@ describe("Home page - full investigation flow", () => {
     global.fetch = originalFetch;
   });
 
+  it("renders the premium investigation shell before any investigation starts", () => {
+    render(<Home />);
+    expect(screen.getByText(/fraud\/\/graph/i)).toBeInTheDocument();
+    expect(screen.getByText(/agentic fraud investigation platform/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/start investigation/i).length).toBeGreaterThan(0);
+  });
+
   it("does not investigate automatically on load", () => {
     render(<Home />);
-    expect(global.fetch).not.toHaveBeenCalled();
-    expect(screen.getByText(/enter a transaction id/i)).toBeInTheDocument();
+    // A real health check is expected on mount - what must never happen
+    // automatically is starting an investigation.
+    expect(global.fetch).not.toHaveBeenCalledWith(
+      `${API_BASE}/investigations`,
+      expect.objectContaining({ method: "POST" })
+    );
+    expect(screen.getByText(/graph-powered evidence workflow/i)).toBeInTheDocument();
   });
 
   it("shows the loading state while the request is genuinely still pending", async () => {
@@ -78,13 +123,10 @@ describe("Home page - full investigation flow", () => {
     const pending = new Promise<void>((resolve) => {
       releaseResponse = resolve;
     });
-    global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
-      const url = typeof input === "string" ? input : input.toString();
-      if ((init?.method ?? "GET") === "POST" && url === `${API_BASE}/investigations`) {
-        await pending;
-      }
+    global.fetch = withInvestigationsOverride(async (url, init) => {
+      await pending;
       return mockFetchImplementation(url, init);
-    }) as unknown as typeof fetch;
+    });
 
     const user = userEvent.setup();
     render(<Home />);
@@ -124,7 +166,7 @@ describe("Home page - full investigation flow", () => {
   });
 
   it("surfaces a structured API error without crashing when the backend rejects the request", async () => {
-    (global.fetch as jest.Mock).mockImplementationOnce(() =>
+    global.fetch = withInvestigationsOverride(() =>
       Promise.resolve(
         jsonResponse(
           { error: { code: "INVALID_REQUEST", message: "transaction_id is required.", details: {} } },
@@ -142,7 +184,7 @@ describe("Home page - full investigation flow", () => {
   });
 
   it("shows a friendly error when the API is unreachable, never a raw network stack trace", async () => {
-    (global.fetch as jest.Mock).mockImplementationOnce(() => Promise.reject(new TypeError("Failed to fetch")));
+    global.fetch = withInvestigationsOverride(() => Promise.reject(new TypeError("Failed to fetch")));
 
     const user = userEvent.setup();
     render(<Home />);

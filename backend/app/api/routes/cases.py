@@ -14,7 +14,12 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends, Query
 
-from app.api.dependencies import get_case_manager, get_case_memory, get_investigation_registry
+from app.api.dependencies import (
+    get_case_manager,
+    get_case_memory,
+    get_case_store,
+    get_investigation_registry,
+)
 from app.api.errors import NotFoundError
 from app.api.models import (
     ContextResponse,
@@ -25,7 +30,7 @@ from app.api.models import (
     SimilarCasesResponse,
 )
 from app.api.registry import InvestigationRegistry
-from app.case import CaseManager, CaseMemory, CaseNotFoundError
+from app.case import CaseManager, CaseMemory, CaseNotFoundError, CaseStore
 from app.case.models import CaseRecord
 
 router = APIRouter(tags=["cases"])
@@ -36,6 +41,15 @@ def _get_case_or_404(case_id: str, case_manager: CaseManager) -> CaseRecord:
         return case_manager.get_case(case_id)
     except CaseNotFoundError as exc:
         raise NotFoundError(f"Case '{case_id}' was not found.", details={"case_id": case_id}) from exc
+
+
+@router.get("/cases", response_model=list[CaseRecord])
+def list_cases(case_store: CaseStore = Depends(get_case_store)) -> list[CaseRecord]:
+    """Every case this API process has created or updated, via the same
+    `CaseStore.list_all()` `CaseMemory` already uses internally - no
+    second listing/filtering implementation. Sorted by `case_id`
+    (`InMemoryCaseStore.list_all()`'s own deterministic order)."""
+    return case_store.list_all()
 
 
 @router.get("/cases/{case_id}", response_model=CaseRecord)

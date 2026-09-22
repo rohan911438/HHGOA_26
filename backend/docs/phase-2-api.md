@@ -76,12 +76,23 @@ on first request, not at import or startup time (see §7).
 
 ## 4. Configuration
 
-Reuses `app.config.Settings` (Phase 1, unmodified) - the same `.env` the
-rest of the backend reads. No API-specific environment variable was
-added. Relevant existing fields: `API_HOST`, `API_PORT` (not enforced by
-`create_app()` itself - pass `--host`/`--port` to `uvicorn`, or read them
-yourself when invoking it), `TG_*`, `OPENAI_API_KEY`/`OPENAI_MODEL`,
-`LOG_LEVEL`.
+Reuses `app.config.Settings` (Phase 1) - the same `.env` the rest of the
+backend reads. Relevant existing fields: `API_HOST`, `API_PORT` (not
+enforced by `create_app()` itself - pass `--host`/`--port` to `uvicorn`,
+or read them yourself when invoking it), `TG_*`,
+`OPENAI_API_KEY`/`OPENAI_MODEL`, `LOG_LEVEL`.
+
+**`CORS_ALLOWED_ORIGINS`** (Phase 2M) - comma-separated browser origins
+allowed to call this API cross-origin, defaulting to
+`http://localhost:3000,http://127.0.0.1:3000` (the frontend's `npm run
+dev` default). A real browser enforces CORS on a cross-origin `fetch()`
+even though `TestClient`/`curl` never exercise it - without this, every
+frontend request would fail at the preflight `OPTIONS` request with
+`405`. `CORSMiddleware` is only added when at least one origin is
+configured, allows `GET`/`POST` and a `Content-Type` header, and never
+sends credentials (`allow_credentials=False` - nothing in this API uses
+cookies). Add your deployed frontend's URL here if you host it anywhere
+other than localhost.
 
 ## 5. Endpoints
 
@@ -91,6 +102,7 @@ yourself when invoking it), `TG_*`, `OPENAI_API_KEY`/`OPENAI_MODEL`,
 | `GET /health/dependencies` | Real TigerGraph probe + LLM configuration check |
 | `POST /investigations` | Start an investigation via `AgentOrchestrator` |
 | `GET /investigations/{investigation_id}` | Retrieve a prior investigation result (this process only - §11) |
+| `GET /cases` | Every case this process's `CaseStore` holds (Phase 2M - added for the frontend's case-queue view) |
 | `GET /cases/{case_id}` | The `CaseRecord`, typed, as-is |
 | `GET /cases/{case_id}/evidence` | Per-item `Evidence` (full detail when available - §11) |
 | `GET /cases/{case_id}/history` | Timeline derived from `CaseRecord` fields |

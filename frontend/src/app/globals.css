@@ -1,19 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0c10;
-  --surface: #12151b;
-  --surface-raised: #171b22;
-  --border: #262c36;
-  --border-strong: #333b48;
-  --foreground: #e6e9ee;
-  --muted: #8b96a5;
-  --muted-strong: #aab4c2;
+  --background: #070b12;
+  --surface: #101821;
+  --surface-raised: #131d2a;
+  --grid: rgba(148, 163, 184, 0.1);
+  --divider: rgba(148, 163, 184, 0.16);
+  --border: #24313d;
+  --border-strong: #2e3b4d;
+  --foreground: #e6edf7;
+  --muted: #8a98ad;
+  --muted-strong: #b6c3d4;
   --accent: #3b82f6;
   --accent-strong: #60a5fa;
-  --warn: #d97706;
-  --danger: #dc2626;
-  --ok: #16a34a;
+  --warn: #f59e0b;
+  --danger: #ef4444;
+  --ok: #10b981;
   --mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
 
@@ -35,18 +37,84 @@
   --font-mono: var(--font-geist-mono);
 }
 
-body {
+html {
   background: var(--background);
+}
+
+body {
+  background:
+    radial-gradient(circle at top, rgba(59, 130, 246, 0.18), transparent 30%),
+    linear-gradient(180deg, #070b12 0%, #0b1118 100%);
   color: var(--foreground);
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.015em;
 }
 
 ::selection {
   background: color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
-/* Compact scrollbars fit the console aesthetic better than default chrome ones. */
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--border-strong) transparent;
+}
+
+.panel-shell {
+  border: 1px solid var(--divider);
+  background: rgba(16, 24, 33, 0.82);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02), 0 18px 38px rgba(2, 6, 23, 0.28);
+  backdrop-filter: blur(10px);
+  border-radius: 18px;
+}
+
+.panel-accent {
+  border-color: rgba(96, 165, 250, 0.32);
+  box-shadow: inset 0 1px 0 rgba(96, 165, 250, 0.08), 0 18px 38px rgba(2, 6, 23, 0.3);
+}
+
+.brand-mark {
+  letter-spacing: 0.38em;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.status-dot {
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--muted);
+  box-shadow: 0 0 0 4px rgba(148, 163, 184, 0.12);
+}
+
+.status-dot.ok {
+  background: var(--ok);
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.18);
+}
+
+.status-dot.warn {
+  background: var(--warn);
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.18);
+}
+
+.status-dot.danger {
+  background: var(--danger);
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.18);
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+input::placeholder {
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .brand-mark {
+    letter-spacing: 0.2em;
+  }
 }

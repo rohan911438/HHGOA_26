@@ -17,3 +17,25 @@ class TestHealth:
         assert names == {"tigergraph", "llm"}
         for dep in body["dependencies"]:
             assert dep["checked"] is True  # never a fabricated/untested status
+
+
+class TestCors:
+    def test_frontend_origin_preflight_succeeds(self, client):
+        # A real browser (unlike this TestClient's usual same-process
+        # calls) enforces CORS on cross-origin fetches - the frontend runs
+        # on a different port in local dev. Without CORSMiddleware this
+        # preflight 405s and every frontend request silently fails before
+        # ever reaching a route.
+        response = client.options(
+            "/health/dependencies",
+            headers={"Origin": "http://localhost:3000", "Access-Control-Request-Method": "GET"},
+        )
+        assert response.status_code == 200
+        assert response.headers["access-control-allow-origin"] == "http://localhost:3000"
+
+    def test_unlisted_origin_is_not_granted_cors(self, client):
+        response = client.options(
+            "/health/dependencies",
+            headers={"Origin": "http://evil.example.com", "Access-Control-Request-Method": "GET"},
+        )
+        assert "access-control-allow-origin" not in response.headers

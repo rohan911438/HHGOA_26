@@ -562,6 +562,7 @@ The frontend communicates exclusively with the FastAPI backend.
 - `GET /investigations/{investigation_id}`
 
 **Cases**
+- `GET /cases`
 - `GET /cases/{case_id}`
 - `GET /cases/{case_id}/evidence`
 - `GET /cases/{case_id}/history`

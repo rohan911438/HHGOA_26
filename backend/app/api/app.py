@@ -15,6 +15,7 @@ import logging
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
@@ -40,6 +41,20 @@ def create_app() -> FastAPI:
             "docs/phase-2-api.md."
         ),
     )
+    if settings.cors_origins:
+        # A real browser (unlike TestClient/curl) enforces CORS on
+        # cross-origin calls - the frontend runs on a different port in
+        # local dev, so without this every fetch from it fails at the
+        # preflight OPTIONS request. No credentials/cookies are used
+        # anywhere in this API, so allowing only GET/POST and JSON
+        # headers from the configured origins is sufficient.
+        app.add_middleware(
+            CORSMiddleware,
+            allow_origins=settings.cors_origins,
+            allow_methods=["GET", "POST"],
+            allow_headers=["Content-Type"],
+            allow_credentials=False,
+        )
     app.include_router(api_router)
     _register_exception_handlers(app)
     return app
