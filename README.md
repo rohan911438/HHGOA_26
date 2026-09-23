@@ -10,6 +10,19 @@ Instead of asking an LLM to guess whether a transaction is fraudulent, the syste
 
 The result is an investigation workflow that is evidence-driven, traceable, uncertainty-aware, and approval-gated.
 
+## Live Deployment
+
+| | URL | Hosting |
+| --- | --- | --- |
+| **Analyst Dashboard** | https://hhgoa-fraud-frontend.vercel.app | Vercel |
+| **Backend API** | https://hhgoa-fraud-backend.onrender.com | Render |
+| **API Docs (Swagger)** | https://hhgoa-fraud-backend.onrender.com/docs | Render |
+| **Health Check** | https://hhgoa-fraud-backend.onrender.com/health/dependencies | Render |
+
+Open the dashboard, go to **Investigate**, and run the demo transaction `2987937`.
+
+> The backend runs on Render's free tier and sleeps after 15 minutes of inactivity. The first request after that can take about a minute while it wakes up, and in-memory cases are reset on each restart.
+
 ## What does this project do?
 
 Given a transaction such as:
@@ -1043,6 +1056,7 @@ It is asking:
 | Graph Querying | GSQL |
 | Graph Access | TigerGraph MCP / controlled application tools |
 | Agent Orchestration | LangGraph |
+| LLM | Google Gemini (OpenAI-compatible endpoint) |
 | Backend | FastAPI |
 | Language | Python |
 | Frontend | Next.js 16 |
@@ -1051,6 +1065,7 @@ It is asking:
 | Case Memory | Structured deterministic retrieval |
 | Testing | Pytest + Jest |
 | Build | Next.js / Turbopack |
+| Hosting | Vercel (frontend) + Render (backend) |
 
 ## Documentation
 
@@ -1134,7 +1149,7 @@ The system is designed to investigate fraud as a traceable decision-support work
 
 ## License
 
-*Add the project's chosen license here.*
+Released under the [MIT License](LICENSE). Copyright (c) 2026 BROTHERHOOD.
 
 ---
 
