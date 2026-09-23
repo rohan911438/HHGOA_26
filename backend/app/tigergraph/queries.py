@@ -52,8 +52,11 @@ undifferentiated signal.
 
 from __future__ import annotations
 
+import time
 from dataclasses import dataclass, field
 from typing import Any
+
+import requests
 
 from app.logging import InvestigationEvent, get_logger, log_event
 from app.tigergraph.client import TigerGraphClient, TigerGraphError, TigerGraphQueryError
@@ -63,6 +66,11 @@ logger = get_logger(__name__)
 # Fields kept for a "related transaction" result - enough to reason about
 # without echoing the full opaque C/D/M/V-derived attribute set.
 _TXN_SUMMARY_FIELDS = ("is_fraud", "transaction_amt", "transaction_dt", "product_cd")
+
+# Transport-level retry for the read-only interpreted queries (see _run).
+_TRANSIENT_ATTEMPTS = 3
+_TRANSIENT_BACKOFF_SECONDS = 1.0
+_TRANSIENT_ERRORS = (requests.exceptions.ConnectionError, ConnectionError)
 
 
 def _txn_summary(v: dict[str, Any]) -> dict[str, Any]:
@@ -226,13 +234,37 @@ INTERPRET QUERY (VERTEX<Txn> seed) FOR GRAPH HHGOA_FRAUD {
 
 def _run(client: TigerGraphClient, name: str, gsql: str, seed_txn_id: str) -> list[dict]:
     log_event(logger, InvestigationEvent.GRAPH_QUERY, f"running {name}", query=name, seed=seed_txn_id)
-    try:
-        result = client.connection.runInterpretedQuery(gsql, params={"seed": seed_txn_id})
-    except Exception as exc:
-        log_event(
-            logger, InvestigationEvent.TOOL_FAILED, f"{name} failed", query=name, error=str(exc)
-        )
-        raise TigerGraphQueryError(f"{name} failed: {type(exc).__name__}: {exc}") from exc
+    # Every query here is a read-only INTERPRET query, so a transport-level
+    # failure (DNS lookup miss, connection reset) is safe to retry. Query
+    # errors and read timeouts are not retried - they fail exactly as before.
+    for attempt in range(1, _TRANSIENT_ATTEMPTS + 1):
+        try:
+            result = client.connection.runInterpretedQuery(gsql, params={"seed": seed_txn_id})
+            break
+        except _TRANSIENT_ERRORS as exc:
+            if attempt == _TRANSIENT_ATTEMPTS:
+                log_event(
+                    logger,
+                    InvestigationEvent.TOOL_FAILED,
+                    f"{name} failed",
+                    query=name,
+                    error=str(exc),
+                )
+                raise TigerGraphQueryError(f"{name} failed: {type(exc).__name__}: {exc}") from exc
+            log_event(
+                logger,
+                InvestigationEvent.TOOL_FAILED,
+                f"{name} transient connection error, retrying",
+                query=name,
+                attempt=attempt,
+                error=str(exc),
+            )
+            time.sleep(_TRANSIENT_BACKOFF_SECONDS * attempt)
+        except Exception as exc:
+            log_event(
+                logger, InvestigationEvent.TOOL_FAILED, f"{name} failed", query=name, error=str(exc)
+            )
+            raise TigerGraphQueryError(f"{name} failed: {type(exc).__name__}: {exc}") from exc
     log_event(logger, InvestigationEvent.GRAPH_RESULT, f"{name} returned", query=name)
     return result
 
