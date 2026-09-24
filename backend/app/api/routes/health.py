@@ -22,6 +22,26 @@ from app.tigergraph.client import TigerGraphClient
 router = APIRouter(tags=["health"])
 
 
+@router.get("/")
+def index() -> dict:
+    """Landing response for the bare API URL (previously a 404). Static -
+    no dependency call - so it answers instantly even right after a cold
+    start."""
+    return {
+        "service": "hhgoa-fraud-agent",
+        "status": "ok",
+        "description": "HHGoa'26 agentic fraud investigation API (TigerGraph). "
+        "The analyst dashboard is the frontend; this is its API.",
+        "links": {
+            "docs": "/docs",
+            "health": "/health",
+            "dependencies": "/health/dependencies",
+            "investigate": "POST /investigations",
+            "cases": "/cases",
+        },
+    }
+
+
 @router.get("/health", response_model=HealthResponse)
 def health() -> HealthResponse:
     return HealthResponse(status="ok", service="hhgoa-fraud-agent")

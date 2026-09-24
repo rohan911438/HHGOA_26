@@ -4,6 +4,13 @@ from __future__ import annotations
 
 
 class TestHealth:
+    def test_root_is_200_and_points_to_docs(self, client):
+        response = client.get("/")
+        assert response.status_code == 200
+        body = response.json()
+        assert body["status"] == "ok"
+        assert body["links"]["docs"] == "/docs"
+
     def test_health_is_200(self, client):
         response = client.get("/health")
         assert response.status_code == 200
