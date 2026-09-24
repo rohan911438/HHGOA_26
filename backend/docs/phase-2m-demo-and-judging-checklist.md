@@ -132,7 +132,7 @@ it does not assign a score or claim a ranking.
 - [x] Real, non-hardcoded values render in the UI — verified by an integration test that never mocks `lib/api.ts` itself, only the network boundary
 - [x] Degraded/error states are also demonstrable and honest, not hidden
 - [x] **Official benchmark reproducible with one command:** `python -m app.benchmark.runner --official` (validate → 20 cases → graph write/read-back → conformance → summary); a repeat run gave identical decisions
-- [ ] 3–5 minute demo video link: to be added by the team
+- [x] 3–5 minute demo video: https://youtu.be/0dqjXyY2Hoc
 
 ## Explicitly not claimed
 

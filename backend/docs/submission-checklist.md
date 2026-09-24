@@ -9,14 +9,14 @@ Legend: ✅ done and verified in this repository · ⏳ needs a human action · 
 | Item | Status | Evidence |
 |---|---|---|
 | Working agent | ✅ | Official pipeline `python -m app.benchmark.runner --official`; Phase-2 API + dashboard live (links below) |
-| GitHub repository | ⏳ | Commit and push the new files (see "Before submitting"). Nothing has been committed yet. |
+| GitHub repository | ✅ | https://github.com/rohan911438/HHGOA_26 (benchmark work pushed to `main`) |
 | Agent output on the 20 provided cases | ✅ | `cases/HHG-001.json` … `cases/HHG-020.json`, one per case, README answer format, 20/20 conformant |
 | Case: investigation record, evidence, findings, decisions, actions | ✅ | `case` object in each answer; details in `backend/benchmark/results/official/<id>/` |
 | Case written to the graph | ✅ | 20 `InvestigationCase` vertices in TigerGraph graph `HHGOA_IEEE`, each read back and verified (`graph-verification.json`) |
 | SAR when required by policy | ✅ | 5 filed (HHG-005, 006, 010, 014, 019) under §3a; 15 not filed, reason recorded |
 | NBA + approval route **before** additional evidence | ✅ | `next_best_actions.initial`, 20/20, routes = policy §2 |
 | NBA + approval route **after** additional evidence | ✅ | `next_best_actions.final` + `what_changed`, 20/20; 12 changed after evidence |
-| 3–5 minute demo video | ⏳ | Link to be added: `<DEMO_VIDEO_URL>` |
+| 3–5 minute demo video | ✅ | https://youtu.be/0dqjXyY2Hoc (linked in the README) |
 | Technical blog post | ⏳ | Draft ready: `backend/docs/technical-blog.md`. Publish it and add `<BLOG_URL>` |
 | X or LinkedIn post, linking blog or demo | ⏳ | Drafts ready: `backend/docs/x-post.md`. Post it and record the URL |
 | Post tags @TigerGraphDB | ⏳ | Tag included in the drafts; confirm it on the published post |
@@ -38,9 +38,9 @@ Legend: ✅ done and verified in this repository · ⏳ needs a human action · 
 
 ## Before submitting (human steps)
 
-1. Review `git status`, then commit and push. **Suggested:** `cases/`, `backend/app/benchmark/official/`, `backend/tests/unit/test_official_benchmark.py`, `backend/benchmark/results/official/`, `backend/docs/*`, `README.md`, `.gitignore`, `backend/pyproject.toml`, `backend/app/benchmark/runner.py`. **Do not commit** `backend/data/hhgoa_ieee/` (it's gitignored).
-2. Record and upload the 3–5 minute demo. Suggested extra beat: open `cases/HHG-014.json` and show the device traced to 27 cards, the before/after actions, and the SAR.
-3. Publish the blog, then replace `<GITHUB_URL>`, `<DEMO_VIDEO_URL>` and `<BLOG_URL>` in `technical-blog.md` and `x-post.md`.
+1. ~~Commit and push~~: done (`main`).
+2. ~~Record and upload the demo~~: done, https://youtu.be/0dqjXyY2Hoc
+3. Publish the blog, then replace `<BLOG_URL>` in `x-post.md` (demo and GitHub links are already filled in).
 4. Post on X/LinkedIn tagging @TigerGraphDB.
 5. Submit the form before **23:59 IST**, team lead only, once.
 

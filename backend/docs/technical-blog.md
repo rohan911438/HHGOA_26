@@ -2,7 +2,7 @@
 
 *Hacker House Goa '26, TigerGraph challenge. Team BROTHERHOOD.*
 
-> Links: GitHub: `<GITHUB_URL>` · Demo video: `<DEMO_VIDEO_URL>` · Live dashboard: https://hhgoa-fraud-frontend.vercel.app
+> Links: GitHub: https://github.com/rohan911438/HHGOA_26 · Demo video: https://youtu.be/0dqjXyY2Hoc · Live dashboard: https://hhgoa-fraud-frontend.vercel.app
 
 ## The problem
 
@@ -182,4 +182,4 @@ We changed logic after looking at our own outputs. There was no answer key to fi
 
 The graph does the finding, the policy does the deciding, and the agent's job is to connect them honestly: gather the evidence, say how sure it is, ask when it isn't sure, and record every step. Every one of the 20 official cases is investigated, decided before and after evidence, written to TigerGraph and read back. We don't yet know how many we got right, and that's exactly what the answer key is for.
 
-*Code: `<GITHUB_URL>` · Demo: `<DEMO_VIDEO_URL>` · Built on TigerGraph Savanna for Hacker House Goa '26. @TigerGraphDB*
+*Code: https://github.com/rohan911438/HHGOA_26 · Demo: https://youtu.be/0dqjXyY2Hoc · Built on TigerGraph Savanna for Hacker House Goa '26. @TigerGraphDB*

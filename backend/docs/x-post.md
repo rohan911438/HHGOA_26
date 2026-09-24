@@ -1,6 +1,6 @@
 # X / LinkedIn post drafts
 
-Replace the three placeholders before posting: `<GITHUB_URL>`, `<DEMO_VIDEO_URL>`, `<BLOG_URL>`.
+Replace `<BLOG_URL>` once the blog is published; the demo and GitHub links are filled in.
 Every number below comes from `backend/benchmark/results/official/summary.json`.
 
 ## Main X post (266 characters with both links, which X counts as 23 each)
@@ -8,7 +8,7 @@ Every number below comes from `backend/benchmark/results/official/summary.json`.
 > Built an agentic fraud investigator on @TigerGraphDB for #HHGoa26: it traces devices across cards, says how sure it is, asks for evidence when unsure, and acts under bank policy. 20/20 official cases done.
 >
 > Blog: <BLOG_URL>
-> Demo: <DEMO_VIDEO_URL>
+> Demo: https://youtu.be/0dqjXyY2Hoc
 
 ## Thread (optional follow-ups)
 
@@ -24,7 +24,7 @@ Every number below comes from `backend/benchmark/results/official/summary.json`.
 
 **5/**
 > Honest numbers: 20/20 cases answered in the official format, 20/20 persisted in TigerGraph and verified, 12 recommendations updated after new evidence. Accuracy: unknown until TigerGraph scores it, because the package has no answer key.
-> Code: <GITHUB_URL>
+> Code: https://github.com/rohan911438/HHGOA_26
 
 ## LinkedIn version
 
@@ -36,6 +36,6 @@ Every number below comes from `backend/benchmark/results/official/summary.json`.
 >
 > We don't know our accuracy yet (the answer key is private), and we wrote up what we got wrong along the way.
 >
-> Blog: <BLOG_URL> · Demo: <DEMO_VIDEO_URL> · Code: <GITHUB_URL>
+> Blog: <BLOG_URL> · Demo: https://youtu.be/0dqjXyY2Hoc · Code: https://github.com/rohan911438/HHGOA_26
 >
 > #HHGoa26 #TigerGraph #GraphDatabases #FraudDetection #AIAgents
