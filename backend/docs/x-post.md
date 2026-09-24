@@ -1,6 +1,6 @@
 # X / LinkedIn post drafts
 
-All links are filled in.
+All links are filled in. **Published:** https://x.com/Roan0i/status/2103057070023184664
 Every number below comes from `backend/benchmark/results/official/summary.json`.
 
 ## Main X post (266 characters with both links, which X counts as 23 each)

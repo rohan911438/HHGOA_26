@@ -18,8 +18,8 @@ Legend: ✅ done and verified in this repository · ⏳ needs a human action · 
 | NBA + approval route **after** additional evidence | ✅ | `next_best_actions.final` + `what_changed`, 20/20; 12 changed after evidence |
 | 3–5 minute demo video | ✅ | https://youtu.be/0dqjXyY2Hoc (linked in the README) |
 | Technical blog post | ✅ | https://dev.to/roan911/building-an-agentic-fraud-investigation-agent-with-tigergraph-aec (source: `backend/docs/technical-blog.md`) |
-| X or LinkedIn post, linking blog or demo | ⏳ | Drafts ready: `backend/docs/x-post.md`. Post it and record the URL |
-| Post tags @TigerGraphDB | ⏳ | Tag included in the drafts; confirm it on the published post |
+| X or LinkedIn post, linking blog or demo | ✅ | https://x.com/Roan0i/status/2103057070023184664 |
+| Post tags @TigerGraphDB | ⏳ | Tag was in the draft; confirm it appears on the published post |
 
 ## Final quality
 
@@ -41,7 +41,7 @@ Legend: ✅ done and verified in this repository · ⏳ needs a human action · 
 1. ~~Commit and push~~: done (`main`).
 2. ~~Record and upload the demo~~: done, https://youtu.be/0dqjXyY2Hoc
 3. ~~Publish the blog~~: done, https://dev.to/roan911/building-an-agentic-fraud-investigation-agent-with-tigergraph-aec
-4. Post on X/LinkedIn tagging @TigerGraphDB.
+4. ~~Post on X~~: done, https://x.com/Roan0i/status/2103057070023184664 (confirm the @TigerGraphDB tag is on it)
 5. Submit the form before **23:59 IST**, team lead only, once.
 
 ## Known limitations to be upfront about
