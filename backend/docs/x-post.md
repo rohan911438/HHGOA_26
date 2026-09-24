@@ -1,13 +1,13 @@
 # X / LinkedIn post drafts
 
-Replace `<BLOG_URL>` once the blog is published; the demo and GitHub links are filled in.
+All links are filled in.
 Every number below comes from `backend/benchmark/results/official/summary.json`.
 
 ## Main X post (266 characters with both links, which X counts as 23 each)
 
 > Built an agentic fraud investigator on @TigerGraphDB for #HHGoa26: it traces devices across cards, says how sure it is, asks for evidence when unsure, and acts under bank policy. 20/20 official cases done.
 >
-> Blog: <BLOG_URL>
+> Blog: https://dev.to/roan911/building-an-agentic-fraud-investigation-agent-with-tigergraph-aec
 > Demo: https://youtu.be/0dqjXyY2Hoc
 
 ## Thread (optional follow-ups)
@@ -36,6 +36,6 @@ Every number below comes from `backend/benchmark/results/official/summary.json`.
 >
 > We don't know our accuracy yet (the answer key is private), and we wrote up what we got wrong along the way.
 >
-> Blog: <BLOG_URL> · Demo: https://youtu.be/0dqjXyY2Hoc · Code: https://github.com/rohan911438/HHGOA_26
+> Blog: https://dev.to/roan911/building-an-agentic-fraud-investigation-agent-with-tigergraph-aec · Demo: https://youtu.be/0dqjXyY2Hoc · Code: https://github.com/rohan911438/HHGOA_26
 >
 > #HHGoa26 #TigerGraph #GraphDatabases #FraudDetection #AIAgents

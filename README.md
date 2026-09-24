@@ -10,13 +10,14 @@ Instead of asking an LLM to guess whether a transaction is fraudulent, the syste
 
 The result is an investigation workflow that is evidence-driven, traceable, uncertainty-aware, and approval-gated.
 
-**Demo video (3–5 min):** https://youtu.be/0dqjXyY2Hoc
+**Demo video (3–5 min):** https://youtu.be/0dqjXyY2Hoc · **Technical blog:** https://dev.to/roan911/building-an-agentic-fraud-investigation-agent-with-tigergraph-aec
 
 ## Live Deployment
 
 | | URL | Hosting |
 | --- | --- | --- |
 | **Demo Video** | https://youtu.be/0dqjXyY2Hoc | YouTube |
+| **Technical Blog** | https://dev.to/roan911/building-an-agentic-fraud-investigation-agent-with-tigergraph-aec | DEV Community |
 | **Analyst Dashboard** | https://hhgoa-fraud-frontend.vercel.app | Vercel |
 | **Backend API** | https://hhgoa-fraud-backend.onrender.com | Render |
 | **API Docs (Swagger)** | https://hhgoa-fraud-backend.onrender.com/docs | Render |
