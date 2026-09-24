@@ -1,0 +1,12 @@
+{
+  "case_id": "HHG-007",
+  "opened_at": "2016-12-05 03:46:14",
+  "trigger_type": "risk_score",
+  "trigger_text": "Real-time model scored transaction 3514948 ($111.92, in billing region 264.0) at 0.87. Review and decide.",
+  "flagged_txn_id": "3514948",
+  "card_id": "C09933-K2",
+  "customer_id": "C09933",
+  "risk_score": 0.87,
+  "is_official_benchmark_case": true,
+  "source": "official case_pack.csv"
+}

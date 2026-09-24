@@ -1,0 +1,18 @@
+{
+  "file": true,
+  "reason": "activity connects to a shared device profile used on other customers' cards (R2, R6, §3a); pattern is coordinated/undocumented (R9, §3a)",
+  "narrative": "On 2016-12-07 at 21:38, card C02923-K1 held by customer C02923 was used for one transaction of $100.07. The activity was online, billed in region(s) 330.0, under product code(s) R. The online transactions came from device profile(s) iOS Device | iOS 9.3.5 | mobile safari 9.0 | 1024x768. The alert was raised by risk score on transaction 3523199 (model score 0.54). The investigation found a pattern outside the bank's five documented typologies. Identity record device status 'New'; profile not seen earlier on this card. The same device profile was used on 4 other customers' cards within 30 days, including C08299-K1, C11496-K2, C11539-K2, C12267-K2, indicating a common actor. It is suspicious because activity connects to a shared device profile used on other customers' cards (R2, R6, §3a); pattern is coordinated/undocumented (R9, §3a). Actions: BLOCK_CARD, CREATE_CASE, FILE_REPORT, MONITOR_CONNECTED_CARDS, ESCALATE_TO_ANALYST.",
+  "subjects": [
+    "C02923",
+    "C02923-K1",
+    "C08299-K1",
+    "C11496-K2",
+    "C11539-K2",
+    "C12267-K2"
+  ],
+  "total_amount_usd": 100.07,
+  "activity_dates": [
+    "2016-12-07",
+    "2016-12-07"
+  ]
+}

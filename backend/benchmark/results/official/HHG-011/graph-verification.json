@@ -1,0 +1,32 @@
+{
+  "attempted": true,
+  "write": {
+    "vertices_upserted": 1,
+    "edges_upserted": 9,
+    "edges_expected": 9
+  },
+  "read_back": {
+    "vertex": {
+      "summary": "Customer report alert on C11923-K2 (transaction 3583368). Assessed as card-not-present fraud from a device new to the account, fraud probability 0.83: 1 transaction(s) totalling $131.30 starting at 3583368. Final actions: BLOCK_CARD, CREATE_CASE.",
+      "sar_file": false,
+      "fraud_probability": 0.83,
+      "pattern": "card_not_present_new_device",
+      "pattern_description": "",
+      "stop_reason": "The customer's denial plus graph evidence put the probability at 0.83; a further request would not change the action (§6).",
+      "official_case_id": "HHG-011",
+      "final_actions": "BLOCK_CARD|CREATE_CASE",
+      "exposure_usd": 131.3,
+      "graph_case_id": "CASE-HHG-011",
+      "initial_actions": "BLOCK_CARD|CREATE_CASE",
+      "verdict": "fraud",
+      "written_at": "2026-09-24 09:03:53",
+      "status": "closed_fraud"
+    },
+    "similar": 6,
+    "cards": 1,
+    "flagged": 1,
+    "devices": 0,
+    "affected": 1
+  },
+  "verified": true
+}

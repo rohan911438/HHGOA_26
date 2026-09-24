@@ -1,0 +1,16 @@
+{
+  "next_best_actions_final": [
+    {
+      "action": "CREATE_CASE",
+      "route": "auto",
+      "reason": "§3a: the dispute is recorded"
+    },
+    {
+      "action": "CLOSE_NO_FRAUD",
+      "route": "auto",
+      "reason": "R3: customer recognised the purchase after step-up"
+    }
+  ],
+  "what_changed": "The simulated step-up pass and recognition moved the case from verify-and-monitor to closed as legitimate.",
+  "stop_reason": "Step-up result settled the question (§6)."
+}

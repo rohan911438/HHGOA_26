@@ -1,0 +1,272 @@
+{
+  "flagged_transaction": {
+    "channel": "online",
+    "device_profile": "iOS Device | iOS 9.3.5 | mobile safari 9.0 | 1024x768",
+    "device_type": "mobile",
+    "product_cd": "R",
+    "txn_id": "3523199",
+    "p_email": "icloud.com",
+    "device_status": "New",
+    "amount": 100.07,
+    "addr2": "87.0",
+    "m1": "",
+    "risk_score": 0.54,
+    "addr1": "330.0",
+    "m2": "",
+    "m3": "",
+    "m4": "",
+    "m5": "",
+    "m6": "",
+    "r_email": "gmail.com",
+    "m7": "",
+    "m8": "",
+    "m9": "",
+    "card_id": "C02923-K1",
+    "dist1": -1,
+    "customer_id": "C02923",
+    "ts": "2016-12-07 21:38:37",
+    "proxy_type": ""
+  },
+  "card_history_size": 92,
+  "customer_cards": [
+    "C02923-K1"
+  ],
+  "device_neighbourhood": {
+    "profile": "iOS Device | iOS 9.3.5 | mobile safari 9.0 | 1024x768",
+    "window_txns": 5,
+    "all_txns": 168,
+    "all_cards": 112,
+    "new_share_all": 0.869,
+    "anon_proxy_share_all": 0.0,
+    "cards": [
+      {
+        "card_id": "C12267-K2",
+        "customer_id": "C12267",
+        "n": 1,
+        "amount": 49.95,
+        "first": "2016-12-31 17:10:46",
+        "last": "2016-12-31 17:10:46"
+      },
+      {
+        "card_id": "C08299-K1",
+        "customer_id": "C08299",
+        "n": 1,
+        "amount": 29.97,
+        "first": "2016-12-15 16:07:11",
+        "last": "2016-12-15 16:07:11"
+      },
+      {
+        "card_id": "C11539-K2",
+        "customer_id": "C11539",
+        "n": 1,
+        "amount": 99.95,
+        "first": "2016-12-25 03:09:13",
+        "last": "2016-12-25 03:09:13"
+      },
+      {
+        "card_id": "C02923-K1",
+        "customer_id": "C02923",
+        "n": 1,
+        "amount": 100.07,
+        "first": "2016-12-07 21:38:37",
+        "last": "2016-12-07 21:38:37"
+      },
+      {
+        "card_id": "C11496-K2",
+        "customer_id": "C11496",
+        "n": 1,
+        "amount": 199.95,
+        "first": "2016-12-11 20:58:50",
+        "last": "2016-12-11 20:58:50"
+      }
+    ],
+    "confirmed_fraud_cases": [
+      "CC-1672"
+    ],
+    "case_cards": [
+      "C05551-K2"
+    ]
+  },
+  "signals": {
+    "history_depth": {
+      "name": "history_depth",
+      "present": true,
+      "detail": "90 prior transactions on this card",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "card_testing_sequence": {
+      "name": "card_testing_sequence",
+      "present": false,
+      "detail": "no run of 3+ sub-$5 online authorizations",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "sub_threshold_structuring": {
+      "name": "sub_threshold_structuring",
+      "present": false,
+      "detail": "no cluster of just-under-$500 online purchases",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "online_amount_or_product_unusual": {
+      "name": "online_amount_or_product_unusual",
+      "present": false,
+      "detail": "flagged $100.07 (product R) vs card median $117.01; product seen before: True",
+      "entity_ids": [
+        "3523199"
+      ],
+      "weight": 0.0
+    },
+    "online_burst_48h": {
+      "name": "online_burst_48h",
+      "present": false,
+      "detail": "0 unusual online purchases within 48h of the alert",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "no_prior_online_use": {
+      "name": "no_prior_online_use",
+      "present": false,
+      "detail": "21 prior online transactions on this card",
+      "entity_ids": [
+        "3523199"
+      ],
+      "weight": 0.0
+    },
+    "new_device": {
+      "name": "new_device",
+      "present": true,
+      "detail": "identity record device status 'New'; profile not seen earlier on this card",
+      "entity_ids": [
+        "3523199"
+      ],
+      "weight": 0.0
+    },
+    "known_device": {
+      "name": "known_device",
+      "present": false,
+      "detail": "device already known to the account (identity record 'New')",
+      "entity_ids": [
+        "3523199"
+      ],
+      "weight": 0.0
+    },
+    "proxy": {
+      "name": "proxy",
+      "present": false,
+      "detail": "proxy flag (id_23) = 'none'",
+      "entity_ids": [
+        "3523199"
+      ],
+      "weight": 0.0
+    },
+    "new_billing_region": {
+      "name": "new_billing_region",
+      "present": false,
+      "detail": "card-present use in region 330.0; home region 330.0; 5 region(s) in history",
+      "entity_ids": [
+        "3523199"
+      ],
+      "weight": 0.0
+    },
+    "home_activity_continues": {
+      "name": "home_activity_continues",
+      "present": false,
+      "detail": "0 home-region transactions within 3 days of the alert",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "multi_day_stay": {
+      "name": "multi_day_stay",
+      "present": false,
+      "detail": "purchases on 5 distinct day(s) in region 330.0",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "match_flag_anomaly": {
+      "name": "match_flag_anomaly",
+      "present": false,
+      "detail": "0 match flags false on the flagged txn vs 46% false historically",
+      "entity_ids": [
+        "3523199"
+      ],
+      "weight": 0.0
+    },
+    "purchaser_email_change": {
+      "name": "purchaser_email_change",
+      "present": true,
+      "detail": "purchaser email domain 'icloud.com' not seen before on this card",
+      "entity_ids": [
+        "3523199"
+      ],
+      "weight": 0.0
+    },
+    "mixed_channel_48h": {
+      "name": "mixed_channel_48h",
+      "present": false,
+      "detail": "channels within 48h: ['online']",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "recurring_charge": {
+      "name": "recurring_charge",
+      "present": false,
+      "detail": "1 earlier charges of ~$100.07 (product R), 0 at monthly spacing",
+      "entity_ids": [
+        "3050502"
+      ],
+      "weight": 0.0
+    },
+    "shared_device_ring": {
+      "name": "shared_device_ring",
+      "present": true,
+      "detail": "device profile used by 4 other customer(s) within 30 days (112 cards all-time, 1.5 txns per card, marked New on 87% of its transactions); 1 confirmed-fraud closed case(s) involve it",
+      "entity_ids": [
+        "C08299-K1",
+        "C11496-K2",
+        "C11539-K2",
+        "C12267-K2",
+        "CC-1672"
+      ],
+      "weight": 0.0
+    },
+    "device_in_confirmed_fraud": {
+      "name": "device_in_confirmed_fraud",
+      "present": false,
+      "detail": "closed cases on this device profile: ['CC-1672']",
+      "entity_ids": [
+        "CC-1672"
+      ],
+      "weight": 0.0
+    }
+  },
+  "episode_txn_ids": [
+    "3523199"
+  ],
+  "initial_assessment": {
+    "probability": 0.92,
+    "fraud_groups": [
+      "device",
+      "network",
+      "credentials"
+    ],
+    "legit_groups": [],
+    "contributions": {
+      "shared_device_ring": 2.0,
+      "new_device": 0.8,
+      "purchaser_email_change": 0.5,
+      "risk_score": 0.04
+    }
+  },
+  "own_closed_cases": [
+    "CC-2717",
+    "CC-2400",
+    "CC-2857"
+  ],
+  "similar_closed_cases_retrieved": [
+    "CC-3035",
+    "CC-2971"
+  ],
+  "agent_case_memory": []
+}

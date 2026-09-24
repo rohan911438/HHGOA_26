@@ -43,6 +43,12 @@ data = [
     # Only needed to fetch the source dataset, not at runtime.
     "kaggle>=1.6",
 ]
+benchmark = [
+    # Official HHGOA_IEEE benchmark: package prep + graph load
+    # (`python -m app.benchmark.official`). Not used by the API.
+    "pandas>=2.2",
+    "pyarrow>=17",
+]
 dev = [
     "pytest>=8.3",
     "pytest-asyncio>=0.24",

@@ -1,0 +1,147 @@
+{
+  "steps": [
+    {
+      "n": 1,
+      "name": "trigger",
+      "detail": "customer_report: Customer C08299 message: 'I never made this $30.02 purchase. Please check my card.' Refers to 3581141."
+    },
+    {
+      "n": 2,
+      "name": "open_case",
+      "detail": "flagged txn 3581141 $30.02 online at 2016-12-28 12:10:53"
+    },
+    {
+      "n": 3,
+      "name": "history",
+      "detail": "56 txns on C08299-K1; customer holds ['C08299-K1']"
+    },
+    {
+      "n": 4,
+      "name": "device_neighbourhood",
+      "detail": "no device record (in-person)"
+    },
+    {
+      "n": 5,
+      "name": "memory",
+      "detail": "0 closed case(s) on the customer's cards; 0 similar 'none' closed case(s); 1 earlier agent case(s) linked"
+    },
+    {
+      "n": 6,
+      "name": "assess",
+      "detail": "p=0.23 fraud evidence ['customer_denial'] legit ['device']"
+    },
+    {
+      "n": 7,
+      "name": "evidence_request",
+      "detail": "Customer passes step-up authentication and, shown the merchant details, recognises the purchase (simulated: probability 0.23 favoured legitimate)."
+    },
+    {
+      "n": 8,
+      "name": "final_decision",
+      "detail": "CREATE_CASE, CLOSE_NO_FRAUD"
+    },
+    {
+      "n": 9,
+      "name": "write_case",
+      "detail": "CASE-HHG-009 written and read back: verified=True"
+    }
+  ],
+  "tool_calls": [
+    {
+      "tool": "get_transaction",
+      "params": {
+        "t": "3581141"
+      },
+      "latency_ms": 356.8,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "card_history",
+      "params": {
+        "c": "C08299-K1"
+      },
+      "latency_ms": 334.3,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "customer_cards",
+      "params": {
+        "cu": "C08299"
+      },
+      "latency_ms": 313.8,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "closed_cases_for_cards",
+      "params": {
+        "cards": [
+          "C08299-K1"
+        ]
+      },
+      "latency_ms": 306.2,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "similar_closed_cases",
+      "params": {
+        "pat": "none",
+        "lo": 15.01,
+        "hi": 50.0,
+        "before_ts": "2016-12-28 17:10:53"
+      },
+      "latency_ms": 9170.0,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "case_memory",
+      "params": {
+        "cards": [
+          "C08299-K1"
+        ]
+      },
+      "latency_ms": 549.6,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "write_case",
+      "params": {
+        "graph_case_id": "CASE-HHG-009"
+      },
+      "latency_ms": 865.4,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "read_case",
+      "params": {
+        "ic": "CASE-HHG-009"
+      },
+      "latency_ms": 325.2,
+      "ok": true,
+      "error": ""
+    }
+  ],
+  "decision": {
+    "verdict": "legitimate",
+    "status": "closed_legitimate",
+    "final_probability": 0.01,
+    "affected": [],
+    "exposure": 0.0,
+    "connected_cards": [],
+    "evidence_requests": [
+      {
+        "type": "step_up_auth",
+        "asked_after_step": 6,
+        "assumed_response": "Customer passes step-up authentication and, shown the merchant details, recognises the purchase (simulated: probability 0.23 favoured legitimate)."
+      }
+    ],
+    "stop_reason": "Step-up result settled the question (§6).",
+    "what_changed": "The simulated step-up pass and recognition moved the case from verify-and-monitor to closed as legitimate."
+  }
+}

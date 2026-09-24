@@ -1,0 +1,68 @@
+{
+  "status": "escalated",
+  "verdict": "uncertain",
+  "fraud_probability": 0.55,
+  "pattern": "none",
+  "pattern_description": "",
+  "affected_txn_ids": [
+    "3491361"
+  ],
+  "first_suspicious_txn_id": "3491361",
+  "connected_card_ids": [],
+  "connected_device_profiles": [],
+  "exposure_usd": 39.08,
+  "evidence": [
+    {
+      "claim": "Alert: Customer C02354 message: 'I never made this $39.08 purchase. Please check my card.' Refers to 3491361.",
+      "source": "customer",
+      "ref": "case_pack:HHG-018",
+      "entity_ids": [
+        "3491361",
+        "C02354-K2"
+      ]
+    },
+    {
+      "claim": "Channels within 48h: ['in_person', 'online']",
+      "source": "graph",
+      "ref": "query:card_history(card_id=C02354-K2)",
+      "entity_ids": []
+    },
+    {
+      "claim": "Customer's cards have prior closed cases: CC-4942 (confirmed_fraud, out_of_region_use), CC-1450 (confirmed_fraud, account_takeover), CC-0454 (confirmed_fraud, account_takeover), CC-3537 (confirmed_fraud, out_of_region_use)",
+      "source": "graph",
+      "ref": "query:closed_cases_for_cards",
+      "entity_ids": [
+        "CC-4942",
+        "CC-1450",
+        "CC-0454",
+        "CC-3537"
+      ]
+    },
+    {
+      "claim": "Retrieved closed cases used as memory: CC-4942, CC-1450, CC-0454",
+      "source": "graph",
+      "ref": "query:similar_closed_cases",
+      "entity_ids": [
+        "CC-4942",
+        "CC-1450",
+        "CC-0454"
+      ]
+    },
+    {
+      "claim": "Assessed fraud probability 0.55 before further evidence (lines of evidence: customer_denial; legitimate indicators: none)",
+      "source": "document",
+      "ref": "policy:§6,R1",
+      "entity_ids": [
+        "3491361"
+      ]
+    }
+  ],
+  "similar_prior_cases": [
+    "CC-4942",
+    "CC-1450",
+    "CC-0454"
+  ],
+  "summary": "Customer report alert on C02354-K2 (transaction 3491361). Verdict uncertain (probability 0.55): the cardholder denies the $39.08 purchase, but the graph shows no anomaly on the card, device or region to confirm or refute it. The card is blocked on the denial (R2) and the case escalated to an analyst (R8). Final actions: BLOCK_CARD, CREATE_CASE, ESCALATE_TO_ANALYST.",
+  "written_to_graph": true,
+  "graph_case_id": "CASE-HHG-018"
+}

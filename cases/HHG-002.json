@@ -1,0 +1,124 @@
+{
+  "case_id": "HHG-002",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.85,
+    "pattern": "card_not_present_fraud",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3478782"
+    ],
+    "first_suspicious_txn_id": "3478782",
+    "connected_card_ids": [],
+    "connected_device_profiles": [],
+    "exposure_usd": 292.36,
+    "evidence": [
+      {
+        "claim": "Alert: Real-time model scored transaction 3478782 ($292.36, online) at 0.79. Review and decide.",
+        "source": "external",
+        "ref": "case_pack:HHG-002",
+        "entity_ids": [
+          "3478782",
+          "C11891-K1"
+        ]
+      },
+      {
+        "claim": "Flagged $292.36 (product C) vs card median $47.29; product seen before: True",
+        "source": "graph",
+        "ref": "query:card_history(card_id=C11891-K1)",
+        "entity_ids": [
+          "3478782"
+        ]
+      },
+      {
+        "claim": "Customer's cards have prior closed cases: CC-4160 (confirmed_fraud, card_not_present_fraud)",
+        "source": "graph",
+        "ref": "query:closed_cases_for_cards",
+        "entity_ids": [
+          "CC-4160"
+        ]
+      },
+      {
+        "claim": "Retrieved closed cases used as memory: CC-4160, CC-5202, CC-4386, CC-4044",
+        "source": "graph",
+        "ref": "query:similar_closed_cases",
+        "entity_ids": [
+          "CC-4160",
+          "CC-5202",
+          "CC-4386",
+          "CC-4044"
+        ]
+      },
+      {
+        "claim": "Assessed fraud probability 0.56 before further evidence (lines of evidence: amount; legitimate indicators: none)",
+        "source": "document",
+        "ref": "policy:§6,R1",
+        "entity_ids": [
+          "3478782"
+        ]
+      },
+      {
+        "claim": "Customer states they did not make the transaction and still holds the card (simulated: probability 0.56 favoured fraud).",
+        "source": "customer",
+        "ref": "evidence_request:1",
+        "entity_ids": []
+      }
+    ],
+    "similar_prior_cases": [
+      "CC-4160",
+      "CC-5202",
+      "CC-4386",
+      "CC-4044"
+    ],
+    "summary": "Risk score alert on C11891-K1 (transaction 3478782). Assessed as card-not-present fraud, fraud probability 0.85: 1 transaction(s) totalling $292.36 starting at 3478782. Final actions: BLOCK_CARD, CREATE_CASE.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-HHG-002"
+  },
+  "evidence_requests": [
+    {
+      "type": "customer_validation",
+      "asked_after_step": 6,
+      "assumed_response": "Customer states they did not make the transaction and still holds the card (simulated: probability 0.56 favoured fraud)."
+    }
+  ],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "VERIFY_WITH_CUSTOMER",
+        "route": "auto",
+        "reason": "R1: probability 0.56 rests on 1 line(s) of evidence; confirm before any block"
+      },
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: evidence requested; probability 0.56 >= 0.30"
+      }
+    ],
+    "final": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "R2: customer denied; exposure $292.36 <= $2,500"
+      },
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "R2, §3a"
+      }
+    ],
+    "what_changed": "The (simulated) customer response moved the probability to 0.85, turning verification into BLOCK_CARD."
+  },
+  "sar": {
+    "file": false,
+    "reason": "§3a: fraud is confirmed but exposure $292.36 is at or below $1,000 and no shared origin or coordinated pattern was found; case only, no report.",
+    "narrative": "",
+    "subjects": [],
+    "total_amount_usd": 0,
+    "activity_dates": []
+  },
+  "stop_reason": "The customer's (simulated) denial settled the question (§6).",
+  "tool_calls": 8,
+  "tokens": 0,
+  "latency_s": 4.3
+}

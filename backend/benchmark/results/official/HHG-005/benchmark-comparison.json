@@ -1,0 +1,203 @@
+{
+  "official_answer_key_available": false,
+  "note": "The HHGOA_IEEE package ships no answer key (README: 'We score them against an answer key you don't have'). No accuracy is computed. These are deterministic format/policy conformance checks.",
+  "conformance_passed": 39,
+  "conformance_total": 39,
+  "checks": [
+    {
+      "check": "top_level_fields",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "check": "case_fields",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "check": "sar_fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "nba_fields",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "enum_status",
+      "ok": true,
+      "detail": "escalated"
+    },
+    {
+      "check": "enum_verdict",
+      "ok": true,
+      "detail": "fraud"
+    },
+    {
+      "check": "enum_pattern",
+      "ok": true,
+      "detail": "undocumented"
+    },
+    {
+      "check": "probability_range",
+      "ok": true,
+      "detail": "0.92"
+    },
+    {
+      "check": "undocumented_has_description",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "description_empty_unless_undocumented",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "affected_ids_exist",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "check": "exposure_equals_sum_of_affected",
+      "ok": true,
+      "detail": "sum=100.07 stated=100.07"
+    },
+    {
+      "check": "first_suspicious_in_affected",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "connected_cards_exist",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "device_profiles_exist",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "similar_cases_exist",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "check": "evidence_well_formed",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "evidence_ids_exist",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "check": "initial_nonempty",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "initial_actions_valid",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "initial_routes_match_policy_s2",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "check": "initial_reasons_cite_rule",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "final_nonempty",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "final_actions_valid",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "final_routes_match_policy_s2",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "check": "final_reasons_cite_rule",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "evidence_requests_well_formed",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "no_requests_means_final_equals_initial",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "what_changed_consistent",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "case_opened_when_evidence_requested_s3a",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "block_all_cards_r10",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "sar_file_matches_FILE_REPORT",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "sar_narrative_6_to_12_sentences",
+      "ok": true,
+      "detail": "9"
+    },
+    {
+      "check": "sar_subjects_exist",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "sar_total_equals_exposure",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "sar_dates_format",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "sar_requires_fraud_verdict",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "written_to_graph",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "counters_present",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

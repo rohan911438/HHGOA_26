@@ -1,5 +1,10 @@
 # Phase 2J Report — Official Benchmark Discovery + Infrastructure Validation
 
+> **Update, 2026-09-24.** Phase 2J: the official benchmark was unavailable during development (this report, unchanged below).
+> Final benchmark: the official HHGOA_IEEE package was then obtained from TigerGraph's Drive folder linked in the
+> challenge brief and all 20 cases were evaluated. See [`official-benchmark-report.md`](official-benchmark-report.md).
+> The infrastructure-validation results below were run on the IEEE-CIS development fallback and are not official results.
+
 Status date: 2026-09-22. Every result below is from an actual command run in
 this session against this repository and, where noted, the live TigerGraph
 instance. Nothing here is inferred, assumed, or fabricated.

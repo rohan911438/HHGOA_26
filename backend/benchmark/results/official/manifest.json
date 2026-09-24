@@ -1,0 +1,307 @@
+{
+  "dataset": "HHGOA_IEEE",
+  "official": true,
+  "source": "https://drive.google.com/drive/folders/1YDJUW1fiE7Jx8R9KqknC4IcsED9zll2A",
+  "root": "C:\\Users\\dell\\Desktop\\TigerGraph\\backend\\data\\hhgoa_ieee",
+  "case_count": 20,
+  "valid": true,
+  "checks": [
+    {
+      "check": "dataset_root_exists",
+      "ok": true,
+      "detail": "C:\\Users\\dell\\Desktop\\TigerGraph\\backend\\data\\hhgoa_ieee"
+    },
+    {
+      "check": "required_files_present",
+      "ok": true,
+      "detail": "all 5"
+    },
+    {
+      "check": "readme_identifies_dataset",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "readme_policy_patterns_answer_format",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "case_pack_header",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "closed_cases_header",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "transactions_added_columns",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "transactions_no_fraud_label",
+      "ok": true,
+      "detail": "README: 'the yes/no fraud label is gone'"
+    },
+    {
+      "check": "identity_joins_on_TransactionID",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "case_count_is_20",
+      "ok": true,
+      "detail": "found 20"
+    },
+    {
+      "check": "case_ids_unique",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "case_ids_well_formed",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "flagged_txns_unique",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "trigger_types_known",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "card_ids_well_formed",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "card_belongs_to_customer",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "risk_score_only_for_risk_triggers",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "case_pack_matches_readme_table",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "flagged_txns_exist",
+      "ok": true,
+      "detail": "20/20"
+    },
+    {
+      "check": "flagged_txn_customer_matches",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "transactions_row_count",
+      "ok": true,
+      "detail": "590742"
+    },
+    {
+      "check": "identity_row_count",
+      "ok": true,
+      "detail": "144432"
+    },
+    {
+      "check": "closed_case_row_count",
+      "ok": true,
+      "detail": "5565"
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "HHG-001",
+      "transaction_id": "3514030",
+      "card_id": "C12382-K1",
+      "customer_id": "C12382",
+      "trigger_type": "risk_score",
+      "source": "official",
+      "is_official_benchmark_case": true
+    },
+    {
+      "case_id": "HHG-002",
+      "transaction_id": "3478782",
+      "card_id": "C11891-K1",
+      "customer_id": "C11891",
+      "trigger_type": "risk_score",
+      "source": "official",
+      "is_official_benchmark_case": true
+    },
+    {
+      "case_id": "HHG-003",
+      "transaction_id": "3530164",
+      "card_id": "C08623-K2",
+      "customer_id": "C08623",
+      "trigger_type": "customer_report",
+      "source": "official",
+      "is_official_benchmark_case": true
+    },
+    {
+      "case_id": "HHG-004",
+      "transaction_id": "3583227",
+      "card_id": "C08106-K1",
+      "customer_id": "C08106",
+      "trigger_type": "customer_report",
+      "source": "official",
+      "is_official_benchmark_case": true
+    },
+    {
+      "case_id": "HHG-005",
+      "transaction_id": "3523199",
+      "card_id": "C02923-K1",
+      "customer_id": "C02923",
+      "trigger_type": "risk_score",
+      "source": "official",
+      "is_official_benchmark_case": true
+    },
+    {
+      "case_id": "HHG-006",
+      "transaction_id": "3476682",
+      "card_id": "C07297-K1",
+      "customer_id": "C07297",
+      "trigger_type": "customer_report",
+      "source": "official",
+      "is_official_benchmark_case": true
+    },
+    {
+      "case_id": "HHG-007",
+      "transaction_id": "3514948",
+      "card_id": "C09933-K2",
+      "customer_id": "C09933",
+      "trigger_type": "risk_score",
+      "source": "official",
+      "is_official_benchmark_case": true
+    },
+    {
+      "case_id": "HHG-008",
+      "transaction_id": "3558054",
+      "card_id": "C13171-K2",
+      "customer_id": "C13171",
+      "trigger_type": "customer_report",
+      "source": "official",
+      "is_official_benchmark_case": true
+    },
+    {
+      "case_id": "HHG-009",
+      "transaction_id": "3581141",
+      "card_id": "C08299-K1",
+      "customer_id": "C08299",
+      "trigger_type": "customer_report",
+      "source": "official",
+      "is_official_benchmark_case": true
+    },
+    {
+      "case_id": "HHG-010",
+      "transaction_id": "3506725",
+      "card_id": "C10434-K1",
+      "customer_id": "C10434",
+      "trigger_type": "risk_score",
+      "source": "official",
+      "is_official_benchmark_case": true
+    },
+    {
+      "case_id": "HHG-011",
+      "transaction_id": "3583368",
+      "card_id": "C11923-K2",
+      "customer_id": "C11923",
+      "trigger_type": "customer_report",
+      "source": "official",
+      "is_official_benchmark_case": true
+    },
+    {
+      "case_id": "HHG-012",
+      "transaction_id": "3553342",
+      "card_id": "C05876-K2",
+      "customer_id": "C05876",
+      "trigger_type": "risk_score",
+      "source": "official",
+      "is_official_benchmark_case": true
+    },
+    {
+      "case_id": "HHG-013",
+      "transaction_id": "3526826",
+      "card_id": "C07671-K2",
+      "customer_id": "C07671",
+      "trigger_type": "risk_score",
+      "source": "official",
+      "is_official_benchmark_case": true
+    },
+    {
+      "case_id": "HHG-014",
+      "transaction_id": "3478561",
+      "card_id": "C13487-K1",
+      "customer_id": "C13487",
+      "trigger_type": "analyst_request",
+      "source": "official",
+      "is_official_benchmark_case": true
+    },
+    {
+      "case_id": "HHG-015",
+      "transaction_id": "3464869",
+      "card_id": "C03042-K1",
+      "customer_id": "C03042",
+      "trigger_type": "risk_score",
+      "source": "official",
+      "is_official_benchmark_case": true
+    },
+    {
+      "case_id": "HHG-016",
+      "transaction_id": "3534820",
+      "card_id": "C09988-K1",
+      "customer_id": "C09988",
+      "trigger_type": "customer_report",
+      "source": "official",
+      "is_official_benchmark_case": true
+    },
+    {
+      "case_id": "HHG-017",
+      "transaction_id": "3450629",
+      "card_id": "C04570-K1",
+      "customer_id": "C04570",
+      "trigger_type": "risk_score",
+      "source": "official",
+      "is_official_benchmark_case": true
+    },
+    {
+      "case_id": "HHG-018",
+      "transaction_id": "3491361",
+      "card_id": "C02354-K2",
+      "customer_id": "C02354",
+      "trigger_type": "customer_report",
+      "source": "official",
+      "is_official_benchmark_case": true
+    },
+    {
+      "case_id": "HHG-019",
+      "transaction_id": "3503878",
+      "card_id": "C07987-K2",
+      "customer_id": "C07987",
+      "trigger_type": "risk_score",
+      "source": "official",
+      "is_official_benchmark_case": true
+    },
+    {
+      "case_id": "HHG-020",
+      "transaction_id": "3509359",
+      "card_id": "C12265-K2",
+      "customer_id": "C12265",
+      "trigger_type": "risk_score",
+      "source": "official",
+      "is_official_benchmark_case": true
+    }
+  ]
+}

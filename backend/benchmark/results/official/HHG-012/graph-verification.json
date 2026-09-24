@@ -1,0 +1,32 @@
+{
+  "attempted": true,
+  "write": {
+    "vertices_upserted": 1,
+    "edges_upserted": 4,
+    "edges_expected": 4
+  },
+  "read_back": {
+    "vertex": {
+      "summary": "Risk score alert on C05876-K2 (transaction 3553342). Assessed as legitimate, final fraud probability 0.02. Customer confirms they made the purchase (simulated: probability 0.31 favoured legitimate). Actions: CREATE_CASE, CLOSE_NO_FRAUD.",
+      "sar_file": false,
+      "fraud_probability": 0.02,
+      "pattern": "none",
+      "pattern_description": "",
+      "stop_reason": "The customer's (simulated) confirmation settled the question (§6).",
+      "official_case_id": "HHG-012",
+      "final_actions": "CREATE_CASE|CLOSE_NO_FRAUD",
+      "exposure_usd": 0,
+      "graph_case_id": "CASE-HHG-012",
+      "initial_actions": "VERIFY_WITH_CUSTOMER|CREATE_CASE",
+      "verdict": "legitimate",
+      "written_at": "2026-09-24 09:02:11",
+      "status": "closed_legitimate"
+    },
+    "similar": 2,
+    "cards": 1,
+    "flagged": 1,
+    "devices": 0,
+    "affected": 0
+  },
+  "verified": true
+}

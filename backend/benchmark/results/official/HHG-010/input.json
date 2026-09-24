@@ -1,0 +1,12 @@
+{
+  "case_id": "HHG-010",
+  "opened_at": "2016-12-02 18:18:27",
+  "trigger_type": "risk_score",
+  "trigger_text": "Real-time model scored transaction 3506725 ($1,000.03, online) at 0.90. Review and decide.",
+  "flagged_txn_id": "3506725",
+  "card_id": "C10434-K1",
+  "customer_id": "C10434",
+  "risk_score": 0.9,
+  "is_official_benchmark_case": true,
+  "source": "official case_pack.csv"
+}

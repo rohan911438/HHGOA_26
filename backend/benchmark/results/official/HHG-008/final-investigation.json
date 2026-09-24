@@ -1,0 +1,12 @@
+{
+  "status": "closed_legitimate",
+  "verdict": "legitimate",
+  "fraud_probability": 0.01,
+  "pattern": "none",
+  "pattern_description": "",
+  "affected_txn_ids": [],
+  "first_suspicious_txn_id": "",
+  "connected_card_ids": [],
+  "connected_device_profiles": [],
+  "exposure_usd": 0.0
+}

@@ -1,0 +1,11 @@
+{
+  "additional_evidence_required": true,
+  "evidence_requests": [
+    {
+      "type": "customer_validation",
+      "asked_after_step": 6,
+      "assumed_response": "Customer states they did not make the transaction and still holds the card (simulated: probability 0.6 favoured fraud)."
+    }
+  ],
+  "note": "Replies are simulated per README §5; the assumption is stated."
+}

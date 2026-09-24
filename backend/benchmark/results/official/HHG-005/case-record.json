@@ -1,0 +1,102 @@
+{
+  "status": "escalated",
+  "verdict": "fraud",
+  "fraud_probability": 0.92,
+  "pattern": "undocumented",
+  "pattern_description": "One device profile (iOS Device | iOS 9.3.5 | mobile safari 9.0 | 1024x768) is transacting on cards of several unrelated customers within a month (4 other card(s)), a coordinated multi-victim scheme rather than a single stolen number. Found by traversing the graph from the flagged transaction to its device profile and back out to every card that used it.",
+  "affected_txn_ids": [
+    "3523199"
+  ],
+  "first_suspicious_txn_id": "3523199",
+  "connected_card_ids": [
+    "C08299-K1",
+    "C11496-K2",
+    "C11539-K2",
+    "C12267-K2"
+  ],
+  "connected_device_profiles": [
+    "iOS Device | iOS 9.3.5 | mobile safari 9.0 | 1024x768"
+  ],
+  "exposure_usd": 100.07,
+  "evidence": [
+    {
+      "claim": "Alert: Real-time model scored transaction 3523199 ($100.07, online) at 0.54. Review and decide.",
+      "source": "external",
+      "ref": "case_pack:HHG-005",
+      "entity_ids": [
+        "3523199",
+        "C02923-K1"
+      ]
+    },
+    {
+      "claim": "Identity record device status 'New'; profile not seen earlier on this card",
+      "source": "graph",
+      "ref": "query:card_history+identity(device_status)",
+      "entity_ids": [
+        "3523199"
+      ]
+    },
+    {
+      "claim": "Purchaser email domain 'icloud.com' not seen before on this card",
+      "source": "graph",
+      "ref": "query:card_history(card_id=C02923-K1)",
+      "entity_ids": [
+        "3523199"
+      ]
+    },
+    {
+      "claim": "Device profile used by 4 other customer(s) within 30 days (112 cards all-time, 1.5 txns per card, marked New on 87% of its transactions); 1 confirmed-fraud closed case(s) involve it",
+      "source": "graph",
+      "ref": "query:device_neighbours(window=30d)",
+      "entity_ids": [
+        "C08299-K1",
+        "C11496-K2",
+        "C11539-K2",
+        "C12267-K2",
+        "CC-1672"
+      ]
+    },
+    {
+      "claim": "Customer's cards have prior closed cases: CC-2717 (confirmed_fraud, account_takeover), CC-2400 (confirmed_fraud, account_takeover), CC-2857 (confirmed_fraud, account_takeover)",
+      "source": "graph",
+      "ref": "query:closed_cases_for_cards",
+      "entity_ids": [
+        "CC-2717",
+        "CC-2400",
+        "CC-2857"
+      ]
+    },
+    {
+      "claim": "Retrieved closed cases used as memory: CC-2717, CC-2400, CC-2857, CC-1672, CC-3035, CC-2971",
+      "source": "graph",
+      "ref": "query:similar_closed_cases",
+      "entity_ids": [
+        "CC-2717",
+        "CC-2400",
+        "CC-2857",
+        "CC-1672",
+        "CC-3035",
+        "CC-2971"
+      ]
+    },
+    {
+      "claim": "Assessed fraud probability 0.92 before further evidence (lines of evidence: device, network, credentials; legitimate indicators: none)",
+      "source": "document",
+      "ref": "policy:§6,R1",
+      "entity_ids": [
+        "3523199"
+      ]
+    }
+  ],
+  "similar_prior_cases": [
+    "CC-2717",
+    "CC-2400",
+    "CC-2857",
+    "CC-1672",
+    "CC-3035",
+    "CC-2971"
+  ],
+  "summary": "Risk score alert on C02923-K1 (transaction 3523199). Assessed as a pattern outside the bank's five documented typologies, fraud probability 0.92: 1 transaction(s) totalling $100.07 starting at 3523199. The device profile links 4 other card(s). Final actions: BLOCK_CARD, CREATE_CASE, FILE_REPORT, MONITOR_CONNECTED_CARDS, ESCALATE_TO_ANALYST.",
+  "written_to_graph": true,
+  "graph_case_id": "CASE-HHG-005"
+}

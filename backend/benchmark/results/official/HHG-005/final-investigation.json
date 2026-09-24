@@ -1,0 +1,21 @@
+{
+  "status": "escalated",
+  "verdict": "fraud",
+  "fraud_probability": 0.92,
+  "pattern": "undocumented",
+  "pattern_description": "One device profile (iOS Device | iOS 9.3.5 | mobile safari 9.0 | 1024x768) is transacting on cards of several unrelated customers within a month (4 other card(s)), a coordinated multi-victim scheme rather than a single stolen number. Found by traversing the graph from the flagged transaction to its device profile and back out to every card that used it.",
+  "affected_txn_ids": [
+    "3523199"
+  ],
+  "first_suspicious_txn_id": "3523199",
+  "connected_card_ids": [
+    "C08299-K1",
+    "C11496-K2",
+    "C11539-K2",
+    "C12267-K2"
+  ],
+  "connected_device_profiles": [
+    "iOS Device | iOS 9.3.5 | mobile safari 9.0 | 1024x768"
+  ],
+  "exposure_usd": 100.07
+}

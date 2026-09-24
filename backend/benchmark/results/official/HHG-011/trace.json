@@ -1,0 +1,153 @@
+{
+  "steps": [
+    {
+      "n": 1,
+      "name": "trigger",
+      "detail": "customer_report: Customer C11923 message: 'I never made this $131.30 purchase. Please check my card.' Refers to 3583368."
+    },
+    {
+      "n": 2,
+      "name": "open_case",
+      "detail": "flagged txn 3583368 $131.30 online at 2016-12-29 03:27:44"
+    },
+    {
+      "n": 3,
+      "name": "history",
+      "detail": "10332 txns on C11923-K2; customer holds ['C11923-K1', 'C11923-K2']"
+    },
+    {
+      "n": 4,
+      "name": "device_neighbourhood",
+      "detail": "4 card(s) on the device profile within 30 days"
+    },
+    {
+      "n": 5,
+      "name": "memory",
+      "detail": "11 closed case(s) on the customer's cards; 40 similar 'card_not_present_new_device' closed case(s); 0 earlier agent case(s) linked"
+    },
+    {
+      "n": 6,
+      "name": "assess",
+      "detail": "p=0.83 fraud evidence ['amount', 'device', 'customer_denial'] legit []"
+    },
+    {
+      "n": 7,
+      "name": "final_decision",
+      "detail": "BLOCK_CARD, CREATE_CASE"
+    },
+    {
+      "n": 8,
+      "name": "write_case",
+      "detail": "CASE-HHG-011 written and read back: verified=True"
+    }
+  ],
+  "tool_calls": [
+    {
+      "tool": "get_transaction",
+      "params": {
+        "t": "3583368"
+      },
+      "latency_ms": 7380.1,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "card_history",
+      "params": {
+        "c": "C11923-K2"
+      },
+      "latency_ms": 10913.8,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "customer_cards",
+      "params": {
+        "cu": "C11923"
+      },
+      "latency_ms": 309.9,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "device_neighbours",
+      "params": {
+        "d": "SM-G610F Build/NRD90M |  | chrome 66.0 for android | ",
+        "t0": "2016-11-29 03:27:44",
+        "t1": "2017-01-28 03:27:44"
+      },
+      "latency_ms": 344.8,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "closed_cases_for_cards",
+      "params": {
+        "cards": [
+          "C11923-K1",
+          "C11923-K2"
+        ]
+      },
+      "latency_ms": 357.5,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "similar_closed_cases",
+      "params": {
+        "pat": "card_not_present_new_device",
+        "lo": 65.65,
+        "hi": 196.95000000000002,
+        "before_ts": "2016-12-29 06:27:44"
+      },
+      "latency_ms": 374.9,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "case_memory",
+      "params": {
+        "cards": [
+          "C11923-K2"
+        ],
+        "devices": [
+          "SM-G610F Build/NRD90M |  | chrome 66.0 for android | "
+        ]
+      },
+      "latency_ms": 341.9,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "write_case",
+      "params": {
+        "graph_case_id": "CASE-HHG-011"
+      },
+      "latency_ms": 3497.4,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "read_case",
+      "params": {
+        "ic": "CASE-HHG-011"
+      },
+      "latency_ms": 328.9,
+      "ok": true,
+      "error": ""
+    }
+  ],
+  "decision": {
+    "verdict": "fraud",
+    "status": "closed_fraud",
+    "final_probability": 0.83,
+    "affected": [
+      "3583368"
+    ],
+    "exposure": 131.3,
+    "connected_cards": [],
+    "evidence_requests": [],
+    "stop_reason": "The customer's denial plus graph evidence put the probability at 0.83; a further request would not change the action (§6).",
+    "what_changed": "nothing"
+  }
+}

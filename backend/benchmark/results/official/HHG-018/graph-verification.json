@@ -1,0 +1,32 @@
+{
+  "attempted": true,
+  "write": {
+    "vertices_upserted": 1,
+    "edges_upserted": 6,
+    "edges_expected": 6
+  },
+  "read_back": {
+    "vertex": {
+      "summary": "Customer report alert on C02354-K2 (transaction 3491361). Verdict uncertain (probability 0.55): the cardholder denies the $39.08 purchase, but the graph shows no anomaly on the card, device or region to confirm or refute it. The card is blocked on the denial (R2) and the case escalated to an analyst (R8). Final actions: BLOCK_CARD, CREATE_CASE, ESCALATE_TO_ANALYST.",
+      "sar_file": false,
+      "fraud_probability": 0.55,
+      "pattern": "none",
+      "pattern_description": "",
+      "stop_reason": "The cardholder's own statement is already the verification response (§6: a verification response settles what it can); the graph has nothing further to add, so the case goes to an analyst under R8.",
+      "official_case_id": "HHG-018",
+      "final_actions": "BLOCK_CARD|CREATE_CASE|ESCALATE_TO_ANALYST",
+      "exposure_usd": 39.08,
+      "graph_case_id": "CASE-HHG-018",
+      "initial_actions": "BLOCK_CARD|CREATE_CASE|ESCALATE_TO_ANALYST",
+      "verdict": "uncertain",
+      "written_at": "2026-09-24 09:00:02",
+      "status": "escalated"
+    },
+    "similar": 3,
+    "cards": 1,
+    "flagged": 1,
+    "devices": 0,
+    "affected": 1
+  },
+  "verified": true
+}

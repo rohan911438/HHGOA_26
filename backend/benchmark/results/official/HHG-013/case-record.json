@@ -1,0 +1,95 @@
+{
+  "status": "closed_fraud",
+  "verdict": "fraud",
+  "fraud_probability": 0.87,
+  "pattern": "card_not_present_new_device",
+  "pattern_description": "",
+  "affected_txn_ids": [
+    "3526826"
+  ],
+  "first_suspicious_txn_id": "3526826",
+  "connected_card_ids": [],
+  "connected_device_profiles": [],
+  "exposure_usd": 35.66,
+  "evidence": [
+    {
+      "claim": "Alert: Real-time model scored transaction 3526826 ($35.66, online) at 0.76. Review and decide.",
+      "source": "external",
+      "ref": "case_pack:HHG-013",
+      "entity_ids": [
+        "3526826",
+        "C07671-K2"
+      ]
+    },
+    {
+      "claim": "Identity record device status 'New'; profile not seen earlier on this card",
+      "source": "graph",
+      "ref": "query:card_history+identity(device_status)",
+      "entity_ids": [
+        "3526826"
+      ]
+    },
+    {
+      "claim": "Channels within 48h: ['in_person', 'online']",
+      "source": "graph",
+      "ref": "query:card_history(card_id=C07671-K2)",
+      "entity_ids": []
+    },
+    {
+      "claim": "Device profile seen on 266 card(s) within 30 days; no ring",
+      "source": "graph",
+      "ref": "query:device_neighbours(window=30d)",
+      "entity_ids": [
+        "C02639-K1",
+        "C04655-K1",
+        "C02456-K1",
+        "C07911-K1",
+        "C12961-K2",
+        "C00073-K2"
+      ]
+    },
+    {
+      "claim": "Customer's cards have prior closed cases: CC-4294 (confirmed_fraud, account_takeover), CC-3216 (confirmed_fraud, card_not_present_new_device), CC-3761 (cleared, none), CC-1475 (confirmed_fraud, account_takeover)",
+      "source": "graph",
+      "ref": "query:closed_cases_for_cards",
+      "entity_ids": [
+        "CC-4294",
+        "CC-3216",
+        "CC-3761",
+        "CC-1475"
+      ]
+    },
+    {
+      "claim": "Retrieved closed cases used as memory: CC-4294, CC-3216, CC-3761",
+      "source": "graph",
+      "ref": "query:similar_closed_cases",
+      "entity_ids": [
+        "CC-4294",
+        "CC-3216",
+        "CC-3761"
+      ]
+    },
+    {
+      "claim": "Assessed fraud probability 0.6 before further evidence (lines of evidence: device; legitimate indicators: none)",
+      "source": "document",
+      "ref": "policy:§6,R1",
+      "entity_ids": [
+        "3526826"
+      ]
+    },
+    {
+      "claim": "Customer states they did not make the transaction and still holds the card (simulated: probability 0.6 favoured fraud).",
+      "source": "customer",
+      "ref": "evidence_request:1",
+      "entity_ids": []
+    }
+  ],
+  "similar_prior_cases": [
+    "CC-4294",
+    "CC-3216",
+    "CC-3761"
+  ],
+  "summary": "Risk score alert on C07671-K2 (transaction 3526826). Assessed as card-not-present fraud from a device new to the account, fraud probability 0.87: 1 transaction(s) totalling $35.66 starting at 3526826. Final actions: BLOCK_CARD, CREATE_CASE.",
+  "written_to_graph": true,
+  "graph_case_id": "CASE-HHG-013"
+}

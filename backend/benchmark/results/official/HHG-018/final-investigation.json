@@ -1,0 +1,14 @@
+{
+  "status": "escalated",
+  "verdict": "uncertain",
+  "fraud_probability": 0.55,
+  "pattern": "none",
+  "pattern_description": "",
+  "affected_txn_ids": [
+    "3491361"
+  ],
+  "first_suspicious_txn_id": "3491361",
+  "connected_card_ids": [],
+  "connected_device_profiles": [],
+  "exposure_usd": 39.08
+}

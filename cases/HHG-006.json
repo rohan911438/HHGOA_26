@@ -1,0 +1,194 @@
+{
+  "case_id": "HHG-006",
+  "case": {
+    "status": "escalated",
+    "verdict": "fraud",
+    "fraud_probability": 0.98,
+    "pattern": "undocumented",
+    "pattern_description": "Rapid online purchases each just under a $500 authorization level (4 online purchases between $400 and $500 within 60 minutes), consistent with amounts chosen to stay below a review threshold. It fits none of the five documented patterns: there is no low-value testing run and no new region. Found by scanning the card's 48-hour window for clusters of near-threshold amounts.",
+    "affected_txn_ids": [
+      "3476602",
+      "3476633",
+      "3476665",
+      "3476682"
+    ],
+    "first_suspicious_txn_id": "3476602",
+    "connected_card_ids": [],
+    "connected_device_profiles": [],
+    "exposure_usd": 1906.07,
+    "evidence": [
+      {
+        "claim": "Alert: Customer C07297 message: 'I never made this $482.12 purchase. Please check my card.' Refers to 3476682.",
+        "source": "customer",
+        "ref": "case_pack:HHG-006",
+        "entity_ids": [
+          "3476682",
+          "C07297-K1"
+        ]
+      },
+      {
+        "claim": "4 online purchases between $400 and $500 within 60 minutes",
+        "source": "graph",
+        "ref": "query:card_history(card_id=C07297-K1)",
+        "entity_ids": [
+          "3476602",
+          "3476633",
+          "3476665",
+          "3476682"
+        ]
+      },
+      {
+        "claim": "Flagged $482.12 (product C) vs card median $62.93; product seen before: True",
+        "source": "graph",
+        "ref": "query:card_history(card_id=C07297-K1)",
+        "entity_ids": [
+          "3476682"
+        ]
+      },
+      {
+        "claim": "4 unusual online purchases within 48h of the alert",
+        "source": "graph",
+        "ref": "query:card_history(card_id=C07297-K1)",
+        "entity_ids": [
+          "3476602",
+          "3476633",
+          "3476665",
+          "3476682"
+        ]
+      },
+      {
+        "claim": "Identity record device status 'New'; profile seen earlier on this card",
+        "source": "graph",
+        "ref": "query:card_history+identity(device_status)",
+        "entity_ids": [
+          "3476682"
+        ]
+      },
+      {
+        "claim": "Device already known to the account (identity record 'New', profile used on this card before)",
+        "source": "graph",
+        "ref": "query:card_history(card_id=C07297-K1)",
+        "entity_ids": [
+          "3476682"
+        ]
+      },
+      {
+        "claim": "Channels within 48h: ['in_person', 'online']",
+        "source": "graph",
+        "ref": "query:card_history(card_id=C07297-K1)",
+        "entity_ids": []
+      },
+      {
+        "claim": "Device profile seen on 140 card(s) within 30 days; no ring",
+        "source": "graph",
+        "ref": "query:device_neighbours(window=30d)",
+        "entity_ids": [
+          "C00854-K2",
+          "C12842-K1",
+          "C07297-K1",
+          "C13086-K2",
+          "C01165-K1",
+          "C09274-K1"
+        ]
+      },
+      {
+        "claim": "Retrieved closed cases used as memory: CC-0781, CC-1476, CC-1960, CC-3841, CC-4124, CC-3907",
+        "source": "graph",
+        "ref": "query:similar_closed_cases",
+        "entity_ids": [
+          "CC-0781",
+          "CC-1476",
+          "CC-1960",
+          "CC-3841",
+          "CC-4124",
+          "CC-3907"
+        ]
+      },
+      {
+        "claim": "Assessed fraud probability 0.98 before further evidence (lines of evidence: sequence, amount, device, customer_denial; legitimate indicators: device)",
+        "source": "document",
+        "ref": "policy:§6,R1",
+        "entity_ids": [
+          "3476682"
+        ]
+      }
+    ],
+    "similar_prior_cases": [
+      "CC-0781",
+      "CC-1476",
+      "CC-1960",
+      "CC-3841",
+      "CC-4124",
+      "CC-3907"
+    ],
+    "summary": "Customer report alert on C07297-K1 (transaction 3476682). Assessed as a pattern outside the bank's five documented typologies, fraud probability 0.98: 4 transaction(s) totalling $1,906.07 starting at 3476602. Final actions: BLOCK_CARD, CREATE_CASE, FILE_REPORT, ESCALATE_TO_ANALYST.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-HHG-006"
+  },
+  "evidence_requests": [],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "R2: customer denies the transaction; exposure $1,906.07 <= $2,500"
+      },
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "R2, §3a"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "R6/R9 shared or coordinated origin"
+      },
+      {
+        "action": "ESCALATE_TO_ANALYST",
+        "route": "auto",
+        "reason": "R9: undocumented, coordinated pattern"
+      }
+    ],
+    "final": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "R2: customer denies the transaction; exposure $1,906.07 <= $2,500"
+      },
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "R2, §3a"
+      },
+      {
+        "action": "FILE_REPORT",
+        "route": "L2",
+        "reason": "R6/R9 shared or coordinated origin"
+      },
+      {
+        "action": "ESCALATE_TO_ANALYST",
+        "route": "auto",
+        "reason": "R9: undocumented, coordinated pattern"
+      }
+    ],
+    "what_changed": "nothing"
+  },
+  "sar": {
+    "file": true,
+    "reason": "exposure $1,906.07 exceeds $1,000 (R2, §3a); pattern is coordinated/undocumented (R9, §3a)",
+    "narrative": "Between 2016-11-21 20:00 and 2016-11-21 20:30, card C07297-K1 held by customer C07297 was used for 4 transactions of $478.95, $456.96, $488.04, $482.12, totalling $1,906.07. The activity was online, billed in region(s) 264.0, 476.0, under product code(s) C. The online transactions came from device profile(s) Trident/7.0 | Windows 7 | ie 11.0 for desktop | 1920x1080; iOS Device | iOS 11.2.1 | mobile safari 11.0 | 2208x1242. The alert was raised by customer report on transaction 3476682. The investigation found a pattern outside the bank's five documented typologies. 4 online purchases between $400 and $500 within 60 minutes. 4 unusual online purchases within 48h of the alert. Identity record device status 'New'; profile seen earlier on this card. The cardholder reported that they did not make the transaction. It is suspicious because exposure $1,906.07 exceeds $1,000 (R2, §3a); pattern is coordinated/undocumented (R9, §3a). Actions: BLOCK_CARD, CREATE_CASE, FILE_REPORT, ESCALATE_TO_ANALYST.",
+    "subjects": [
+      "C07297",
+      "C07297-K1"
+    ],
+    "total_amount_usd": 1906.07,
+    "activity_dates": [
+      "2016-11-21",
+      "2016-11-21"
+    ]
+  },
+  "stop_reason": "The customer's denial plus graph evidence put the probability at 0.98; a further request would not change the action (§6).",
+  "tool_calls": 9,
+  "tokens": 0,
+  "latency_s": 5.8
+}

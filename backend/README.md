@@ -73,7 +73,8 @@ inspection alone.
 | 2J | Official-benchmark discovery + infrastructure validation (0 official cases found; not fabricated) | 5/5 | 5/5 diagnostic runs | `docs/phase-2-benchmark-report.md` |
 | 2K | FastAPI serving layer — 9 routes, typed models, dependency injection | 27/27 (API) | 3/3 | `docs/phase-2-api.md` |
 | 2L | Next.js frontend — investigation console | 29/29 | see `docs/phase-2-frontend.md` | `docs/phase-2-frontend.md` |
-| **Backend total (unit + API)** | | **329/329** | **79/79** (last fully-healthy run) | |
+| Final | Official HHGOA_IEEE benchmark: package validation, `HHGOA_IEEE` graph load, 20-case run, graph write + read-back, conformance | 27/27 | 20/20 cases executed, written and verified | `docs/official-benchmark-report.md` |
+| **Backend total (unit + API)** | | **365/365** | **79/79** (last fully-healthy run) | |
 
 A separate, fully optional real-LLM integration test
 (`tests/integration/test_agent_real_llm.py`) skips cleanly with no
@@ -189,6 +190,7 @@ app/
   agent/                  LangGraph orchestrator: state, LLM abstraction, prompts, graph
   context/                GraphRAG/context layer (Phase 2I) - structured retrieval, no vector DB
   benchmark/               official-benchmark discovery + infra-validation runner (Phase 2J)
+    official/                 official HHGOA_IEEE benchmark (`python -m app.benchmark.runner --official`)
   api/                       FastAPI serving layer (Phase 2K) - routes, models, dependency injection
   rag/, cases/, policies/    empty scaffolds - unrelated pre-existing placeholders, not built
 scripts/            inspect_dataset, create_schema, load_data, healthcheck,
@@ -205,6 +207,11 @@ from Phase 0 — unrelated to `app/policy/` (singular, Phase 2F), left
 untouched and reserved for a possible future policy-document/RAG phase.
 
 ## Dataset
+
+> **Official package:** the official HHGOA_IEEE dataset (`data/hhgoa_ieee/`, fetched with
+> `python -m app.benchmark.official fetch`) powers the 20-case benchmark in its own graph,
+> `HHGOA_IEEE`. See `docs/official-benchmark-report.md`. The rest of this section describes the
+> development fallback that the Phase 1–2M API and dashboard still use.
 
 The current dataset is **IEEE-CIS Fraud Detection**, an explicitly
 labeled **DEVELOPMENT FALLBACK — not official HHGoa data**. It is not

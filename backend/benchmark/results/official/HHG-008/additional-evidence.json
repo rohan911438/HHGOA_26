@@ -1,0 +1,11 @@
+{
+  "additional_evidence_required": true,
+  "evidence_requests": [
+    {
+      "type": "step_up_auth",
+      "asked_after_step": 6,
+      "assumed_response": "Customer passes step-up authentication and, shown the merchant details, recognises the purchase (simulated: probability 0.23 favoured legitimate)."
+    }
+  ],
+  "note": "Replies are simulated per README §5; the assumption is stated."
+}

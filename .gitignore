@@ -58,6 +58,10 @@ backend/data/hhgoa/**
 !backend/data/hhgoa/README.md
 !backend/data/hhgoa/.gitkeep
 
+# Official HHGOA_IEEE package (TigerGraph's Drive folder). Fetched by
+# `python -m app.benchmark.official fetch`; never committed.
+backend/data/hhgoa_ieee/
+
 # Dev subset is deterministically reproducible from the (gitignored)
 # source dataset via `python scripts/create_dev_subset.py --seed 42` -
 # a build output, not source.

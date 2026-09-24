@@ -1,0 +1,132 @@
+{
+  "case_id": "HHG-016",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.91,
+    "pattern": "card_not_present_new_device",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3534820"
+    ],
+    "first_suspicious_txn_id": "3534820",
+    "connected_card_ids": [],
+    "connected_device_profiles": [],
+    "exposure_usd": 59.67,
+    "evidence": [
+      {
+        "claim": "Alert: Customer C09988 message: 'I never made this $59.67 purchase. Please check my card.' Refers to 3534820.",
+        "source": "customer",
+        "ref": "case_pack:HHG-016",
+        "entity_ids": [
+          "3534820",
+          "C09988-K1"
+        ]
+      },
+      {
+        "claim": "Identity record device status 'New'; profile not seen earlier on this card",
+        "source": "graph",
+        "ref": "query:card_history+identity(device_status)",
+        "entity_ids": [
+          "3534820"
+        ]
+      },
+      {
+        "claim": "Device profile seen on 71 card(s) within 30 days; no ring",
+        "source": "graph",
+        "ref": "query:device_neighbours(window=30d)",
+        "entity_ids": [
+          "C00854-K2",
+          "C12098-K1",
+          "C05638-K1",
+          "C13171-K2",
+          "C02181-K2",
+          "C08106-K1"
+        ]
+      },
+      {
+        "claim": "Retrieved closed cases used as memory: CC-0497, CC-2540, CC-2675",
+        "source": "graph",
+        "ref": "query:similar_closed_cases",
+        "entity_ids": [
+          "CC-0497",
+          "CC-2540",
+          "CC-2675"
+        ]
+      },
+      {
+        "claim": "Assessed fraud probability 0.69 before further evidence (lines of evidence: device, customer_denial; legitimate indicators: none)",
+        "source": "document",
+        "ref": "policy:§6,R1",
+        "entity_ids": [
+          "3534820"
+        ]
+      },
+      {
+        "claim": "Step-up authentication on the account fails and the customer repeats the denial (simulated: probability 0.69 favoured fraud).",
+        "source": "customer",
+        "ref": "evidence_request:1",
+        "entity_ids": []
+      }
+    ],
+    "similar_prior_cases": [
+      "CC-0497",
+      "CC-2540",
+      "CC-2675"
+    ],
+    "summary": "Customer report alert on C09988-K1 (transaction 3534820). Assessed as card-not-present fraud from a device new to the account, fraud probability 0.91: 1 transaction(s) totalling $59.67 starting at 3534820. Final actions: BLOCK_CARD, CREATE_CASE.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-HHG-016"
+  },
+  "evidence_requests": [
+    {
+      "type": "step_up_auth",
+      "asked_after_step": 6,
+      "assumed_response": "Step-up authentication on the account fails and the customer repeats the denial (simulated: probability 0.69 favoured fraud)."
+    }
+  ],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: customer disputes a charge"
+      },
+      {
+        "action": "STEP_UP_AUTH",
+        "route": "auto",
+        "reason": "R1: denial is the only fraud signal and probability 0.69 < 0.70; verify before blocking"
+      },
+      {
+        "action": "MONITOR_CARD",
+        "route": "auto",
+        "reason": "R1: keep watching while verification is pending"
+      }
+    ],
+    "final": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "R2: customer denial confirmed; exposure $59.67 <= $2,500"
+      },
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "R2, §3a"
+      }
+    ],
+    "what_changed": "The (simulated) customer response moved the probability to 0.91, turning verification into BLOCK_CARD."
+  },
+  "sar": {
+    "file": false,
+    "reason": "§3a: fraud is confirmed but exposure $59.67 is at or below $1,000 and no shared origin or coordinated pattern was found; case only, no report.",
+    "narrative": "",
+    "subjects": [],
+    "total_amount_usd": 0,
+    "activity_dates": []
+  },
+  "stop_reason": "Step-up result settled the question (§6).",
+  "tool_calls": 9,
+  "tokens": 0,
+  "latency_s": 4.1
+}

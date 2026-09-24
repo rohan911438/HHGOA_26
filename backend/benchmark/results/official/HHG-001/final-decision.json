@@ -1,0 +1,16 @@
+{
+  "next_best_actions_final": [
+    {
+      "action": "CREATE_CASE",
+      "route": "auto",
+      "reason": "§3a: case records the verification and closes as legitimate"
+    },
+    {
+      "action": "CLOSE_NO_FRAUD",
+      "route": "auto",
+      "reason": "R3: customer confirmed the transaction; confirmation noted in the case"
+    }
+  ],
+  "what_changed": "Customer confirmation dropped the probability from 0.32 to 0.02; the verify request became a no-fraud closure (R3).",
+  "stop_reason": "The customer's (simulated) confirmation settled the question (§6)."
+}

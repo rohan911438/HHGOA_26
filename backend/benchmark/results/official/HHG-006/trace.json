@@ -1,0 +1,152 @@
+{
+  "steps": [
+    {
+      "n": 1,
+      "name": "trigger",
+      "detail": "customer_report: Customer C07297 message: 'I never made this $482.12 purchase. Please check my card.' Refers to 3476682."
+    },
+    {
+      "n": 2,
+      "name": "open_case",
+      "detail": "flagged txn 3476682 $482.12 online at 2016-11-21 20:30:00"
+    },
+    {
+      "n": 3,
+      "name": "history",
+      "detail": "261 txns on C07297-K1; customer holds ['C07297-K1']"
+    },
+    {
+      "n": 4,
+      "name": "device_neighbourhood",
+      "detail": "140 card(s) on the device profile within 30 days"
+    },
+    {
+      "n": 5,
+      "name": "memory",
+      "detail": "0 closed case(s) on the customer's cards; 5 similar 'undocumented' closed case(s); 0 earlier agent case(s) linked"
+    },
+    {
+      "n": 6,
+      "name": "assess",
+      "detail": "p=0.98 fraud evidence ['sequence', 'amount', 'device', 'customer_denial'] legit ['device']"
+    },
+    {
+      "n": 7,
+      "name": "final_decision",
+      "detail": "BLOCK_CARD, CREATE_CASE, FILE_REPORT, ESCALATE_TO_ANALYST"
+    },
+    {
+      "n": 8,
+      "name": "write_case",
+      "detail": "CASE-HHG-006 written and read back: verified=True"
+    }
+  ],
+  "tool_calls": [
+    {
+      "tool": "get_transaction",
+      "params": {
+        "t": "3476682"
+      },
+      "latency_ms": 323.6,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "card_history",
+      "params": {
+        "c": "C07297-K1"
+      },
+      "latency_ms": 1639.7,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "customer_cards",
+      "params": {
+        "cu": "C07297"
+      },
+      "latency_ms": 433.2,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "device_neighbours",
+      "params": {
+        "d": "Trident/7.0 | Windows 7 | ie 11.0 for desktop | 1920x1080",
+        "t0": "2016-10-22 20:30:00",
+        "t1": "2016-12-21 20:30:00"
+      },
+      "latency_ms": 412.8,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "closed_cases_for_cards",
+      "params": {
+        "cards": [
+          "C07297-K1"
+        ]
+      },
+      "latency_ms": 277.1,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "similar_closed_cases",
+      "params": {
+        "pat": "undocumented",
+        "lo": 953.0350000000001,
+        "hi": 2859.1050000000005,
+        "before_ts": "2016-11-22 02:30:00"
+      },
+      "latency_ms": 373.1,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "case_memory",
+      "params": {
+        "cards": [
+          "C07297-K1"
+        ]
+      },
+      "latency_ms": 319.3,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "write_case",
+      "params": {
+        "graph_case_id": "CASE-HHG-006"
+      },
+      "latency_ms": 1608.6,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "read_case",
+      "params": {
+        "ic": "CASE-HHG-006"
+      },
+      "latency_ms": 353.1,
+      "ok": true,
+      "error": ""
+    }
+  ],
+  "decision": {
+    "verdict": "fraud",
+    "status": "escalated",
+    "final_probability": 0.98,
+    "affected": [
+      "3476602",
+      "3476633",
+      "3476665",
+      "3476682"
+    ],
+    "exposure": 1906.07,
+    "connected_cards": [],
+    "evidence_requests": [],
+    "stop_reason": "The customer's denial plus graph evidence put the probability at 0.98; a further request would not change the action (§6).",
+    "what_changed": "nothing"
+  }
+}

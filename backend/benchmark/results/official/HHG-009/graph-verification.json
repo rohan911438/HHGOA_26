@@ -1,0 +1,32 @@
+{
+  "attempted": true,
+  "write": {
+    "vertices_upserted": 1,
+    "edges_upserted": 2,
+    "edges_expected": 2
+  },
+  "read_back": {
+    "vertex": {
+      "summary": "Customer report alert on C08299-K1 (transaction 3581141). Assessed as legitimate, final fraud probability 0.01. Supporting: device already known to the account (identity record 'Found'). Customer passes step-up authentication and, shown the merchant details, recognises the purchase (simulated: probability 0.23 favoured legitimate). Actions: CREATE_CASE, CLOSE_NO_FRAUD.",
+      "sar_file": false,
+      "fraud_probability": 0.01,
+      "pattern": "none",
+      "pattern_description": "",
+      "stop_reason": "Step-up result settled the question (§6).",
+      "official_case_id": "HHG-009",
+      "final_actions": "CREATE_CASE|CLOSE_NO_FRAUD",
+      "exposure_usd": 0,
+      "graph_case_id": "CASE-HHG-009",
+      "initial_actions": "CREATE_CASE|STEP_UP_AUTH|MONITOR_CARD|ESCALATE_TO_ANALYST",
+      "verdict": "legitimate",
+      "written_at": "2026-09-24 09:03:30",
+      "status": "closed_legitimate"
+    },
+    "similar": 0,
+    "cards": 1,
+    "flagged": 1,
+    "devices": 0,
+    "affected": 0
+  },
+  "verified": true
+}

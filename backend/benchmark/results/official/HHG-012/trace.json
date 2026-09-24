@@ -1,0 +1,148 @@
+{
+  "steps": [
+    {
+      "n": 1,
+      "name": "trigger",
+      "detail": "risk_score: Real-time model scored transaction 3553342 ($30.91, in billing region 494.0) at 0.55. Review and decide."
+    },
+    {
+      "n": 2,
+      "name": "open_case",
+      "detail": "flagged txn 3553342 $30.91 in_person at 2016-12-18 04:00:31"
+    },
+    {
+      "n": 3,
+      "name": "history",
+      "detail": "988 txns on C05876-K2; customer holds ['C05876-K1', 'C05876-K2']"
+    },
+    {
+      "n": 4,
+      "name": "device_neighbourhood",
+      "detail": "no device record (in-person)"
+    },
+    {
+      "n": 5,
+      "name": "memory",
+      "detail": "2 closed case(s) on the customer's cards; 0 similar 'none' closed case(s); 0 earlier agent case(s) linked"
+    },
+    {
+      "n": 6,
+      "name": "assess",
+      "detail": "p=0.31 fraud evidence [] legit []"
+    },
+    {
+      "n": 7,
+      "name": "evidence_request",
+      "detail": "Customer confirms they made the purchase (simulated: probability 0.31 favoured legitimate)."
+    },
+    {
+      "n": 8,
+      "name": "final_decision",
+      "detail": "CREATE_CASE, CLOSE_NO_FRAUD"
+    },
+    {
+      "n": 9,
+      "name": "write_case",
+      "detail": "CASE-HHG-012 written and read back: verified=True"
+    }
+  ],
+  "tool_calls": [
+    {
+      "tool": "get_transaction",
+      "params": {
+        "t": "3553342"
+      },
+      "latency_ms": 296.9,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "card_history",
+      "params": {
+        "c": "C05876-K2"
+      },
+      "latency_ms": 1755.5,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "customer_cards",
+      "params": {
+        "cu": "C05876"
+      },
+      "latency_ms": 272.0,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "closed_cases_for_cards",
+      "params": {
+        "cards": [
+          "C05876-K1",
+          "C05876-K2"
+        ]
+      },
+      "latency_ms": 308.9,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "similar_closed_cases",
+      "params": {
+        "pat": "none",
+        "lo": 15.455,
+        "hi": 50.0,
+        "before_ts": "2016-12-18 05:00:31"
+      },
+      "latency_ms": 326.6,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "case_memory",
+      "params": {
+        "cards": [
+          "C05876-K2"
+        ]
+      },
+      "latency_ms": 280.0,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "write_case",
+      "params": {
+        "graph_case_id": "CASE-HHG-012"
+      },
+      "latency_ms": 1223.2,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "read_case",
+      "params": {
+        "ic": "CASE-HHG-012"
+      },
+      "latency_ms": 312.5,
+      "ok": true,
+      "error": ""
+    }
+  ],
+  "decision": {
+    "verdict": "legitimate",
+    "status": "closed_legitimate",
+    "final_probability": 0.02,
+    "affected": [],
+    "exposure": 0.0,
+    "connected_cards": [],
+    "evidence_requests": [
+      {
+        "type": "customer_validation",
+        "asked_after_step": 6,
+        "assumed_response": "Customer confirms they made the purchase (simulated: probability 0.31 favoured legitimate)."
+      }
+    ],
+    "stop_reason": "The customer's (simulated) confirmation settled the question (§6).",
+    "what_changed": "Customer confirmation dropped the probability from 0.31 to 0.02; the verify request became a no-fraud closure (R3)."
+  }
+}

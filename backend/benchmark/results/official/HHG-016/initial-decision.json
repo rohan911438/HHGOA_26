@@ -1,0 +1,22 @@
+{
+  "fraud_probability_before_evidence": 0.69,
+  "next_best_actions_initial": [
+    {
+      "action": "CREATE_CASE",
+      "route": "auto",
+      "reason": "§3a: customer disputes a charge"
+    },
+    {
+      "action": "STEP_UP_AUTH",
+      "route": "auto",
+      "reason": "R1: denial is the only fraud signal and probability 0.69 < 0.70; verify before blocking"
+    },
+    {
+      "action": "MONITOR_CARD",
+      "route": "auto",
+      "reason": "R1: keep watching while verification is pending"
+    }
+  ],
+  "additional_evidence_required": true,
+  "why": "Requested: step_up_auth (policy R1/§3b - probability 0.69 not at a §6 stopping point)"
+}

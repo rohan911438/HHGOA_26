@@ -1,0 +1,21 @@
+{
+  "status": "escalated",
+  "verdict": "fraud",
+  "fraud_probability": 0.93,
+  "pattern": "undocumented",
+  "pattern_description": "One device profile (Windows | other | chrome 61.0 | 1280x720) is transacting on cards of several unrelated customers within a month (4 other card(s)), a coordinated multi-victim scheme rather than a single stolen number. Found by traversing the graph from the flagged transaction to its device profile and back out to every card that used it.",
+  "affected_txn_ids": [
+    "3503878"
+  ],
+  "first_suspicious_txn_id": "3503878",
+  "connected_card_ids": [
+    "C01104-K2",
+    "C01983-K1",
+    "C06224-K2",
+    "C11309-K1"
+  ],
+  "connected_device_profiles": [
+    "Windows | other | chrome 61.0 | 1280x720"
+  ],
+  "exposure_usd": 99.92
+}

@@ -1,0 +1,14 @@
+{
+  "file": true,
+  "reason": "exposure $1,906.07 exceeds $1,000 (R2, §3a); pattern is coordinated/undocumented (R9, §3a)",
+  "narrative": "Between 2016-11-21 20:00 and 2016-11-21 20:30, card C07297-K1 held by customer C07297 was used for 4 transactions of $478.95, $456.96, $488.04, $482.12, totalling $1,906.07. The activity was online, billed in region(s) 264.0, 476.0, under product code(s) C. The online transactions came from device profile(s) Trident/7.0 | Windows 7 | ie 11.0 for desktop | 1920x1080; iOS Device | iOS 11.2.1 | mobile safari 11.0 | 2208x1242. The alert was raised by customer report on transaction 3476682. The investigation found a pattern outside the bank's five documented typologies. 4 online purchases between $400 and $500 within 60 minutes. 4 unusual online purchases within 48h of the alert. Identity record device status 'New'; profile seen earlier on this card. The cardholder reported that they did not make the transaction. It is suspicious because exposure $1,906.07 exceeds $1,000 (R2, §3a); pattern is coordinated/undocumented (R9, §3a). Actions: BLOCK_CARD, CREATE_CASE, FILE_REPORT, ESCALATE_TO_ANALYST.",
+  "subjects": [
+    "C07297",
+    "C07297-K1"
+  ],
+  "total_amount_usd": 1906.07,
+  "activity_dates": [
+    "2016-11-21",
+    "2016-11-21"
+  ]
+}

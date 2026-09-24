@@ -1,0 +1,17 @@
+{
+  "fraud_probability_before_evidence": 0.31,
+  "next_best_actions_initial": [
+    {
+      "action": "VERIFY_WITH_CUSTOMER",
+      "route": "auto",
+      "reason": "R1: probability 0.31 rests on 0 line(s) of evidence; confirm before any block"
+    },
+    {
+      "action": "CREATE_CASE",
+      "route": "auto",
+      "reason": "§3a: evidence requested; probability 0.31 >= 0.30"
+    }
+  ],
+  "additional_evidence_required": true,
+  "why": "Requested: customer_validation (policy R1/§3b - probability 0.31 not at a §6 stopping point)"
+}

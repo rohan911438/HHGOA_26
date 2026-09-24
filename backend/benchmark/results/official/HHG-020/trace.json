@@ -1,0 +1,161 @@
+{
+  "steps": [
+    {
+      "n": 1,
+      "name": "trigger",
+      "detail": "risk_score: Real-time model scored transaction 3509359 ($125.08, online) at 0.52. Review and decide."
+    },
+    {
+      "n": 2,
+      "name": "open_case",
+      "detail": "flagged txn 3509359 $125.08 online at 2016-12-03 06:04:26"
+    },
+    {
+      "n": 3,
+      "name": "history",
+      "detail": "109 txns on C12265-K2; customer holds ['C12265-K1', 'C12265-K2']"
+    },
+    {
+      "n": 4,
+      "name": "device_neighbourhood",
+      "detail": "79 card(s) on the device profile within 30 days"
+    },
+    {
+      "n": 5,
+      "name": "memory",
+      "detail": "2 closed case(s) on the customer's cards; 40 similar 'card_not_present_new_device' closed case(s); 0 earlier agent case(s) linked"
+    },
+    {
+      "n": 6,
+      "name": "assess",
+      "detail": "p=0.73 fraud evidence ['amount', 'device'] legit []"
+    },
+    {
+      "n": 7,
+      "name": "evidence_request",
+      "detail": "Customer states they did not make the transaction and still holds the card (simulated: probability 0.73 favoured fraud)."
+    },
+    {
+      "n": 8,
+      "name": "final_decision",
+      "detail": "BLOCK_CARD, CREATE_CASE"
+    },
+    {
+      "n": 9,
+      "name": "write_case",
+      "detail": "CASE-HHG-020 written and read back: verified=True"
+    }
+  ],
+  "tool_calls": [
+    {
+      "tool": "get_transaction",
+      "params": {
+        "t": "3509359"
+      },
+      "latency_ms": 262.4,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "card_history",
+      "params": {
+        "c": "C12265-K2"
+      },
+      "latency_ms": 287.5,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "customer_cards",
+      "params": {
+        "cu": "C12265"
+      },
+      "latency_ms": 273.0,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "device_neighbours",
+      "params": {
+        "d": "Trident/7.0 | Windows 10 | ie 11.0 for desktop | 1920x1080",
+        "t0": "2016-11-03 06:04:26",
+        "t1": "2017-01-02 06:04:26"
+      },
+      "latency_ms": 365.7,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "closed_cases_for_cards",
+      "params": {
+        "cards": [
+          "C12265-K1",
+          "C12265-K2"
+        ]
+      },
+      "latency_ms": 263.4,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "similar_closed_cases",
+      "params": {
+        "pat": "card_not_present_new_device",
+        "lo": 62.54,
+        "hi": 187.62,
+        "before_ts": "2016-12-03 12:04:26"
+      },
+      "latency_ms": 311.0,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "case_memory",
+      "params": {
+        "cards": [
+          "C12265-K2"
+        ]
+      },
+      "latency_ms": 255.9,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "write_case",
+      "params": {
+        "graph_case_id": "CASE-HHG-020"
+      },
+      "latency_ms": 1488.6,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "read_case",
+      "params": {
+        "ic": "CASE-HHG-020"
+      },
+      "latency_ms": 315.1,
+      "ok": true,
+      "error": ""
+    }
+  ],
+  "decision": {
+    "verdict": "fraud",
+    "status": "closed_fraud",
+    "final_probability": 0.92,
+    "affected": [
+      "3509359"
+    ],
+    "exposure": 125.08,
+    "connected_cards": [],
+    "evidence_requests": [
+      {
+        "type": "customer_validation",
+        "asked_after_step": 6,
+        "assumed_response": "Customer states they did not make the transaction and still holds the card (simulated: probability 0.73 favoured fraud)."
+      }
+    ],
+    "stop_reason": "The customer's (simulated) denial settled the question (§6).",
+    "what_changed": "The (simulated) customer response moved the probability to 0.92, turning verification into BLOCK_CARD."
+  }
+}

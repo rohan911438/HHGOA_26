@@ -1,0 +1,32 @@
+{
+  "attempted": true,
+  "write": {
+    "vertices_upserted": 1,
+    "edges_upserted": 6,
+    "edges_expected": 6
+  },
+  "read_back": {
+    "vertex": {
+      "summary": "Risk score alert on C04570-K1 (transaction 3450629). Assessed as legitimate, final fraud probability 0.01. Supporting: device already known to the account (identity record 'Found', profile used on this card before). Customer confirms they made the purchase (simulated: probability 0.2 favoured legitimate). Actions: CREATE_CASE, CLOSE_NO_FRAUD.",
+      "sar_file": false,
+      "fraud_probability": 0.01,
+      "pattern": "none",
+      "pattern_description": "",
+      "stop_reason": "The customer's (simulated) confirmation settled the question (§6).",
+      "official_case_id": "HHG-017",
+      "final_actions": "CREATE_CASE|CLOSE_NO_FRAUD",
+      "exposure_usd": 0,
+      "graph_case_id": "CASE-HHG-017",
+      "initial_actions": "VERIFY_WITH_CUSTOMER|CREATE_CASE",
+      "verdict": "legitimate",
+      "written_at": "2026-09-24 08:57:38",
+      "status": "closed_legitimate"
+    },
+    "similar": 4,
+    "cards": 1,
+    "flagged": 1,
+    "devices": 0,
+    "affected": 0
+  },
+  "verified": true
+}

@@ -1,0 +1,116 @@
+{
+  "case_id": "HHG-009",
+  "case": {
+    "status": "closed_legitimate",
+    "verdict": "legitimate",
+    "fraud_probability": 0.01,
+    "pattern": "none",
+    "pattern_description": "",
+    "affected_txn_ids": [],
+    "first_suspicious_txn_id": "",
+    "connected_card_ids": [],
+    "connected_device_profiles": [],
+    "exposure_usd": 0.0,
+    "evidence": [
+      {
+        "claim": "Alert: Customer C08299 message: 'I never made this $30.02 purchase. Please check my card.' Refers to 3581141.",
+        "source": "customer",
+        "ref": "case_pack:HHG-009",
+        "entity_ids": [
+          "3581141",
+          "C08299-K1"
+        ]
+      },
+      {
+        "claim": "Device already known to the account (identity record 'Found')",
+        "source": "graph",
+        "ref": "query:card_history(card_id=C08299-K1)",
+        "entity_ids": [
+          "3581141"
+        ]
+      },
+      {
+        "claim": "Earlier agent investigations linked by card or device: CASE-HHG-005",
+        "source": "graph",
+        "ref": "query:case_memory",
+        "entity_ids": [
+          "HHG-005"
+        ]
+      },
+      {
+        "claim": "Assessed fraud probability 0.23 before further evidence (lines of evidence: customer_denial; legitimate indicators: device)",
+        "source": "document",
+        "ref": "policy:§6,R1",
+        "entity_ids": [
+          "3581141"
+        ]
+      },
+      {
+        "claim": "Customer passes step-up authentication and, shown the merchant details, recognises the purchase (simulated: probability 0.23 favoured legitimate).",
+        "source": "customer",
+        "ref": "evidence_request:1",
+        "entity_ids": []
+      }
+    ],
+    "similar_prior_cases": [],
+    "summary": "Customer report alert on C08299-K1 (transaction 3581141). Assessed as legitimate, final fraud probability 0.01. Supporting: device already known to the account (identity record 'Found'). Customer passes step-up authentication and, shown the merchant details, recognises the purchase (simulated: probability 0.23 favoured legitimate). Actions: CREATE_CASE, CLOSE_NO_FRAUD.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-HHG-009"
+  },
+  "evidence_requests": [
+    {
+      "type": "step_up_auth",
+      "asked_after_step": 6,
+      "assumed_response": "Customer passes step-up authentication and, shown the merchant details, recognises the purchase (simulated: probability 0.23 favoured legitimate)."
+    }
+  ],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: customer disputes a charge"
+      },
+      {
+        "action": "STEP_UP_AUTH",
+        "route": "auto",
+        "reason": "R1: denial is the only fraud signal and probability 0.23 < 0.70; verify before blocking"
+      },
+      {
+        "action": "MONITOR_CARD",
+        "route": "auto",
+        "reason": "R1: keep watching while verification is pending"
+      },
+      {
+        "action": "ESCALATE_TO_ANALYST",
+        "route": "auto",
+        "reason": "R8: evidence conflicts with the customer's denial"
+      }
+    ],
+    "final": [
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: the dispute is recorded"
+      },
+      {
+        "action": "CLOSE_NO_FRAUD",
+        "route": "auto",
+        "reason": "R3: customer recognised the purchase after step-up"
+      }
+    ],
+    "what_changed": "The simulated step-up pass and recognition moved the case from verify-and-monitor to closed as legitimate."
+  },
+  "sar": {
+    "file": false,
+    "reason": "§3a: fraud is not confirmed or strongly suspected, so no report is filed; the case is the record.",
+    "narrative": "",
+    "subjects": [],
+    "total_amount_usd": 0,
+    "activity_dates": []
+  },
+  "stop_reason": "Step-up result settled the question (§6).",
+  "tool_calls": 8,
+  "tokens": 0,
+  "latency_s": 12.2
+}

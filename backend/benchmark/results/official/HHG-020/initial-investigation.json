@@ -1,0 +1,889 @@
+{
+  "flagged_transaction": {
+    "channel": "online",
+    "device_profile": "Trident/7.0 | Windows 10 | ie 11.0 for desktop | 1920x1080",
+    "device_type": "desktop",
+    "product_cd": "R",
+    "txn_id": "3509359",
+    "p_email": "yahoo.com",
+    "device_status": "New",
+    "amount": 125.08,
+    "addr2": "87.0",
+    "m1": "",
+    "risk_score": 0.52,
+    "addr1": "264.0",
+    "m2": "",
+    "m3": "",
+    "m4": "",
+    "m5": "",
+    "m6": "",
+    "r_email": "cox.net",
+    "m7": "",
+    "m8": "",
+    "m9": "",
+    "card_id": "C12265-K2",
+    "dist1": -1,
+    "customer_id": "C12265",
+    "ts": "2016-12-03 06:04:26",
+    "proxy_type": ""
+  },
+  "card_history_size": 109,
+  "customer_cards": [
+    "C12265-K1",
+    "C12265-K2"
+  ],
+  "device_neighbourhood": {
+    "profile": "Trident/7.0 | Windows 10 | ie 11.0 for desktop | 1920x1080",
+    "window_txns": 116,
+    "all_txns": 462,
+    "all_cards": 253,
+    "new_share_all": 0.45,
+    "anon_proxy_share_all": 0.032,
+    "cards": [
+      {
+        "card_id": "C00854-K2",
+        "customer_id": "C00854",
+        "n": 4,
+        "amount": 239.92,
+        "first": "2016-11-06 00:50:21",
+        "last": "2016-12-29 17:10:19"
+      },
+      {
+        "card_id": "C01033-K1",
+        "customer_id": "C01033",
+        "n": 1,
+        "amount": 199.97,
+        "first": "2016-12-27 15:14:18",
+        "last": "2016-12-27 15:14:18"
+      },
+      {
+        "card_id": "C12961-K2",
+        "customer_id": "C12961",
+        "n": 1,
+        "amount": 49.93,
+        "first": "2016-12-01 17:15:29",
+        "last": "2016-12-01 17:15:29"
+      },
+      {
+        "card_id": "C05797-K1",
+        "customer_id": "C05797",
+        "n": 2,
+        "amount": 399.95,
+        "first": "2016-12-20 17:13:22",
+        "last": "2016-12-20 17:43:16"
+      },
+      {
+        "card_id": "C09274-K1",
+        "customer_id": "C09274",
+        "n": 1,
+        "amount": 99.91,
+        "first": "2016-12-18 13:42:57",
+        "last": "2016-12-18 13:42:57"
+      },
+      {
+        "card_id": "C07612-K1",
+        "customer_id": "C07612",
+        "n": 1,
+        "amount": 50.02,
+        "first": "2016-11-30 17:12:19",
+        "last": "2016-11-30 17:12:19"
+      },
+      {
+        "card_id": "C07212-K2",
+        "customer_id": "C07212",
+        "n": 3,
+        "amount": 300.06,
+        "first": "2016-11-10 17:29:14",
+        "last": "2016-12-25 00:12:15"
+      },
+      {
+        "card_id": "C07133-K1",
+        "customer_id": "C07133",
+        "n": 1,
+        "amount": 49.96,
+        "first": "2016-12-20 21:27:06",
+        "last": "2016-12-20 21:27:06"
+      },
+      {
+        "card_id": "C03843-K1",
+        "customer_id": "C03843",
+        "n": 2,
+        "amount": 599.95,
+        "first": "2016-12-10 14:14:34",
+        "last": "2016-12-10 14:31:46"
+      },
+      {
+        "card_id": "C02966-K1",
+        "customer_id": "C02966",
+        "n": 1,
+        "amount": 100.07,
+        "first": "2016-11-16 14:07:13",
+        "last": "2016-11-16 14:07:13"
+      },
+      {
+        "card_id": "C04187-K1",
+        "customer_id": "C04187",
+        "n": 1,
+        "amount": 49.92,
+        "first": "2016-11-07 12:50:08",
+        "last": "2016-11-07 12:50:08"
+      },
+      {
+        "card_id": "C11294-K2",
+        "customer_id": "C11294",
+        "n": 1,
+        "amount": 200.06,
+        "first": "2016-12-14 17:03:47",
+        "last": "2016-12-14 17:03:47"
+      },
+      {
+        "card_id": "C12265-K2",
+        "customer_id": "C12265",
+        "n": 1,
+        "amount": 125.08,
+        "first": "2016-12-03 06:04:26",
+        "last": "2016-12-03 06:04:26"
+      },
+      {
+        "card_id": "C07969-K1",
+        "customer_id": "C07969",
+        "n": 1,
+        "amount": 99.94,
+        "first": "2016-12-01 22:36:38",
+        "last": "2016-12-01 22:36:38"
+      },
+      {
+        "card_id": "C07196-K2",
+        "customer_id": "C07196",
+        "n": 2,
+        "amount": 425.02,
+        "first": "2016-11-03 12:48:07",
+        "last": "2016-11-12 02:45:47"
+      },
+      {
+        "card_id": "C02716-K2",
+        "customer_id": "C02716",
+        "n": 4,
+        "amount": 700.25,
+        "first": "2016-11-05 17:48:36",
+        "last": "2016-12-25 01:53:21"
+      },
+      {
+        "card_id": "C00989-K1",
+        "customer_id": "C00989",
+        "n": 1,
+        "amount": 249.92,
+        "first": "2016-11-28 17:45:19",
+        "last": "2016-11-28 17:45:19"
+      },
+      {
+        "card_id": "C04565-K1",
+        "customer_id": "C04565",
+        "n": 1,
+        "amount": 19.97,
+        "first": "2016-12-03 12:58:10",
+        "last": "2016-12-03 12:58:10"
+      },
+      {
+        "card_id": "C01138-K2",
+        "customer_id": "C01138",
+        "n": 1,
+        "amount": 49.98,
+        "first": "2016-11-11 22:48:11",
+        "last": "2016-11-11 22:48:11"
+      },
+      {
+        "card_id": "C03169-K1",
+        "customer_id": "C03169",
+        "n": 1,
+        "amount": 174.92,
+        "first": "2016-11-14 02:17:38",
+        "last": "2016-11-14 02:17:38"
+      },
+      {
+        "card_id": "C03070-K1",
+        "customer_id": "C03070",
+        "n": 2,
+        "amount": 725.09,
+        "first": "2016-12-19 01:07:11",
+        "last": "2016-12-19 01:20:44"
+      },
+      {
+        "card_id": "C12585-K1",
+        "customer_id": "C12585",
+        "n": 1,
+        "amount": 200.09,
+        "first": "2016-11-24 17:43:57",
+        "last": "2016-11-24 17:43:57"
+      },
+      {
+        "card_id": "C06224-K2",
+        "customer_id": "C06224",
+        "n": 8,
+        "amount": 1275.01,
+        "first": "2016-11-24 22:26:43",
+        "last": "2016-12-30 16:12:12"
+      },
+      {
+        "card_id": "C10897-K1",
+        "customer_id": "C10897",
+        "n": 1,
+        "amount": 149.98,
+        "first": "2016-11-04 14:28:23",
+        "last": "2016-11-04 14:28:23"
+      },
+      {
+        "card_id": "C09185-K1",
+        "customer_id": "C09185",
+        "n": 1,
+        "amount": 100.07,
+        "first": "2016-11-13 19:16:29",
+        "last": "2016-11-13 19:16:29"
+      },
+      {
+        "card_id": "C06220-K1",
+        "customer_id": "C06220",
+        "n": 1,
+        "amount": 199.99,
+        "first": "2016-11-30 19:42:37",
+        "last": "2016-11-30 19:42:37"
+      },
+      {
+        "card_id": "C02479-K2",
+        "customer_id": "C02479",
+        "n": 1,
+        "amount": 49.94,
+        "first": "2016-12-27 22:36:41",
+        "last": "2016-12-27 22:36:41"
+      },
+      {
+        "card_id": "C04865-K1",
+        "customer_id": "C04865",
+        "n": 1,
+        "amount": 199.95,
+        "first": "2016-12-29 18:52:05",
+        "last": "2016-12-29 18:52:05"
+      },
+      {
+        "card_id": "C02393-K2",
+        "customer_id": "C02393",
+        "n": 1,
+        "amount": 174.98,
+        "first": "2016-11-12 02:29:41",
+        "last": "2016-11-12 02:29:41"
+      },
+      {
+        "card_id": "C02171-K1",
+        "customer_id": "C02171",
+        "n": 1,
+        "amount": 99.91,
+        "first": "2016-12-01 14:08:41",
+        "last": "2016-12-01 14:08:41"
+      },
+      {
+        "card_id": "C07311-K1",
+        "customer_id": "C07311",
+        "n": 1,
+        "amount": 250.05,
+        "first": "2016-12-14 13:43:08",
+        "last": "2016-12-14 13:43:08"
+      },
+      {
+        "card_id": "C05868-K1",
+        "customer_id": "C05868",
+        "n": 1,
+        "amount": 99.91,
+        "first": "2016-11-05 14:27:39",
+        "last": "2016-11-05 14:27:39"
+      },
+      {
+        "card_id": "C00750-K2",
+        "customer_id": "C00750",
+        "n": 2,
+        "amount": 249.94,
+        "first": "2016-12-09 19:45:35",
+        "last": "2016-12-18 17:23:35"
+      },
+      {
+        "card_id": "C03279-K1",
+        "customer_id": "C03279",
+        "n": 2,
+        "amount": 400.07,
+        "first": "2016-12-03 22:50:31",
+        "last": "2016-12-03 22:56:24"
+      },
+      {
+        "card_id": "C06208-K1",
+        "customer_id": "C06208",
+        "n": 1,
+        "amount": 125.02,
+        "first": "2016-12-31 04:33:46",
+        "last": "2016-12-31 04:33:46"
+      },
+      {
+        "card_id": "C02667-K1",
+        "customer_id": "C02667",
+        "n": 1,
+        "amount": 50.01,
+        "first": "2016-11-09 17:49:10",
+        "last": "2016-11-09 17:49:10"
+      },
+      {
+        "card_id": "C11522-K2",
+        "customer_id": "C11522",
+        "n": 1,
+        "amount": 50,
+        "first": "2016-12-13 12:20:10",
+        "last": "2016-12-13 12:20:10"
+      },
+      {
+        "card_id": "C02254-K1",
+        "customer_id": "C02254",
+        "n": 1,
+        "amount": 75.02,
+        "first": "2016-12-07 03:02:21",
+        "last": "2016-12-07 03:02:21"
+      },
+      {
+        "card_id": "C09436-K1",
+        "customer_id": "C09436",
+        "n": 1,
+        "amount": 100.07,
+        "first": "2016-11-22 18:50:46",
+        "last": "2016-11-22 18:50:46"
+      },
+      {
+        "card_id": "C11637-K1",
+        "customer_id": "C11637",
+        "n": 2,
+        "amount": 299.85,
+        "first": "2016-11-27 17:22:49",
+        "last": "2016-11-27 17:52:35"
+      },
+      {
+        "card_id": "C12305-K1",
+        "customer_id": "C12305",
+        "n": 1,
+        "amount": 99.97,
+        "first": "2016-12-22 17:37:38",
+        "last": "2016-12-22 17:37:38"
+      },
+      {
+        "card_id": "C06348-K1",
+        "customer_id": "C06348",
+        "n": 1,
+        "amount": 49.93,
+        "first": "2016-12-12 16:48:14",
+        "last": "2016-12-12 16:48:14"
+      },
+      {
+        "card_id": "C07323-K1",
+        "customer_id": "C07323",
+        "n": 2,
+        "amount": 99.92,
+        "first": "2016-12-23 13:59:20",
+        "last": "2016-12-23 14:07:53"
+      },
+      {
+        "card_id": "C03089-K1",
+        "customer_id": "C03089",
+        "n": 1,
+        "amount": 75.06,
+        "first": "2016-11-21 19:52:15",
+        "last": "2016-11-21 19:52:15"
+      },
+      {
+        "card_id": "C03040-K2",
+        "customer_id": "C03040",
+        "n": 2,
+        "amount": 400.05,
+        "first": "2016-12-30 18:45:29",
+        "last": "2016-12-30 18:47:52"
+      },
+      {
+        "card_id": "C09159-K1",
+        "customer_id": "C09159",
+        "n": 1,
+        "amount": 40.08,
+        "first": "2016-12-22 22:02:01",
+        "last": "2016-12-22 22:02:01"
+      },
+      {
+        "card_id": "C02554-K1",
+        "customer_id": "C02554",
+        "n": 1,
+        "amount": 149.96,
+        "first": "2016-12-25 20:26:24",
+        "last": "2016-12-25 20:26:24"
+      },
+      {
+        "card_id": "C08679-K1",
+        "customer_id": "C08679",
+        "n": 1,
+        "amount": 99.94,
+        "first": "2016-11-17 21:00:13",
+        "last": "2016-11-17 21:00:13"
+      },
+      {
+        "card_id": "C08072-K1",
+        "customer_id": "C08072",
+        "n": 1,
+        "amount": 100,
+        "first": "2016-12-21 22:02:12",
+        "last": "2016-12-21 22:02:12"
+      },
+      {
+        "card_id": "C11000-K2",
+        "customer_id": "C11000",
+        "n": 3,
+        "amount": 349.91,
+        "first": "2016-11-03 16:00:30",
+        "last": "2016-12-27 20:02:33"
+      },
+      {
+        "card_id": "C09301-K2",
+        "customer_id": "C09301",
+        "n": 2,
+        "amount": 115.07,
+        "first": "2016-11-26 19:53:02",
+        "last": "2016-12-23 16:14:52"
+      },
+      {
+        "card_id": "C03285-K2",
+        "customer_id": "C03285",
+        "n": 1,
+        "amount": 149.98,
+        "first": "2016-12-20 21:36:39",
+        "last": "2016-12-20 21:36:39"
+      },
+      {
+        "card_id": "C05039-K1",
+        "customer_id": "C05039",
+        "n": 1,
+        "amount": 99.91,
+        "first": "2016-11-03 14:36:44",
+        "last": "2016-11-03 14:36:44"
+      },
+      {
+        "card_id": "C12865-K1",
+        "customer_id": "C12865",
+        "n": 3,
+        "amount": 959.84,
+        "first": "2016-11-23 15:02:53",
+        "last": "2016-12-26 15:11:58"
+      },
+      {
+        "card_id": "C09249-K1",
+        "customer_id": "C09249",
+        "n": 1,
+        "amount": 25.03,
+        "first": "2016-12-16 13:51:50",
+        "last": "2016-12-16 13:51:50"
+      },
+      {
+        "card_id": "C12166-K2",
+        "customer_id": "C12166",
+        "n": 2,
+        "amount": 250,
+        "first": "2016-11-27 20:45:43",
+        "last": "2016-12-29 17:17:58"
+      },
+      {
+        "card_id": "C11309-K1",
+        "customer_id": "C11309",
+        "n": 1,
+        "amount": 199.93,
+        "first": "2016-12-10 19:45:09",
+        "last": "2016-12-10 19:45:09"
+      },
+      {
+        "card_id": "C08374-K1",
+        "customer_id": "C08374",
+        "n": 1,
+        "amount": 100,
+        "first": "2016-11-29 18:25:53",
+        "last": "2016-11-29 18:25:53"
+      },
+      {
+        "card_id": "C03218-K2",
+        "customer_id": "C03218",
+        "n": 2,
+        "amount": 125,
+        "first": "2016-11-23 21:53:59",
+        "last": "2016-12-17 17:16:20"
+      },
+      {
+        "card_id": "C03080-K2",
+        "customer_id": "C03080",
+        "n": 1,
+        "amount": 24.94,
+        "first": "2016-11-11 12:58:35",
+        "last": "2016-11-11 12:58:35"
+      },
+      {
+        "card_id": "C03484-K1",
+        "customer_id": "C03484",
+        "n": 1,
+        "amount": 200.04,
+        "first": "2016-11-23 19:04:45",
+        "last": "2016-11-23 19:04:45"
+      },
+      {
+        "card_id": "C00704-K1",
+        "customer_id": "C00704",
+        "n": 1,
+        "amount": 74.95,
+        "first": "2016-12-08 16:01:39",
+        "last": "2016-12-08 16:01:39"
+      },
+      {
+        "card_id": "C05546-K1",
+        "customer_id": "C05546",
+        "n": 2,
+        "amount": 200.03,
+        "first": "2016-12-02 22:18:39",
+        "last": "2016-12-02 22:33:51"
+      },
+      {
+        "card_id": "C01377-K1",
+        "customer_id": "C01377",
+        "n": 1,
+        "amount": 200.04,
+        "first": "2016-12-11 17:57:44",
+        "last": "2016-12-11 17:57:44"
+      },
+      {
+        "card_id": "C01419-K1",
+        "customer_id": "C01419",
+        "n": 1,
+        "amount": 300.05,
+        "first": "2016-11-27 13:30:22",
+        "last": "2016-11-27 13:30:22"
+      },
+      {
+        "card_id": "C10390-K1",
+        "customer_id": "C10390",
+        "n": 1,
+        "amount": 50.09,
+        "first": "2016-12-01 15:04:14",
+        "last": "2016-12-01 15:04:14"
+      },
+      {
+        "card_id": "C12897-K1",
+        "customer_id": "C12897",
+        "n": 1,
+        "amount": 249.96,
+        "first": "2016-11-07 13:42:52",
+        "last": "2016-11-07 13:42:52"
+      },
+      {
+        "card_id": "C08943-K2",
+        "customer_id": "C08943",
+        "n": 1,
+        "amount": 9.94,
+        "first": "2016-12-09 17:28:56",
+        "last": "2016-12-09 17:28:56"
+      },
+      {
+        "card_id": "C11143-K1",
+        "customer_id": "C11143",
+        "n": 4,
+        "amount": 47.06,
+        "first": "2016-12-23 18:12:41",
+        "last": "2016-12-31 16:20:20"
+      },
+      {
+        "card_id": "C02910-K1",
+        "customer_id": "C02910",
+        "n": 1,
+        "amount": 149.93,
+        "first": "2016-12-26 16:28:52",
+        "last": "2016-12-26 16:28:52"
+      },
+      {
+        "card_id": "C04108-K2",
+        "customer_id": "C04108",
+        "n": 1,
+        "amount": 149.92,
+        "first": "2016-12-06 20:57:20",
+        "last": "2016-12-06 20:57:20"
+      },
+      {
+        "card_id": "C03182-K1",
+        "customer_id": "C03182",
+        "n": 2,
+        "amount": 999.99,
+        "first": "2016-11-29 16:27:41",
+        "last": "2016-11-29 16:39:24"
+      },
+      {
+        "card_id": "C12739-K1",
+        "customer_id": "C12739",
+        "n": 1,
+        "amount": 35.04,
+        "first": "2016-11-10 12:59:56",
+        "last": "2016-11-10 12:59:56"
+      },
+      {
+        "card_id": "C04125-K2",
+        "customer_id": "C04125",
+        "n": 1,
+        "amount": 100.02,
+        "first": "2016-12-12 04:22:29",
+        "last": "2016-12-12 04:22:29"
+      },
+      {
+        "card_id": "C03278-K2",
+        "customer_id": "C03278",
+        "n": 1,
+        "amount": 100.07,
+        "first": "2016-12-18 21:26:42",
+        "last": "2016-12-18 21:26:42"
+      },
+      {
+        "card_id": "C13153-K1",
+        "customer_id": "C13153",
+        "n": 1,
+        "amount": 99.96,
+        "first": "2016-11-23 15:25:08",
+        "last": "2016-11-23 15:25:08"
+      },
+      {
+        "card_id": "C09612-K1",
+        "customer_id": "C09612",
+        "n": 1,
+        "amount": 499.94,
+        "first": "2016-11-24 12:35:30",
+        "last": "2016-11-24 12:35:30"
+      },
+      {
+        "card_id": "C09800-K2",
+        "customer_id": "C09800",
+        "n": 2,
+        "amount": 79.97,
+        "first": "2016-12-10 16:22:17",
+        "last": "2016-12-12 13:47:53"
+      },
+      {
+        "card_id": "C10751-K1",
+        "customer_id": "C10751",
+        "n": 1,
+        "amount": 464.46,
+        "first": "2016-11-24 17:00:00",
+        "last": "2016-11-24 17:00:00"
+      }
+    ],
+    "confirmed_fraud_cases": [],
+    "case_cards": []
+  },
+  "signals": {
+    "history_depth": {
+      "name": "history_depth",
+      "present": true,
+      "detail": "82 prior transactions on this card",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "card_testing_sequence": {
+      "name": "card_testing_sequence",
+      "present": false,
+      "detail": "no run of 3+ sub-$5 online authorizations",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "sub_threshold_structuring": {
+      "name": "sub_threshold_structuring",
+      "present": false,
+      "detail": "no cluster of just-under-$500 online purchases",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "online_amount_or_product_unusual": {
+      "name": "online_amount_or_product_unusual",
+      "present": true,
+      "detail": "flagged $125.08 (product R) vs card median $107.91; product seen before: False",
+      "entity_ids": [
+        "3509359"
+      ],
+      "weight": 0.0
+    },
+    "online_burst_48h": {
+      "name": "online_burst_48h",
+      "present": false,
+      "detail": "1 unusual online purchases within 48h of the alert",
+      "entity_ids": [
+        "3509359"
+      ],
+      "weight": 0.0
+    },
+    "no_prior_online_use": {
+      "name": "no_prior_online_use",
+      "present": false,
+      "detail": "4 prior online transactions on this card",
+      "entity_ids": [
+        "3509359"
+      ],
+      "weight": 0.0
+    },
+    "new_device": {
+      "name": "new_device",
+      "present": true,
+      "detail": "identity record device status 'New'; profile not seen earlier on this card",
+      "entity_ids": [
+        "3509359"
+      ],
+      "weight": 0.0
+    },
+    "known_device": {
+      "name": "known_device",
+      "present": false,
+      "detail": "device already known to the account (identity record 'New')",
+      "entity_ids": [
+        "3509359"
+      ],
+      "weight": 0.0
+    },
+    "proxy": {
+      "name": "proxy",
+      "present": false,
+      "detail": "proxy flag (id_23) = 'none'",
+      "entity_ids": [
+        "3509359"
+      ],
+      "weight": 0.0
+    },
+    "new_billing_region": {
+      "name": "new_billing_region",
+      "present": false,
+      "detail": "card-present use in region 264.0; home region 264.0; 1 region(s) in history",
+      "entity_ids": [
+        "3509359"
+      ],
+      "weight": 0.0
+    },
+    "home_activity_continues": {
+      "name": "home_activity_continues",
+      "present": false,
+      "detail": "0 home-region transactions within 3 days of the alert",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "multi_day_stay": {
+      "name": "multi_day_stay",
+      "present": false,
+      "detail": "purchases on 12 distinct day(s) in region 264.0",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "match_flag_anomaly": {
+      "name": "match_flag_anomaly",
+      "present": false,
+      "detail": "0 match flags false on the flagged txn vs 25% false historically",
+      "entity_ids": [
+        "3509359"
+      ],
+      "weight": 0.0
+    },
+    "purchaser_email_change": {
+      "name": "purchaser_email_change",
+      "present": false,
+      "detail": "purchaser email domain 'yahoo.com' not seen before on this card",
+      "entity_ids": [
+        "3509359"
+      ],
+      "weight": 0.0
+    },
+    "mixed_channel_48h": {
+      "name": "mixed_channel_48h",
+      "present": true,
+      "detail": "channels within 48h: ['in_person', 'online']",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "recurring_charge": {
+      "name": "recurring_charge",
+      "present": false,
+      "detail": "0 earlier charges of ~$125.08 (product R), 0 at monthly spacing",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "shared_device_ring": {
+      "name": "shared_device_ring",
+      "present": false,
+      "detail": "device profile used by 78 other customer(s) within 30 days (253 cards all-time, 1.8 txns per card, marked New on 45% of its transactions); a mass-market configuration, not a ring; 0 confirmed-fraud closed case(s) involve it",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "device_in_confirmed_fraud": {
+      "name": "device_in_confirmed_fraud",
+      "present": false,
+      "detail": "closed cases on this device profile: []",
+      "entity_ids": [],
+      "weight": 0.0
+    }
+  },
+  "episode_txn_ids": [
+    "3509359"
+  ],
+  "initial_assessment": {
+    "probability": 0.73,
+    "fraud_groups": [
+      "amount",
+      "device"
+    ],
+    "legit_groups": [],
+    "contributions": {
+      "online_amount_or_product_unusual": 0.8,
+      "new_device": 0.8,
+      "mixed_channel_48h": 0.2,
+      "risk_score": 0.02
+    }
+  },
+  "own_closed_cases": [
+    "CC-2447",
+    "CC-2277"
+  ],
+  "similar_closed_cases_retrieved": [
+    "CC-5404",
+    "CC-2882",
+    "CC-1557",
+    "CC-5482",
+    "CC-4317",
+    "CC-0078",
+    "CC-1263",
+    "CC-5455",
+    "CC-1863",
+    "CC-1588",
+    "CC-2300",
+    "CC-3350",
+    "CC-2623",
+    "CC-0334",
+    "CC-2670",
+    "CC-0633",
+    "CC-0579",
+    "CC-0939",
+    "CC-4918",
+    "CC-2198",
+    "CC-2028",
+    "CC-3827",
+    "CC-1556",
+    "CC-5197",
+    "CC-4241",
+    "CC-4101",
+    "CC-3894",
+    "CC-0609",
+    "CC-2375",
+    "CC-1598",
+    "CC-1593",
+    "CC-4733",
+    "CC-4573",
+    "CC-3156",
+    "CC-3886",
+    "CC-3251",
+    "CC-2119",
+    "CC-0945",
+    "CC-1415",
+    "CC-1969"
+  ],
+  "agent_case_memory": []
+}

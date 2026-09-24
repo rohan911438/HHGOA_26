@@ -1,0 +1,22 @@
+{
+  "fraud_probability_before_evidence": 0.73,
+  "next_best_actions_initial": [
+    {
+      "action": "DECLINE_TRANSACTION",
+      "route": "L1",
+      "reason": "§3b, R1: probability 0.73; hold the flagged authorization while verification is pending"
+    },
+    {
+      "action": "VERIFY_WITH_CUSTOMER",
+      "route": "auto",
+      "reason": "§3b: probability 0.73 is below the 0.85 stopping point; confirm before blocking"
+    },
+    {
+      "action": "CREATE_CASE",
+      "route": "auto",
+      "reason": "§3a: evidence requested; probability 0.73 >= 0.30"
+    }
+  ],
+  "additional_evidence_required": true,
+  "why": "Requested: customer_validation (policy R1/§3b - probability 0.73 not at a §6 stopping point)"
+}

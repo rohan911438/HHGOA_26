@@ -1,0 +1,12 @@
+{
+  "case_id": "HHG-008",
+  "opened_at": "2016-12-20 03:08:56",
+  "trigger_type": "customer_report",
+  "trigger_text": "Customer C13171 message: 'I never made this $55.68 purchase. Please check my card.' Refers to 3558054.",
+  "flagged_txn_id": "3558054",
+  "card_id": "C13171-K2",
+  "customer_id": "C13171",
+  "risk_score": null,
+  "is_official_benchmark_case": true,
+  "source": "official case_pack.csv"
+}

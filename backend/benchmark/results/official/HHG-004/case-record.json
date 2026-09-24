@@ -1,0 +1,104 @@
+{
+  "status": "closed_fraud",
+  "verdict": "fraud",
+  "fraud_probability": 0.93,
+  "pattern": "card_not_present_new_device",
+  "pattern_description": "",
+  "affected_txn_ids": [
+    "3580804",
+    "3583227",
+    "3585446"
+  ],
+  "first_suspicious_txn_id": "3580804",
+  "connected_card_ids": [],
+  "connected_device_profiles": [],
+  "exposure_usd": 305.06,
+  "evidence": [
+    {
+      "claim": "Alert: Customer C08106 message: 'I never made this $128.33 purchase. Please check my card.' Refers to 3583227.",
+      "source": "customer",
+      "ref": "case_pack:HHG-004",
+      "entity_ids": [
+        "3583227",
+        "C08106-K1"
+      ]
+    },
+    {
+      "claim": "Flagged $128.33 (product C) vs card median $27.73; product seen before: True",
+      "source": "graph",
+      "ref": "query:card_history(card_id=C08106-K1)",
+      "entity_ids": [
+        "3583227"
+      ]
+    },
+    {
+      "claim": "3 unusual online purchases within 48h of the alert",
+      "source": "graph",
+      "ref": "query:card_history(card_id=C08106-K1)",
+      "entity_ids": [
+        "3580804",
+        "3583227",
+        "3585446"
+      ]
+    },
+    {
+      "claim": "Identity record device status 'New'; profile not seen earlier on this card",
+      "source": "graph",
+      "ref": "query:card_history+identity(device_status)",
+      "entity_ids": [
+        "3583227"
+      ]
+    },
+    {
+      "claim": "Device profile seen on 1 card(s) within 30 days; no ring",
+      "source": "graph",
+      "ref": "query:device_neighbours(window=30d)",
+      "entity_ids": [
+        "C08106-K1"
+      ]
+    },
+    {
+      "claim": "Customer's cards have prior closed cases: CC-0696 (cleared, none), CC-1736 (confirmed_fraud, card_not_present_fraud), CC-3778 (confirmed_fraud, card_not_present_fraud), CC-2121 (confirmed_fraud, card_not_present_fraud)",
+      "source": "graph",
+      "ref": "query:closed_cases_for_cards",
+      "entity_ids": [
+        "CC-0696",
+        "CC-1736",
+        "CC-3778",
+        "CC-2121"
+      ]
+    },
+    {
+      "claim": "Retrieved closed cases used as memory: CC-0696, CC-1736, CC-3778, CC-5300, CC-3893, CC-2900",
+      "source": "graph",
+      "ref": "query:similar_closed_cases",
+      "entity_ids": [
+        "CC-0696",
+        "CC-1736",
+        "CC-3778",
+        "CC-5300",
+        "CC-3893",
+        "CC-2900"
+      ]
+    },
+    {
+      "claim": "Assessed fraud probability 0.93 before further evidence (lines of evidence: sequence, amount, device, customer_denial; legitimate indicators: none)",
+      "source": "document",
+      "ref": "policy:§6,R1",
+      "entity_ids": [
+        "3583227"
+      ]
+    }
+  ],
+  "similar_prior_cases": [
+    "CC-0696",
+    "CC-1736",
+    "CC-3778",
+    "CC-5300",
+    "CC-3893",
+    "CC-2900"
+  ],
+  "summary": "Customer report alert on C08106-K1 (transaction 3583227). Assessed as card-not-present fraud from a device new to the account, fraud probability 0.93: 3 transaction(s) totalling $305.06 starting at 3580804. Final actions: BLOCK_CARD, CREATE_CASE.",
+  "written_to_graph": true,
+  "graph_case_id": "CASE-HHG-004"
+}

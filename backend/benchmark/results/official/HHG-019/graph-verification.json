@@ -1,0 +1,32 @@
+{
+  "attempted": true,
+  "write": {
+    "vertices_upserted": 1,
+    "edges_upserted": 13,
+    "edges_expected": 13
+  },
+  "read_back": {
+    "vertex": {
+      "summary": "Risk score alert on C07987-K2 (transaction 3503878). Assessed as a pattern outside the bank's five documented typologies, fraud probability 0.93: 1 transaction(s) totalling $99.92 starting at 3503878. The device profile links 4 other card(s). Final actions: BLOCK_CARD, CREATE_CASE, FILE_REPORT, MONITOR_CONNECTED_CARDS, ESCALATE_TO_ANALYST.",
+      "sar_file": true,
+      "fraud_probability": 0.93,
+      "pattern": "undocumented",
+      "pattern_description": "One device profile (Windows | other | chrome 61.0 | 1280x720) is transacting on cards of several unrelated customers within a month (4 other card(s)), a coordinated multi-victim scheme rather than a single stolen number. Found by traversing the graph from the flagged transaction to its device profile and back out to every card that used it.",
+      "stop_reason": "Probability 0.93 >= 0.85 on 2 independent lines of evidence (device, network); stopping per §6.",
+      "official_case_id": "HHG-019",
+      "final_actions": "BLOCK_CARD|CREATE_CASE|FILE_REPORT|MONITOR_CONNECTED_CARDS|ESCALATE_TO_ANALYST",
+      "exposure_usd": 99.92,
+      "graph_case_id": "CASE-HHG-019",
+      "initial_actions": "BLOCK_CARD|CREATE_CASE|FILE_REPORT|MONITOR_CONNECTED_CARDS|ESCALATE_TO_ANALYST",
+      "verdict": "fraud",
+      "written_at": "2026-09-24 09:00:07",
+      "status": "escalated"
+    },
+    "similar": 5,
+    "cards": 5,
+    "flagged": 1,
+    "devices": 1,
+    "affected": 1
+  },
+  "verified": true
+}

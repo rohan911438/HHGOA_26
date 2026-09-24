@@ -23,6 +23,35 @@ Open the dashboard, go to **Investigate**, and run the demo transaction `2987937
 
 > The backend runs on Render's free tier and sleeps after 15 minutes of inactivity. The first request after that can take about a minute while it wakes up, and in-memory cases are reset on each restart.
 
+## Official HHGOA Benchmark
+
+The agent was run on the official **HHGOA_IEEE** 20-case benchmark supplied for HHGoa'26. The package comes from TigerGraph's Drive folder linked in the challenge brief and was validated against its own README (23/23 checks).
+
+| | Result |
+| --- | --- |
+| Cases evaluated | **20 / 20** executed (`HHG-001` … `HHG-020`) |
+| Answer files | **20 / 20** in `cases/<case_id>.json`, in the README's answer format |
+| Case written to TigerGraph and read back | **20 / 20** (`InvestigationCase` vertices in graph `HHGOA_IEEE`) |
+| Answers conformant with the answer format and Fraud Policy v1.0 | **20 / 20** (35–39 deterministic checks each) |
+| NBA + approval route before *and* after additional evidence | **20 / 20** |
+| Additional evidence requested | 12 / 20; the recommendation changed after the evidence in 12 / 12 |
+| Suspicious activity reports filed | 5 / 20 (§3a reason recorded for all 20) |
+| Investigation / pattern / NBA / approval / SAR **accuracy** | **Not available.** The package ships no answer key ("We score them against an answer key you don't have"). TigerGraph scores the answers privately. No accuracy figure is claimed. |
+
+Outputs: verdict fraud 12, legitimate 6, uncertain 2. Patterns: `card_not_present_new_device` 7, `undocumented` 4 (a shared-device scheme traced across 27 other customers' cards, and just-under-$500 structuring), `card_not_present_fraud` 1, `none` 8.
+
+**How it runs:** `case_pack.csv` → graph tools over the official `HHGOA_IEEE` graph (590,742 transactions, 14,317 cards, 5,565 closed cases) → pattern signals → uncertainty → closed-case and agent-case memory → Fraud Policy v1.0 (R1–R10, exact action and route identifiers) → case + SAR → written to the graph → read back.
+
+```bash
+cd backend
+pip install -e ".[dev,benchmark]"
+python -m app.benchmark.official fetch && python -m app.benchmark.official prepare
+python -m app.benchmark.official load-graph
+python -m app.benchmark.runner --official
+```
+
+Full methodology, the per-case table, run history (including two earlier runs and the bugs they exposed) and limitations are in **[backend/docs/official-benchmark-report.md](backend/docs/official-benchmark-report.md)**. The main limitations: no answer key; customer replies are simulated (README §5) by one stated rule; the probability weights are hand-set, not fitted; and the official path uses no LLM (`tokens: 0`).
+
 ## What does this project do?
 
 Given a transaction such as:
@@ -181,7 +210,7 @@ The current development graph contains approximately:
 - **6,676 vertices**
 - **15,627 edges**
 
-The exact graph contents are generated from the available development dataset — see [Development dataset & benchmark limitation](#development-dataset--benchmark-limitation).
+The exact graph contents are generated from the available development dataset — see [Development dataset & benchmark limitation](#development-dataset-ieee-cis-fallback-and-the-official-benchmark).
 
 ## Investigation Tools
 
@@ -606,7 +635,9 @@ Interactive API documentation is available through FastAPI's generated OpenAPI d
 │   │   ├── benchmark/
 │   │   │   ├── discovery.py
 │   │   │   ├── models.py
-│   │   │   └── runner.py
+│   │   │   ├── runner.py        # `--official` entry point
+│   │   │   └── official/        # official HHGOA_IEEE benchmark: dataset, graph load,
+│   │   │                        # tools, signals, policy v1.0, agent, SAR, conformance
 │   │   │
 │   │   ├── case/
 │   │   │   ├── models.py
@@ -645,13 +676,21 @@ Interactive API documentation is available through FastAPI's generated OpenAPI d
 │   │   ├── phase-2-benchmark-report.md
 │   │   ├── phase-2-api.md
 │   │   ├── phase-2-frontend.md
-│   │   └── phase-2m-demo-and-judging-checklist.md
+│   │   ├── phase-2m-demo-and-judging-checklist.md
+│   │   ├── official-benchmark-report.md
+│   │   ├── technical-blog.md
+│   │   ├── x-post.md
+│   │   └── submission-checklist.md
 │   │
+│   ├── benchmark/results/official/   # per-case artifacts, summary.json/.csv, manifest.json
 │   ├── data/
-│   │   └── hhgoa/          # not committed - see backend/data/README.md
+│   │   ├── hhgoa/          # IEEE-CIS dev fallback, not committed - see backend/data/README.md
+│   │   └── hhgoa_ieee/     # official package, not committed - `python -m app.benchmark.official fetch`
 │   │
 │   ├── scripts/
 │   └── pyproject.toml
+│
+├── cases/                  # the 20 official answer files (HHG-001.json … HHG-020.json)
 │
 ├── frontend/
 │   ├── src/
@@ -876,7 +915,11 @@ The application exposes investigation findings, evidence, rationale, and traceab
 
 It does not expose hidden chain-of-thought.
 
-## Development Dataset & Benchmark Limitation
+## Development Dataset (IEEE-CIS Fallback) and the Official Benchmark
+
+**Development (Phases 1–2M):** IEEE-CIS fallback. **Final benchmark:** the official HHGOA_IEEE 20-case package, obtained afterwards and evaluated. See [Official HHGOA Benchmark](#official-hhgoa-benchmark).
+
+The history below is kept because it accurately describes how the system was built.
 
 The official HHGOA_IEEE dataset and official 20-case benchmark package were not available in the development environment during implementation.
 
@@ -905,6 +948,8 @@ The fallback dataset contains an `isFraud` field. That field is kept separate fr
 - agent confidence.
 
 No official HHGOA benchmark score is claimed from the fallback data. Full accounting: `backend/docs/phase-2-benchmark-report.md`.
+
+The official package was later obtained from TigerGraph's Drive folder. It is loaded into a **separate** graph, `HHGOA_IEEE`, and run by `app/benchmark/official/`. The fallback CSVs (which carry `isFraud`) are never read by the official pipeline; the dataset README calls using the original public files to recover outcomes disqualifying. The deployed dashboard and API still run on the development `HHGOA_FRAUD` graph.
 
 ## Infrastructure Resilience (Previously Encountered Outage, Now Resolved)
 
@@ -939,8 +984,8 @@ rather than hiding infrastructure failures — no fabricated evidence, no fabric
 
 | Area | Status |
 | --- | --- |
-| Backend offline tests | 329/329 |
-| Frontend tests | 30/30 |
+| Backend offline tests | 365/365 |
+| Frontend tests | 31/31 |
 | TypeScript | PASS |
 | ESLint | PASS |
 | Production build | PASS |
@@ -950,7 +995,7 @@ rather than hiding infrastructure failures — no fabricated evidence, no fabric
 | Security audit | PASS |
 | Backend live tests (TigerGraph) | 79/79 |
 | Live investigation end-to-end | Verified (transaction 2987937, see Demo) |
-| Official HHGOA benchmark | Unavailable |
+| Official HHGOA benchmark | 20/20 executed · 20/20 written to graph and read back · 20/20 conformant · accuracy not available (no answer key) |
 
 ## Design Principles
 
@@ -1082,6 +1127,10 @@ Detailed engineering documentation is available under `backend/docs/`:
 - `phase-2-api.md`
 - `phase-2-frontend.md`
 - `phase-2m-demo-and-judging-checklist.md`
+- `official-benchmark-report.md`: official HHGOA_IEEE 20-case benchmark
+- `technical-blog.md`: technical write-up
+- `x-post.md`: social post draft
+- `submission-checklist.md`: final submission checklist
 
 These documents describe the implementation decisions and validation performed during development.
 
@@ -1104,12 +1153,18 @@ This project addresses the major challenge requirements through:
 | Analyst UI | Next.js investigation console |
 | Traceability | Evidence IDs + provenance + case history |
 | Graceful degradation | Explicit ERROR / UNKNOWN states |
+| Official 20 cases | `cases/*.json` via `python -m app.benchmark.runner --official` |
+| Case written to graph | `InvestigationCase` vertex + edges in `HHGOA_IEEE`, read back and verified |
+| SAR when required | Policy §3a, 5 filed with FinCEN-style narratives |
+| NBA before/after evidence | `next_best_actions.initial` / `final` / `what_changed`, routes from policy §2 |
 
 ## Future Extensions
 
 Potential future work includes:
 
-- official HHGOA benchmark integration once available;
+- fitting the probability weights on the 5,565 labelled closed cases (calibration);
+- loading the policy, closed-case narratives and regulatory documents into TigerGraph vector search;
+- LLM-written case summaries and SAR narratives, validated against dataset IDs;
 - richer graph algorithms;
 - additional fraud typologies;
 - production-grade persistent case storage;

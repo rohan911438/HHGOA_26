@@ -116,3 +116,18 @@ def _run_one(
         error=outcome.error,
         executed_at=datetime.now(UTC),
     )
+
+
+if __name__ == "__main__":
+    # `python -m app.benchmark.runner --official` runs the official HHGOA_IEEE
+    # benchmark (validate -> 20 cases -> conformance -> summary). The Phase 2J
+    # infrastructure validation above stays importable and unchanged; it is
+    # never used as a substitute for the official cases.
+    import sys
+
+    if "--official" not in sys.argv[1:]:
+        print("usage: python -m app.benchmark.runner --official", file=sys.stderr)
+        sys.exit(2)
+    from app.benchmark.official.__main__ import main
+
+    sys.exit(main(["all"]))

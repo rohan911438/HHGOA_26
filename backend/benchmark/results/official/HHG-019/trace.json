@@ -1,0 +1,162 @@
+{
+  "steps": [
+    {
+      "n": 1,
+      "name": "trigger",
+      "detail": "risk_score: Real-time model scored transaction 3503878 ($99.92, online) at 0.90. Review and decide."
+    },
+    {
+      "n": 2,
+      "name": "open_case",
+      "detail": "flagged txn 3503878 $99.92 online at 2016-12-01 17:28:53"
+    },
+    {
+      "n": 3,
+      "name": "history",
+      "detail": "247 txns on C07987-K2; customer holds ['C07987-K1', 'C07987-K2']"
+    },
+    {
+      "n": 4,
+      "name": "device_neighbourhood",
+      "detail": "5 card(s) on the device profile within 30 days"
+    },
+    {
+      "n": 5,
+      "name": "memory",
+      "detail": "4 closed case(s) on the customer's cards; 2 similar 'undocumented' closed case(s); 0 earlier agent case(s) linked"
+    },
+    {
+      "n": 6,
+      "name": "assess",
+      "detail": "p=0.93 fraud evidence ['device', 'network'] legit []"
+    },
+    {
+      "n": 7,
+      "name": "final_decision",
+      "detail": "BLOCK_CARD, CREATE_CASE, FILE_REPORT, MONITOR_CONNECTED_CARDS, ESCALATE_TO_ANALYST"
+    },
+    {
+      "n": 8,
+      "name": "write_case",
+      "detail": "CASE-HHG-019 written and read back: verified=True"
+    }
+  ],
+  "tool_calls": [
+    {
+      "tool": "get_transaction",
+      "params": {
+        "t": "3503878"
+      },
+      "latency_ms": 266.8,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "card_history",
+      "params": {
+        "c": "C07987-K2"
+      },
+      "latency_ms": 1161.8,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "customer_cards",
+      "params": {
+        "cu": "C07987"
+      },
+      "latency_ms": 306.7,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "device_neighbours",
+      "params": {
+        "d": "Windows | other | chrome 61.0 | 1280x720",
+        "t0": "2016-11-01 17:28:53",
+        "t1": "2016-12-31 17:28:53"
+      },
+      "latency_ms": 392.0,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "closed_cases_for_cards",
+      "params": {
+        "cards": [
+          "C07987-K1",
+          "C07987-K2"
+        ]
+      },
+      "latency_ms": 269.5,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "similar_closed_cases",
+      "params": {
+        "pat": "undocumented",
+        "lo": 49.96,
+        "hi": 149.88,
+        "before_ts": "2016-12-01 22:28:53"
+      },
+      "latency_ms": 340.9,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "case_memory",
+      "params": {
+        "cards": [
+          "C07987-K2",
+          "C01104-K2",
+          "C01983-K1",
+          "C06224-K2",
+          "C11309-K1"
+        ],
+        "devices": [
+          "Windows | other | chrome 61.0 | 1280x720"
+        ]
+      },
+      "latency_ms": 355.3,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "write_case",
+      "params": {
+        "graph_case_id": "CASE-HHG-019"
+      },
+      "latency_ms": 1979.5,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "read_case",
+      "params": {
+        "ic": "CASE-HHG-019"
+      },
+      "latency_ms": 337.8,
+      "ok": true,
+      "error": ""
+    }
+  ],
+  "decision": {
+    "verdict": "fraud",
+    "status": "escalated",
+    "final_probability": 0.93,
+    "affected": [
+      "3503878"
+    ],
+    "exposure": 99.92,
+    "connected_cards": [
+      "C01104-K2",
+      "C01983-K1",
+      "C06224-K2",
+      "C11309-K1"
+    ],
+    "evidence_requests": [],
+    "stop_reason": "Probability 0.93 >= 0.85 on 2 independent lines of evidence (device, network); stopping per §6.",
+    "what_changed": "nothing"
+  }
+}

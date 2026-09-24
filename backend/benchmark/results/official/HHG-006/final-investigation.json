@@ -1,0 +1,17 @@
+{
+  "status": "escalated",
+  "verdict": "fraud",
+  "fraud_probability": 0.98,
+  "pattern": "undocumented",
+  "pattern_description": "Rapid online purchases each just under a $500 authorization level (4 online purchases between $400 and $500 within 60 minutes), consistent with amounts chosen to stay below a review threshold. It fits none of the five documented patterns: there is no low-value testing run and no new region. Found by scanning the card's 48-hour window for clusters of near-threshold amounts.",
+  "affected_txn_ids": [
+    "3476602",
+    "3476633",
+    "3476665",
+    "3476682"
+  ],
+  "first_suspicious_txn_id": "3476602",
+  "connected_card_ids": [],
+  "connected_device_profiles": [],
+  "exposure_usd": 1906.07
+}

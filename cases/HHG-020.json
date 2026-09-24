@@ -1,0 +1,159 @@
+{
+  "case_id": "HHG-020",
+  "case": {
+    "status": "closed_fraud",
+    "verdict": "fraud",
+    "fraud_probability": 0.92,
+    "pattern": "card_not_present_new_device",
+    "pattern_description": "",
+    "affected_txn_ids": [
+      "3509359"
+    ],
+    "first_suspicious_txn_id": "3509359",
+    "connected_card_ids": [],
+    "connected_device_profiles": [],
+    "exposure_usd": 125.08,
+    "evidence": [
+      {
+        "claim": "Alert: Real-time model scored transaction 3509359 ($125.08, online) at 0.52. Review and decide.",
+        "source": "external",
+        "ref": "case_pack:HHG-020",
+        "entity_ids": [
+          "3509359",
+          "C12265-K2"
+        ]
+      },
+      {
+        "claim": "Flagged $125.08 (product R) vs card median $107.91; product seen before: False",
+        "source": "graph",
+        "ref": "query:card_history(card_id=C12265-K2)",
+        "entity_ids": [
+          "3509359"
+        ]
+      },
+      {
+        "claim": "Identity record device status 'New'; profile not seen earlier on this card",
+        "source": "graph",
+        "ref": "query:card_history+identity(device_status)",
+        "entity_ids": [
+          "3509359"
+        ]
+      },
+      {
+        "claim": "Channels within 48h: ['in_person', 'online']",
+        "source": "graph",
+        "ref": "query:card_history(card_id=C12265-K2)",
+        "entity_ids": []
+      },
+      {
+        "claim": "Device profile seen on 79 card(s) within 30 days; no ring",
+        "source": "graph",
+        "ref": "query:device_neighbours(window=30d)",
+        "entity_ids": [
+          "C00854-K2",
+          "C01033-K1",
+          "C12961-K2",
+          "C05797-K1",
+          "C09274-K1",
+          "C07612-K1"
+        ]
+      },
+      {
+        "claim": "Customer's cards have prior closed cases: CC-2447 (confirmed_fraud, account_takeover), CC-2277 (confirmed_fraud, account_takeover)",
+        "source": "graph",
+        "ref": "query:closed_cases_for_cards",
+        "entity_ids": [
+          "CC-2447",
+          "CC-2277"
+        ]
+      },
+      {
+        "claim": "Retrieved closed cases used as memory: CC-2447, CC-2277, CC-5404, CC-2882, CC-1557",
+        "source": "graph",
+        "ref": "query:similar_closed_cases",
+        "entity_ids": [
+          "CC-2447",
+          "CC-2277",
+          "CC-5404",
+          "CC-2882",
+          "CC-1557"
+        ]
+      },
+      {
+        "claim": "Assessed fraud probability 0.73 before further evidence (lines of evidence: amount, device; legitimate indicators: none)",
+        "source": "document",
+        "ref": "policy:§6,R1",
+        "entity_ids": [
+          "3509359"
+        ]
+      },
+      {
+        "claim": "Customer states they did not make the transaction and still holds the card (simulated: probability 0.73 favoured fraud).",
+        "source": "customer",
+        "ref": "evidence_request:1",
+        "entity_ids": []
+      }
+    ],
+    "similar_prior_cases": [
+      "CC-2447",
+      "CC-2277",
+      "CC-5404",
+      "CC-2882",
+      "CC-1557"
+    ],
+    "summary": "Risk score alert on C12265-K2 (transaction 3509359). Assessed as card-not-present fraud from a device new to the account, fraud probability 0.92: 1 transaction(s) totalling $125.08 starting at 3509359. Final actions: BLOCK_CARD, CREATE_CASE.",
+    "written_to_graph": true,
+    "graph_case_id": "CASE-HHG-020"
+  },
+  "evidence_requests": [
+    {
+      "type": "customer_validation",
+      "asked_after_step": 6,
+      "assumed_response": "Customer states they did not make the transaction and still holds the card (simulated: probability 0.73 favoured fraud)."
+    }
+  ],
+  "next_best_actions": {
+    "initial": [
+      {
+        "action": "DECLINE_TRANSACTION",
+        "route": "L1",
+        "reason": "§3b, R1: probability 0.73; hold the flagged authorization while verification is pending"
+      },
+      {
+        "action": "VERIFY_WITH_CUSTOMER",
+        "route": "auto",
+        "reason": "§3b: probability 0.73 is below the 0.85 stopping point; confirm before blocking"
+      },
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "§3a: evidence requested; probability 0.73 >= 0.30"
+      }
+    ],
+    "final": [
+      {
+        "action": "BLOCK_CARD",
+        "route": "L1",
+        "reason": "R2: customer denied; exposure $125.08 <= $2,500"
+      },
+      {
+        "action": "CREATE_CASE",
+        "route": "auto",
+        "reason": "R2, §3a"
+      }
+    ],
+    "what_changed": "The (simulated) customer response moved the probability to 0.92, turning verification into BLOCK_CARD."
+  },
+  "sar": {
+    "file": false,
+    "reason": "§3a: fraud is confirmed but exposure $125.08 is at or below $1,000 and no shared origin or coordinated pattern was found; case only, no report.",
+    "narrative": "",
+    "subjects": [],
+    "total_amount_usd": 0,
+    "activity_dates": []
+  },
+  "stop_reason": "The customer's (simulated) denial settled the question (§6).",
+  "tool_calls": 9,
+  "tokens": 0,
+  "latency_s": 3.9
+}

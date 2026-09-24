@@ -1,0 +1,214 @@
+{
+  "flagged_transaction": {
+    "channel": "in_person",
+    "device_profile": "",
+    "device_type": "",
+    "product_cd": "W",
+    "txn_id": "3491361",
+    "p_email": "",
+    "device_status": "",
+    "amount": 39.08,
+    "addr2": "87.0",
+    "m1": "T",
+    "risk_score": 0.48,
+    "addr1": "126.0",
+    "m2": "T",
+    "m3": "T",
+    "m4": "M0",
+    "m5": "F",
+    "m6": "F",
+    "r_email": "",
+    "m7": "F",
+    "m8": "F",
+    "m9": "T",
+    "card_id": "C02354-K2",
+    "dist1": 1,
+    "customer_id": "C02354",
+    "ts": "2016-11-27 13:41:26",
+    "proxy_type": ""
+  },
+  "card_history_size": 7079,
+  "customer_cards": [
+    "C02354-K1",
+    "C02354-K2"
+  ],
+  "device_neighbourhood": null,
+  "signals": {
+    "history_depth": {
+      "name": "history_depth",
+      "present": true,
+      "detail": "5860 prior transactions on this card",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "card_testing_sequence": {
+      "name": "card_testing_sequence",
+      "present": false,
+      "detail": "no run of 3+ sub-$5 online authorizations",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "sub_threshold_structuring": {
+      "name": "sub_threshold_structuring",
+      "present": false,
+      "detail": "no cluster of just-under-$500 online purchases",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "online_amount_or_product_unusual": {
+      "name": "online_amount_or_product_unusual",
+      "present": false,
+      "detail": "flagged $39.08 (product W) vs card median $86.91; product seen before: True",
+      "entity_ids": [
+        "3491361"
+      ],
+      "weight": 0.0
+    },
+    "online_burst_48h": {
+      "name": "online_burst_48h",
+      "present": false,
+      "detail": "0 unusual online purchases within 48h of the alert",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "no_prior_online_use": {
+      "name": "no_prior_online_use",
+      "present": false,
+      "detail": "491 prior online transactions on this card",
+      "entity_ids": [
+        "3491361"
+      ],
+      "weight": 0.0
+    },
+    "new_device": {
+      "name": "new_device",
+      "present": false,
+      "detail": "identity record device status 'n/a'; profile not seen earlier on this card",
+      "entity_ids": [
+        "3491361"
+      ],
+      "weight": 0.0
+    },
+    "known_device": {
+      "name": "known_device",
+      "present": false,
+      "detail": "device already known to the account (identity record 'n/a')",
+      "entity_ids": [
+        "3491361"
+      ],
+      "weight": 0.0
+    },
+    "proxy": {
+      "name": "proxy",
+      "present": false,
+      "detail": "proxy flag (id_23) = 'none'",
+      "entity_ids": [
+        "3491361"
+      ],
+      "weight": 0.0
+    },
+    "new_billing_region": {
+      "name": "new_billing_region",
+      "present": false,
+      "detail": "card-present use in region 126.0; home region 325.0; 38 region(s) in history",
+      "entity_ids": [
+        "3491361"
+      ],
+      "weight": 0.0
+    },
+    "home_activity_continues": {
+      "name": "home_activity_continues",
+      "present": false,
+      "detail": "191 home-region transactions within 3 days of the alert",
+      "entity_ids": [
+        "3483355",
+        "3483390",
+        "3483592",
+        "3483742",
+        "3483774"
+      ],
+      "weight": 0.0
+    },
+    "multi_day_stay": {
+      "name": "multi_day_stay",
+      "present": false,
+      "detail": "purchases on 19 distinct day(s) in region 126.0",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "match_flag_anomaly": {
+      "name": "match_flag_anomaly",
+      "present": false,
+      "detail": "4 match flags false on the flagged txn vs 38% false historically",
+      "entity_ids": [
+        "3491361"
+      ],
+      "weight": 0.0
+    },
+    "purchaser_email_change": {
+      "name": "purchaser_email_change",
+      "present": false,
+      "detail": "purchaser email domain 'n/a' not seen before on this card",
+      "entity_ids": [
+        "3491361"
+      ],
+      "weight": 0.0
+    },
+    "mixed_channel_48h": {
+      "name": "mixed_channel_48h",
+      "present": true,
+      "detail": "channels within 48h: ['in_person', 'online']",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "recurring_charge": {
+      "name": "recurring_charge",
+      "present": false,
+      "detail": "144 earlier charges of ~$39.08 (product W), 0 at monthly spacing",
+      "entity_ids": [
+        "3476976",
+        "3478061",
+        "3482491",
+        "3488986"
+      ],
+      "weight": 0.0
+    }
+  },
+  "episode_txn_ids": [
+    "3491361"
+  ],
+  "initial_assessment": {
+    "probability": 0.55,
+    "fraud_groups": [
+      "customer_denial"
+    ],
+    "legit_groups": [],
+    "contributions": {
+      "mixed_channel_48h": 0.2
+    }
+  },
+  "own_closed_cases": [
+    "CC-4942",
+    "CC-1450",
+    "CC-0454",
+    "CC-3537",
+    "CC-5558",
+    "CC-2432",
+    "CC-2187",
+    "CC-3634",
+    "CC-3899",
+    "CC-3085",
+    "CC-4721",
+    "CC-2051",
+    "CC-0631",
+    "CC-0255",
+    "CC-2589",
+    "CC-0405",
+    "CC-5441",
+    "CC-1699",
+    "CC-4070",
+    "CC-4436"
+  ],
+  "similar_closed_cases_retrieved": [],
+  "agent_case_memory": []
+}

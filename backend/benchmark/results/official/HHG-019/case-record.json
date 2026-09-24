@@ -1,0 +1,98 @@
+{
+  "status": "escalated",
+  "verdict": "fraud",
+  "fraud_probability": 0.93,
+  "pattern": "undocumented",
+  "pattern_description": "One device profile (Windows | other | chrome 61.0 | 1280x720) is transacting on cards of several unrelated customers within a month (4 other card(s)), a coordinated multi-victim scheme rather than a single stolen number. Found by traversing the graph from the flagged transaction to its device profile and back out to every card that used it.",
+  "affected_txn_ids": [
+    "3503878"
+  ],
+  "first_suspicious_txn_id": "3503878",
+  "connected_card_ids": [
+    "C01104-K2",
+    "C01983-K1",
+    "C06224-K2",
+    "C11309-K1"
+  ],
+  "connected_device_profiles": [
+    "Windows | other | chrome 61.0 | 1280x720"
+  ],
+  "exposure_usd": 99.92,
+  "evidence": [
+    {
+      "claim": "Alert: Real-time model scored transaction 3503878 ($99.92, online) at 0.90. Review and decide.",
+      "source": "external",
+      "ref": "case_pack:HHG-019",
+      "entity_ids": [
+        "3503878",
+        "C07987-K2"
+      ]
+    },
+    {
+      "claim": "Identity record device status 'New'; profile not seen earlier on this card",
+      "source": "graph",
+      "ref": "query:card_history+identity(device_status)",
+      "entity_ids": [
+        "3503878"
+      ]
+    },
+    {
+      "claim": "Channels within 48h: ['in_person', 'online']",
+      "source": "graph",
+      "ref": "query:card_history(card_id=C07987-K2)",
+      "entity_ids": []
+    },
+    {
+      "claim": "Device profile used by 4 other customer(s) within 30 days (5 cards all-time, 1.0 txns per card, marked New on 80% of its transactions); 0 confirmed-fraud closed case(s) involve it",
+      "source": "graph",
+      "ref": "query:device_neighbours(window=30d)",
+      "entity_ids": [
+        "C01104-K2",
+        "C01983-K1",
+        "C06224-K2",
+        "C11309-K1"
+      ]
+    },
+    {
+      "claim": "Customer's cards have prior closed cases: CC-2011 (confirmed_fraud, out_of_region_use), CC-2087 (cleared, none), CC-2860 (confirmed_fraud, card_not_present_fraud), CC-5026 (confirmed_fraud, out_of_region_use)",
+      "source": "graph",
+      "ref": "query:closed_cases_for_cards",
+      "entity_ids": [
+        "CC-2011",
+        "CC-2087",
+        "CC-2860",
+        "CC-5026"
+      ]
+    },
+    {
+      "claim": "Retrieved closed cases used as memory: CC-2011, CC-2087, CC-2860, CC-3035, CC-2971",
+      "source": "graph",
+      "ref": "query:similar_closed_cases",
+      "entity_ids": [
+        "CC-2011",
+        "CC-2087",
+        "CC-2860",
+        "CC-3035",
+        "CC-2971"
+      ]
+    },
+    {
+      "claim": "Assessed fraud probability 0.93 before further evidence (lines of evidence: device, network; legitimate indicators: none)",
+      "source": "document",
+      "ref": "policy:§6,R1",
+      "entity_ids": [
+        "3503878"
+      ]
+    }
+  ],
+  "similar_prior_cases": [
+    "CC-2011",
+    "CC-2087",
+    "CC-2860",
+    "CC-3035",
+    "CC-2971"
+  ],
+  "summary": "Risk score alert on C07987-K2 (transaction 3503878). Assessed as a pattern outside the bank's five documented typologies, fraud probability 0.93: 1 transaction(s) totalling $99.92 starting at 3503878. The device profile links 4 other card(s). Final actions: BLOCK_CARD, CREATE_CASE, FILE_REPORT, MONITOR_CONNECTED_CARDS, ESCALATE_TO_ANALYST.",
+  "written_to_graph": true,
+  "graph_case_id": "CASE-HHG-019"
+}

@@ -1,0 +1,32 @@
+{
+  "attempted": true,
+  "write": {
+    "vertices_upserted": 1,
+    "edges_upserted": 9,
+    "edges_expected": 9
+  },
+  "read_back": {
+    "vertex": {
+      "summary": "Risk score alert on C03042-K1 (transaction 3464869). Assessed as card-not-present fraud from a device new to the account, fraud probability 0.94: 1 transaction(s) totalling $599.94 starting at 3464869. Final actions: BLOCK_CARD, CREATE_CASE.",
+      "sar_file": false,
+      "fraud_probability": 0.94,
+      "pattern": "card_not_present_new_device",
+      "pattern_description": "",
+      "stop_reason": "The customer's (simulated) denial settled the question (§6).",
+      "official_case_id": "HHG-015",
+      "final_actions": "BLOCK_CARD|CREATE_CASE",
+      "exposure_usd": 599.94,
+      "graph_case_id": "CASE-HHG-015",
+      "initial_actions": "DECLINE_TRANSACTION|VERIFY_WITH_CUSTOMER|CREATE_CASE",
+      "verdict": "fraud",
+      "written_at": "2026-09-24 08:57:54",
+      "status": "closed_fraud"
+    },
+    "similar": 6,
+    "cards": 1,
+    "flagged": 1,
+    "devices": 0,
+    "affected": 1
+  },
+  "verified": true
+}

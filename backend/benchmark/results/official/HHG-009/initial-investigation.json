@@ -1,0 +1,195 @@
+{
+  "flagged_transaction": {
+    "channel": "online",
+    "device_profile": "",
+    "device_type": "desktop",
+    "product_cd": "S",
+    "txn_id": "3581141",
+    "p_email": "",
+    "device_status": "Found",
+    "amount": 30.02,
+    "addr2": "87.0",
+    "m1": "",
+    "risk_score": 0.28,
+    "addr1": "203.0",
+    "m2": "",
+    "m3": "",
+    "m4": "",
+    "m5": "",
+    "m6": "",
+    "r_email": "gmail.com",
+    "m7": "",
+    "m8": "",
+    "m9": "",
+    "card_id": "C08299-K1",
+    "dist1": -1,
+    "customer_id": "C08299",
+    "ts": "2016-12-28 12:10:53",
+    "proxy_type": ""
+  },
+  "card_history_size": 56,
+  "customer_cards": [
+    "C08299-K1"
+  ],
+  "device_neighbourhood": null,
+  "signals": {
+    "history_depth": {
+      "name": "history_depth",
+      "present": true,
+      "detail": "46 prior transactions on this card",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "card_testing_sequence": {
+      "name": "card_testing_sequence",
+      "present": false,
+      "detail": "no run of 3+ sub-$5 online authorizations",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "sub_threshold_structuring": {
+      "name": "sub_threshold_structuring",
+      "present": false,
+      "detail": "no cluster of just-under-$500 online purchases",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "online_amount_or_product_unusual": {
+      "name": "online_amount_or_product_unusual",
+      "present": false,
+      "detail": "flagged $30.02 (product S) vs card median $49.97; product seen before: True",
+      "entity_ids": [
+        "3581141"
+      ],
+      "weight": 0.0
+    },
+    "online_burst_48h": {
+      "name": "online_burst_48h",
+      "present": false,
+      "detail": "0 unusual online purchases within 48h of the alert",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "no_prior_online_use": {
+      "name": "no_prior_online_use",
+      "present": false,
+      "detail": "40 prior online transactions on this card",
+      "entity_ids": [
+        "3581141"
+      ],
+      "weight": 0.0
+    },
+    "new_device": {
+      "name": "new_device",
+      "present": false,
+      "detail": "identity record device status 'Found'; profile not seen earlier on this card",
+      "entity_ids": [
+        "3581141"
+      ],
+      "weight": 0.0
+    },
+    "known_device": {
+      "name": "known_device",
+      "present": true,
+      "detail": "device already known to the account (identity record 'Found')",
+      "entity_ids": [
+        "3581141"
+      ],
+      "weight": 0.0
+    },
+    "proxy": {
+      "name": "proxy",
+      "present": false,
+      "detail": "proxy flag (id_23) = 'none'",
+      "entity_ids": [
+        "3581141"
+      ],
+      "weight": 0.0
+    },
+    "new_billing_region": {
+      "name": "new_billing_region",
+      "present": false,
+      "detail": "card-present use in region 203.0; home region 330.0; 7 region(s) in history",
+      "entity_ids": [
+        "3581141"
+      ],
+      "weight": 0.0
+    },
+    "home_activity_continues": {
+      "name": "home_activity_continues",
+      "present": false,
+      "detail": "4 home-region transactions within 3 days of the alert",
+      "entity_ids": [
+        "3576079",
+        "3586980",
+        "3587042",
+        "3587043"
+      ],
+      "weight": 0.0
+    },
+    "multi_day_stay": {
+      "name": "multi_day_stay",
+      "present": false,
+      "detail": "purchases on 1 distinct day(s) in region 203.0",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "match_flag_anomaly": {
+      "name": "match_flag_anomaly",
+      "present": false,
+      "detail": "0 match flags false on the flagged txn vs 48% false historically",
+      "entity_ids": [
+        "3581141"
+      ],
+      "weight": 0.0
+    },
+    "purchaser_email_change": {
+      "name": "purchaser_email_change",
+      "present": false,
+      "detail": "purchaser email domain 'n/a' not seen before on this card",
+      "entity_ids": [
+        "3581141"
+      ],
+      "weight": 0.0
+    },
+    "mixed_channel_48h": {
+      "name": "mixed_channel_48h",
+      "present": false,
+      "detail": "channels within 48h: ['online']",
+      "entity_ids": [],
+      "weight": 0.0
+    },
+    "recurring_charge": {
+      "name": "recurring_charge",
+      "present": false,
+      "detail": "4 earlier charges of ~$30.02 (product S), 0 at monthly spacing",
+      "entity_ids": [
+        "3034459",
+        "3342487",
+        "3381749",
+        "3545489"
+      ],
+      "weight": 0.0
+    }
+  },
+  "episode_txn_ids": [
+    "3581141"
+  ],
+  "initial_assessment": {
+    "probability": 0.23,
+    "fraud_groups": [
+      "customer_denial"
+    ],
+    "legit_groups": [
+      "device"
+    ],
+    "contributions": {
+      "known_device": -1.2
+    }
+  },
+  "own_closed_cases": [],
+  "similar_closed_cases_retrieved": [],
+  "agent_case_memory": [
+    "CASE-HHG-005"
+  ]
+}

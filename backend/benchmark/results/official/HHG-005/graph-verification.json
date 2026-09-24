@@ -1,0 +1,32 @@
+{
+  "attempted": true,
+  "write": {
+    "vertices_upserted": 1,
+    "edges_upserted": 14,
+    "edges_expected": 14
+  },
+  "read_back": {
+    "vertex": {
+      "summary": "Risk score alert on C02923-K1 (transaction 3523199). Assessed as a pattern outside the bank's five documented typologies, fraud probability 0.92: 1 transaction(s) totalling $100.07 starting at 3523199. The device profile links 4 other card(s). Final actions: BLOCK_CARD, CREATE_CASE, FILE_REPORT, MONITOR_CONNECTED_CARDS, ESCALATE_TO_ANALYST.",
+      "sar_file": true,
+      "fraud_probability": 0.92,
+      "pattern": "undocumented",
+      "pattern_description": "One device profile (iOS Device | iOS 9.3.5 | mobile safari 9.0 | 1024x768) is transacting on cards of several unrelated customers within a month (4 other card(s)), a coordinated multi-victim scheme rather than a single stolen number. Found by traversing the graph from the flagged transaction to its device profile and back out to every card that used it.",
+      "stop_reason": "Probability 0.92 >= 0.85 on 3 independent lines of evidence (device, network, credentials); stopping per §6.",
+      "official_case_id": "HHG-005",
+      "final_actions": "BLOCK_CARD|CREATE_CASE|FILE_REPORT|MONITOR_CONNECTED_CARDS|ESCALATE_TO_ANALYST",
+      "exposure_usd": 100.07,
+      "graph_case_id": "CASE-HHG-005",
+      "initial_actions": "BLOCK_CARD|CREATE_CASE|FILE_REPORT|MONITOR_CONNECTED_CARDS|ESCALATE_TO_ANALYST",
+      "verdict": "fraud",
+      "written_at": "2026-09-24 09:00:56",
+      "status": "escalated"
+    },
+    "similar": 6,
+    "cards": 5,
+    "flagged": 1,
+    "devices": 1,
+    "affected": 1
+  },
+  "verified": true
+}

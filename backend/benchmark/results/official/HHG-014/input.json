@@ -1,0 +1,12 @@
+{
+  "case_id": "HHG-014",
+  "opened_at": "2016-11-22 20:11:00",
+  "trigger_type": "analyst_request",
+  "trigger_text": "Analyst request: several cards this month show purchases from the same unusual device profile. Review transaction 3478561 on card C13487-K1 and look for related activity.",
+  "flagged_txn_id": "3478561",
+  "card_id": "C13487-K1",
+  "customer_id": "C13487",
+  "risk_score": null,
+  "is_official_benchmark_case": true,
+  "source": "official case_pack.csv"
+}

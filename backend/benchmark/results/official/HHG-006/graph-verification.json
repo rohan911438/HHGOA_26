@@ -1,0 +1,32 @@
+{
+  "attempted": true,
+  "write": {
+    "vertices_upserted": 1,
+    "edges_upserted": 12,
+    "edges_expected": 12
+  },
+  "read_back": {
+    "vertex": {
+      "summary": "Customer report alert on C07297-K1 (transaction 3476682). Assessed as a pattern outside the bank's five documented typologies, fraud probability 0.98: 4 transaction(s) totalling $1,906.07 starting at 3476602. Final actions: BLOCK_CARD, CREATE_CASE, FILE_REPORT, ESCALATE_TO_ANALYST.",
+      "sar_file": true,
+      "fraud_probability": 0.98,
+      "pattern": "undocumented",
+      "pattern_description": "Rapid online purchases each just under a $500 authorization level (4 online purchases between $400 and $500 within 60 minutes), consistent with amounts chosen to stay below a review threshold. It fits none of the five documented patterns: there is no low-value testing run and no new region. Found by scanning the card's 48-hour window for clusters of near-threshold amounts.",
+      "stop_reason": "The customer's denial plus graph evidence put the probability at 0.98; a further request would not change the action (§6).",
+      "official_case_id": "HHG-006",
+      "final_actions": "BLOCK_CARD|CREATE_CASE|FILE_REPORT|ESCALATE_TO_ANALYST",
+      "exposure_usd": 1906.07,
+      "graph_case_id": "CASE-HHG-006",
+      "initial_actions": "BLOCK_CARD|CREATE_CASE|FILE_REPORT|ESCALATE_TO_ANALYST",
+      "verdict": "fraud",
+      "written_at": "2026-09-24 08:58:22",
+      "status": "escalated"
+    },
+    "similar": 6,
+    "cards": 1,
+    "flagged": 1,
+    "devices": 0,
+    "affected": 4
+  },
+  "verified": true
+}

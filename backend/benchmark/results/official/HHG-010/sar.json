@@ -1,0 +1,14 @@
+{
+  "file": true,
+  "reason": "exposure $1,000.03 exceeds $1,000 (R2, §3a)",
+  "narrative": "On 2016-12-02 at 15:18, card C10434-K1 held by customer C10434 was used for one transaction of $1,000.03. The activity was online, billed in region(s) 469.0, under product code(s) R. The online transactions came from device profile(s) Windows | Windows 10 | edge 16.0 | 1366x768. The alert was raised by risk score on transaction 3506725 (model score 0.9). The investigation found card-not-present fraud from a device new to the account. Identity record device status 'New'; profile not seen earlier on this card. Cardholder contact: Customer states they did not make the transaction and still holds the card (simulated: probability 0.76 favoured fraud). It is suspicious because exposure $1,000.03 exceeds $1,000 (R2, §3a). Actions: BLOCK_CARD, CREATE_CASE, FILE_REPORT.",
+  "subjects": [
+    "C10434",
+    "C10434-K1"
+  ],
+  "total_amount_usd": 1000.03,
+  "activity_dates": [
+    "2016-12-02",
+    "2016-12-02"
+  ]
+}

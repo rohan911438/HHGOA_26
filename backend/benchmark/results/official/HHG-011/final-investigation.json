@@ -1,0 +1,14 @@
+{
+  "status": "closed_fraud",
+  "verdict": "fraud",
+  "fraud_probability": 0.83,
+  "pattern": "card_not_present_new_device",
+  "pattern_description": "",
+  "affected_txn_ids": [
+    "3583368"
+  ],
+  "first_suspicious_txn_id": "3583368",
+  "connected_card_ids": [],
+  "connected_device_profiles": [],
+  "exposure_usd": 131.3
+}

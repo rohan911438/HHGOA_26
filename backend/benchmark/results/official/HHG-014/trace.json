@@ -1,0 +1,200 @@
+{
+  "steps": [
+    {
+      "n": 1,
+      "name": "trigger",
+      "detail": "analyst_request: Analyst request: several cards this month show purchases from the same unusual device profile. Review transaction 3478561 on card C13487-K1 and look for related activity."
+    },
+    {
+      "n": 2,
+      "name": "open_case",
+      "detail": "flagged txn 3478561 $74.96 online at 2016-11-22 16:11:00"
+    },
+    {
+      "n": 3,
+      "name": "history",
+      "detail": "85 txns on C13487-K1; customer holds ['C13487-K1']"
+    },
+    {
+      "n": 4,
+      "name": "device_neighbourhood",
+      "detail": "28 card(s) on the device profile within 30 days"
+    },
+    {
+      "n": 5,
+      "name": "memory",
+      "detail": "0 closed case(s) on the customer's cards; 1 similar 'undocumented' closed case(s); 0 earlier agent case(s) linked"
+    },
+    {
+      "n": 6,
+      "name": "assess",
+      "detail": "p=0.88 fraud evidence ['device', 'network'] legit ['device']"
+    },
+    {
+      "n": 7,
+      "name": "final_decision",
+      "detail": "BLOCK_CARD, CREATE_CASE, FILE_REPORT, MONITOR_CONNECTED_CARDS, ESCALATE_TO_ANALYST"
+    },
+    {
+      "n": 8,
+      "name": "write_case",
+      "detail": "CASE-HHG-014 written and read back: verified=True"
+    }
+  ],
+  "tool_calls": [
+    {
+      "tool": "get_transaction",
+      "params": {
+        "t": "3478561"
+      },
+      "latency_ms": 7947.5,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "card_history",
+      "params": {
+        "c": "C13487-K1"
+      },
+      "latency_ms": 1282.9,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "customer_cards",
+      "params": {
+        "cu": "C13487"
+      },
+      "latency_ms": 325.1,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "device_neighbours",
+      "params": {
+        "d": "SM-G935F Build/NRD90M | Android 7.0 | chrome 62.0 for android | 1920x1080",
+        "t0": "2016-10-23 16:11:00",
+        "t1": "2016-12-22 16:11:00"
+      },
+      "latency_ms": 362.9,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "closed_cases_for_cards",
+      "params": {
+        "cards": [
+          "C13487-K1"
+        ]
+      },
+      "latency_ms": 286.8,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "similar_closed_cases",
+      "params": {
+        "pat": "undocumented",
+        "lo": 37.48,
+        "hi": 112.44,
+        "before_ts": "2016-11-22 20:11:00"
+      },
+      "latency_ms": 363.7,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "case_memory",
+      "params": {
+        "cards": [
+          "C13487-K1",
+          "C01289-K1",
+          "C01996-K2",
+          "C02910-K1",
+          "C02975-K1",
+          "C03676-K2",
+          "C04108-K2",
+          "C04274-K1",
+          "C05448-K2",
+          "C06031-K2",
+          "C06650-K2",
+          "C06710-K1",
+          "C07472-K1",
+          "C08168-K1",
+          "C08972-K2",
+          "C09049-K1",
+          "C09195-K1",
+          "C09906-K1",
+          "C09975-K1",
+          "C10020-K1",
+          "C10193-K2"
+        ],
+        "devices": [
+          "SM-G935F Build/NRD90M | Android 7.0 | chrome 62.0 for android | 1920x1080"
+        ]
+      },
+      "latency_ms": 286.3,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "write_case",
+      "params": {
+        "graph_case_id": "CASE-HHG-014"
+      },
+      "latency_ms": 17380.0,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "read_case",
+      "params": {
+        "ic": "CASE-HHG-014"
+      },
+      "latency_ms": 604.8,
+      "ok": true,
+      "error": ""
+    }
+  ],
+  "decision": {
+    "verdict": "fraud",
+    "status": "escalated",
+    "final_probability": 0.88,
+    "affected": [
+      "3478561"
+    ],
+    "exposure": 74.96,
+    "connected_cards": [
+      "C01289-K1",
+      "C01996-K2",
+      "C02910-K1",
+      "C02975-K1",
+      "C03676-K2",
+      "C04108-K2",
+      "C04274-K1",
+      "C05448-K2",
+      "C06031-K2",
+      "C06650-K2",
+      "C06710-K1",
+      "C07472-K1",
+      "C08168-K1",
+      "C08972-K2",
+      "C09049-K1",
+      "C09195-K1",
+      "C09906-K1",
+      "C09975-K1",
+      "C10020-K1",
+      "C10193-K2",
+      "C10326-K1",
+      "C11082-K1",
+      "C11670-K2",
+      "C11702-K1",
+      "C12645-K1",
+      "C12796-K1",
+      "C13291-K1"
+    ],
+    "evidence_requests": [],
+    "stop_reason": "Probability 0.88 >= 0.85 on 2 independent lines of evidence (device, network); stopping per §6.",
+    "what_changed": "nothing"
+  }
+}

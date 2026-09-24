@@ -1,0 +1,139 @@
+{
+  "steps": [
+    {
+      "n": 1,
+      "name": "trigger",
+      "detail": "customer_report: Customer C08623 message: 'I never made this $49.00 purchase. Please check my card.' Refers to 3530164."
+    },
+    {
+      "n": 2,
+      "name": "open_case",
+      "detail": "flagged txn 3530164 $49.00 in_person at 2016-12-10 13:01:21"
+    },
+    {
+      "n": 3,
+      "name": "history",
+      "detail": "1134 txns on C08623-K2; customer holds ['C08623-K1', 'C08623-K2']"
+    },
+    {
+      "n": 4,
+      "name": "device_neighbourhood",
+      "detail": "no device record (in-person)"
+    },
+    {
+      "n": 5,
+      "name": "memory",
+      "detail": "6 closed case(s) on the customer's cards; 0 similar 'none' closed case(s); 0 earlier agent case(s) linked"
+    },
+    {
+      "n": 6,
+      "name": "assess",
+      "detail": "p=0.5 fraud evidence ['customer_denial'] legit []"
+    },
+    {
+      "n": 7,
+      "name": "final_decision",
+      "detail": "BLOCK_CARD, CREATE_CASE, ESCALATE_TO_ANALYST"
+    },
+    {
+      "n": 8,
+      "name": "write_case",
+      "detail": "CASE-HHG-003 written and read back: verified=True"
+    }
+  ],
+  "tool_calls": [
+    {
+      "tool": "get_transaction",
+      "params": {
+        "t": "3530164"
+      },
+      "latency_ms": 259.6,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "card_history",
+      "params": {
+        "c": "C08623-K2"
+      },
+      "latency_ms": 12566.5,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "customer_cards",
+      "params": {
+        "cu": "C08623"
+      },
+      "latency_ms": 2514.7,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "closed_cases_for_cards",
+      "params": {
+        "cards": [
+          "C08623-K1",
+          "C08623-K2"
+        ]
+      },
+      "latency_ms": 288.0,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "similar_closed_cases",
+      "params": {
+        "pat": "none",
+        "lo": 24.5,
+        "hi": 73.5,
+        "before_ts": "2016-12-10 15:01:21"
+      },
+      "latency_ms": 337.2,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "case_memory",
+      "params": {
+        "cards": [
+          "C08623-K2"
+        ]
+      },
+      "latency_ms": 266.7,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "write_case",
+      "params": {
+        "graph_case_id": "CASE-HHG-003"
+      },
+      "latency_ms": 1436.7,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "tool": "read_case",
+      "params": {
+        "ic": "CASE-HHG-003"
+      },
+      "latency_ms": 5212.8,
+      "ok": true,
+      "error": ""
+    }
+  ],
+  "decision": {
+    "verdict": "uncertain",
+    "status": "escalated",
+    "final_probability": 0.5,
+    "affected": [
+      "3530164"
+    ],
+    "exposure": 49.0,
+    "connected_cards": [],
+    "evidence_requests": [],
+    "stop_reason": "The cardholder's own statement is already the verification response (§6: a verification response settles what it can); the graph has nothing further to add, so the case goes to an analyst under R8.",
+    "what_changed": "nothing"
+  }
+}

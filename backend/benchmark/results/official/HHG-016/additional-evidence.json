@@ -1,0 +1,11 @@
+{
+  "additional_evidence_required": true,
+  "evidence_requests": [
+    {
+      "type": "step_up_auth",
+      "asked_after_step": 6,
+      "assumed_response": "Step-up authentication on the account fails and the customer repeats the denial (simulated: probability 0.69 favoured fraud)."
+    }
+  ],
+  "note": "Replies are simulated per README §5; the assumption is stated."
+}

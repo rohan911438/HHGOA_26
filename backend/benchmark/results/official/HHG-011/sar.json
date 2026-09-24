@@ -1,0 +1,9 @@
+{
+  "sar_required": false,
+  "file": false,
+  "reason": "§3a: fraud is confirmed but exposure $131.30 is at or below $1,000 and no shared origin or coordinated pattern was found; case only, no report.",
+  "narrative": "",
+  "subjects": [],
+  "total_amount_usd": 0,
+  "activity_dates": []
+}

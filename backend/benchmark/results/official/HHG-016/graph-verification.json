@@ -1,0 +1,32 @@
+{
+  "attempted": true,
+  "write": {
+    "vertices_upserted": 1,
+    "edges_upserted": 6,
+    "edges_expected": 6
+  },
+  "read_back": {
+    "vertex": {
+      "summary": "Customer report alert on C09988-K1 (transaction 3534820). Assessed as card-not-present fraud from a device new to the account, fraud probability 0.91: 1 transaction(s) totalling $59.67 starting at 3534820. Final actions: BLOCK_CARD, CREATE_CASE.",
+      "sar_file": false,
+      "fraud_probability": 0.91,
+      "pattern": "card_not_present_new_device",
+      "pattern_description": "",
+      "stop_reason": "Step-up result settled the question (§6).",
+      "official_case_id": "HHG-016",
+      "final_actions": "BLOCK_CARD|CREATE_CASE",
+      "exposure_usd": 59.67,
+      "graph_case_id": "CASE-HHG-016",
+      "initial_actions": "CREATE_CASE|STEP_UP_AUTH|MONITOR_CARD",
+      "verdict": "fraud",
+      "written_at": "2026-09-24 09:02:05",
+      "status": "closed_fraud"
+    },
+    "similar": 3,
+    "cards": 1,
+    "flagged": 1,
+    "devices": 0,
+    "affected": 1
+  },
+  "verified": true
+}
